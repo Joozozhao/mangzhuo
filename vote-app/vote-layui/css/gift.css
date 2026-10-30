@@ -1,0 +1,50 @@
+:root {
+    --gallery-image-list-background-color: #333;
+    --gallery-image-list-box-shadow: rgba(247,129,79,0.6);
+}
+html, body{
+    margin:0;
+}
+.gallery-image-list{
+    position:absolute;
+    height:100%;
+    width:100%;
+    top:0;
+    left:0;
+    /*overflow:scroll;*/
+    z-index: 10;
+    /*background-color: var(--gallery-image-list-background-color);*/
+}
+.image-list{
+    position:relative;
+    width:100%;
+    padding: 2vw;
+}
+.image{
+    display:inline-flex;
+    margin-left:1vw;
+    margin-right:1vw;
+    margin-top:2vw;
+    height:19vw;
+    width:21%;
+    -webkit-clip-path: polygon(15% 0, 100% 0%, 85% 100%, 0% 100%);
+    clip-path: polygon(15% 0, 100% 0%, 85% 100%, 0% 100%);
+    transition:0.5s;
+    background-size:auto 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: white;
+    cursor: pointer;
+    -webkit-box-shadow: inset 0px 0px 10px 5px var(--gallery-image-list-box-shadow);
+    -moz-box-shadow: inset 0px 0px 10px 5px var(--gallery-image-list-box-shadow);
+    box-shadow: inset 0px 0px 10px 5px var(--gallery-image-list-box-shadow);
+    z-index: 10;
+}
+.image:hover{
+    transition:0.5s;
+    transform:scale(1.2);
+}
+.hide{
+    -webkit-clip-path: polygon(60% 0, 60% 0, 40% 100%, 40% 100%);
+    clip-path: polygon(60% 0, 60% 0, 40% 100%, 40% 100%);
+}

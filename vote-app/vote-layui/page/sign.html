@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="2024 向新而生">
+    <meta name="author" content="Webpixels">
+    <title>2024 向新而生</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700,800|Roboto:400,500,700" rel="stylesheet">
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="../lib/layui/css/layui.css" media="all">
+    <link type="text/css" href="../css/theme.css" rel="stylesheet">
+    <!-- Demo CSS - No need to use these in your project -->
+    <link type="text/css" href="../css/demo.css" rel="stylesheet">
+  </head>
+  <body>
+      <section class="py-xl bg-cover bg-size--cover" style="background-image: url('../images/bg.jpg'); height: 100vh;">
+        <span class="mask bg-primary alpha-3"></span>
+        <div class="container d-flex align-items-center no-padding">
+          <div class="col">
+            <div class="row justify-content-center">
+              <div class="col-lg-4">
+                <div class="card bg-primary text-white">
+                  <div class="card-body">
+                   
+                    <span class="clearfix"></span>
+                    <img src="../images/brand.png" style="width: 50px;">
+					<br>
+					<br>
+					<br>
+                    <h4 class="heading h3 text-white pt-3 pb-5">welcome<br>
+                      2024&nbsp;向新而生</h4>
+                    <form class="form-primary">
+                      <div class="form-group">
+                        <input type="text" class="form-control code" id="input_email" placeholder="请输入参会Code">
+                      </div>
+<!--                      <button type="submit" class="btn btn-block btn-lg bg-white mt-4 submit">我来了～</button>-->
+                      <button type="button" class="mt-4 btn btn-block btn-dark btn-animated btn-animated-x submit">
+                        <span class="btn-inner--visible">我来了～</span>
+                        <span class="btn-inner--hidden"><i class="fas fa-arrow-right"></i></span>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    </footer>
+    <!-- Core -->
+    <script src="../lib/jquery/jquery.min.js"></script>
+    <script src="../lib/popper/popper.min.js"></script>
+    <script src="../js/bootstrap/bootstrap.min.js"></script>
+    <!-- FontAwesome 5 -->
+    <script src="../lib/fontawesome/js/fontawesome-all.min.js" defer></script>
+    <!-- Page plugins -->
+    <script src="../lib/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="../lib/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script src="../lib/input-mask/input-mask.min.js"></script>
+    <script src="../lib/nouislider/js/nouislider.min.js"></script>
+    <script src="../lib/textarea-autosize/textarea-autosize.min.js"></script>
+    <!-- Theme JS -->
+    <script src="../js/theme.js"></script>
+  </body>
+</html>
+<script src="../lib/layui/layui.js"></script>
+<script type="text/javascript">
+  layui.use(['layer'], function(){
+    let $ = layui.$, layer = layui.layer;
+    $(".submit").on("click",function(){
+      $(".submit").attr("disabled",true);
+      var code = $(".code").val();
+      $.ajax({
+        type:'POST',
+        url:'/vote/mobile/saveCode',
+        data:{code:code},
+        dataType:'json',
+        success:function(json){
+          if(json.code == 0){
+            //获取到openID并绑定过
+            window.location.href="/page/score.html"
+          }else{
+            layer.msg(json.msg, {icon: 2});
+          }
+          $(".submit").attr("disabled",false);
+        }
+      });
+    });
+  });
+</script>

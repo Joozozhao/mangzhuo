@@ -1,0 +1,57 @@
+server:
+  port: 8086
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  #  profiles:
+  #    active: dev
+  application:
+    name: vote-admin
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://10.1.120.152:3306/vote?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&tinyInt1isBit=false&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://127.0.0.1:3306/vote?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&tinyInt1isBit=false&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+#    password: 51welinkdb
+    password: port#123Apt
+    hikari:
+      connection-test-query: SELECT 1
+      max-lifetime: 1800000
+      connection-timeout: 5000
+      idle-timeout: 3600000
+      auto-commit: false
+      maximum-pool-size: 6
+      minimum-idle: 3
+      pool-name: HikariCP
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: html
+    encoding: UTF-8
+    cache: false
+    servlet:
+      content-type: text/html
+  web:
+    resources:
+      static-locations: classpath:/static/
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:/mappers/*.xml
+
+wechat:
+  appSecret: 8e958b8a36ffc27c0ac472bb6860f5d7
+  appId: wxdedeb973cdfc3475
+  wechatUrl: https://open.weixin.qq.com/connect/oauth2/authorize
+  redirectUrl: http://jiu.51welink.com/taste/wechat/getCode
+#  redirectUrl: http://861f4k1738.zicp.fun/taste/wechat/getCode
+  getOpenIdUrl: https://api.weixin.qq.com/sns/oauth2/access_token
+  getUserByOpenId: https://api.weixin.qq.com/sns/userinfo
+#  savepath: /
+  savepath: /data/applications/vote/vote-weui/upload/
+  secretKey: 51welink

@@ -1,0 +1,20 @@
+<view class="container">
+  <view class="success-card card">
+    <view class="success-icon">🍶</view>
+    <view class="success-title">盲品交卷成功！</view>
+    <view class="success-desc">您已完成全场 {{sampleCount}} 款酒的盲猜与品鉴打分。所有推断已严格封存，静候房主开奖！</view>
+    <view class="room-code-tag">房间码：{{room.roomCode}}</view>
+  </view>
+
+  <view class="tip-card card">
+    <view class="tip-head">🍵 醒酒间隙温情提示</view>
+    <view class="tip-body">
+      喝口温水稍作休息。开奖后您将第一时间看到全场「猜酒高手排行榜」、「大家真正喜爱的酒款口味榜」以及包含黑马酒款的「酒局报告」。
+    </view>
+  </view>
+
+  <view class="action-stack">
+    <button class="btn-primary" bindtap="goToRoom">返回酒局大厅查看全员进度</button>
+    <button class="btn-secondary" bindtap="goToReveal">提前看看开奖效果 (演示)</button>
+  </view>
+</view>

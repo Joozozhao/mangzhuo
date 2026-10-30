@@ -1,0 +1,141 @@
+<view class="journal detail-page">
+  <view class="chapter-mast">
+    <view class="chapter-brand">盲酌 · 在线品鉴</view>
+    <view class="chapter-no">活动 #{{id}}</view>
+  </view>
+
+  <!-- 加载中状态 -->
+  <view wx:if="{{loading && !detail}}" class="loading-state">
+    <view class="loading-spinner"></view>
+    <view class="muted">正在加载酒局信息...</view>
+  </view>
+
+  <!-- 错误可恢复状态 -->
+  <view wx:elif="{{error && !detail}}" class="error-state">
+    <view class="row-title">酒局信息加载失败</view>
+    <view class="muted">{{error}}</view>
+    <button wx:if="{{needLogin}}" class="btn-primary retry-btn" bindtap="goLogin">去登录 · 确认微信身份</button>
+    <button wx:else class="btn-primary retry-btn" bindtap="loadData">重试加载</button>
+    <button class="btn-secondary back-btn" bindtap="goBack">返回酒局</button>
+  </view>
+
+  <!-- 主内容 -->
+  <view wx:elif="{{detail}}">
+    <view wx:if="{{error}}" class="empty-note">
+      <view>{{error}}</view>
+      <button class="text-link" bindtap="loadData">重试刷新 →</button>
+    </view>
+    <!-- 头部信息 -->
+    <view class="detail-header">
+      <view class="detail-title-row">
+        <view class="detail-title">{{detail.title}}</view>
+        <view class="status-badge {{detail.status === 1 ? 'status-closed' : 'status-open'}}">
+          {{detail.status === 1 ? '品鉴已揭晓' : '品鉴进行中'}}
+        </view>
+      </view>
+      <view class="detail-meta">
+        <text>共 {{sampleCount}} 款酒样</text>
+        <text wx:if="{{detail.isOwner}}" class="owner-tag">主持人身份</text>
+        <text wx:if="{{results && results.participantCount !== undefined}}"> · {{results.participantCount}} 位参与者</text>
+      </view>
+    </view>
+
+    <!-- 结果模式 (status === 1) -->
+    <view wx:if="{{detail.status === 1}}" class="results-section">
+      <view class="section-title">品鉴揭晓与评分汇总</view>
+      <view wx:if="{{loadingResults}}" class="muted">正在汇总品鉴成绩...</view>
+      <view wx:elif="{{results}}">
+        <view class="result-card card" wx:for="{{results.samples}}" wx:key="sampleId">
+          <view class="result-top">
+            <view class="sample-no">{{item.number}} 号酒样</view>
+            <view class="result-score">{{item.average}} <text class="score-unit">分</text></view>
+          </view>
+          <view class="actual-name-row">
+            <text class="label">真实酒款：</text>
+            <text class="name">{{item.name}}</text>
+          </view>
+          <view class="result-stats">
+            <text>有效评分 {{item.count}} 次</text>
+            <text class="dot">·</text>
+            <text>猜中人数 {{item.correct}} 人</text>
+          </view>
+
+          <!-- 本人答题情况（若有） -->
+          <view class="my-answer-box" wx:if="{{userAnswersMap[item.sampleId]}}">
+            <text class="my-label">我的竞猜：</text>
+            <text class="my-choice {{userAnswersMap[item.sampleId].guessedName === item.name ? 'choice-correct' : 'choice-wrong'}}">
+              {{userAnswersMap[item.sampleId].guessedName}}
+              ({{userAnswersMap[item.sampleId].guessedName === item.name ? '猜中' : '未猜中'}})
+            </text>
+            <text class="my-score">我的评分：{{userAnswersMap[item.sampleId].score}} 分</text>
+          </view>
+        </view>
+      </view>
+      <view wx:elif="{{resultsError}}" class="empty-note">
+        <view class="muted">{{resultsError}}</view>
+        <button class="btn-secondary retry-btn" bindtap="loadResults">重试加载结果</button>
+      </view>
+    </view>
+
+    <!-- 进行中状态 (status === 0) -->
+    <view wx:else class="active-section">
+      <!-- 候选酒单参考池 -->
+      <view class="card choices-card">
+        <view class="choices-title">本局候选酒单：</view>
+        <view class="choices-desc">藏起酒标，真实酒款就在其中，请仔细分辨</view>
+        <view class="choices-tags">
+          <view class="choice-tag" wx:for="{{detail.choices}}" wx:key="*this">{{item}}</view>
+        </view>
+      </view>
+
+      <!-- 酒样评分表单 -->
+      <view class="samples-list">
+        <view class="card sample-card" wx:for="{{detail.samples}}" wx:key="sampleId">
+          <view class="sample-head">
+            <view class="sample-tag">{{item.number}} 号杯</view>
+            <view wx:if="{{detail.isOwner && item.actualName}}" class="host-hint">
+              (主持人暗记: {{item.actualName}})
+            </view>
+          </view>
+
+          <!-- 竞猜选择 -->
+          <view class="field-item">
+            <view class="field-label">竞猜对应酒款</view>
+            <picker range="{{detail.choices}}" value="{{formMap[item.sampleId].choiceIndex}}" data-sample-id="{{item.sampleId}}" bindchange="onChoiceChange">
+              <view class="picker-value {{formMap[item.sampleId].guessedName ? 'has-value' : 'placeholder'}}">
+                {{formMap[item.sampleId].guessedName || '点击选择推测酒款'}} →
+              </view>
+            </picker>
+          </view>
+
+          <!-- 分数输入 (0..100) -->
+          <view class="field-item">
+            <view class="field-label-row">
+              <text class="field-label">风味综合评分 (0 ~ 100)</text>
+              <text class="score-display">{{formMap[item.sampleId].score !== '' ? formMap[item.sampleId].score + ' 分' : '未打分'}}</text>
+            </view>
+            <slider min="0" max="100" step="1" value="{{formMap[item.sampleId].scoreNumber}}" data-sample-id="{{item.sampleId}}" bindchange="onSliderChange" bindchanging="onSliderChanging" activeColor="#893e32" backgroundColor="#e6dfd3" block-size="20" />
+            <view class="score-input-row">
+              <text class="score-tip">精细输入：</text>
+              <input class="score-input" type="number" maxlength="3" value="{{formMap[item.sampleId].score}}" data-sample-id="{{item.sampleId}}" bindinput="onScoreInput" placeholder="0-100" />
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 提交按钮 -->
+      <view class="submit-wrap">
+        <button class="btn-primary" loading="{{submitting}}" disabled="{{submitting || closing || loading}}" bindtap="onSubmitScores">
+          {{hasSubmitted ? '更新品鉴竞猜与评分' : '提交品鉴竞猜与评分'}}
+        </button>
+      </view>
+
+      <!-- 主持人结束酒局控制 -->
+      <view wx:if="{{detail.isOwner}}" class="owner-controls card">
+        <view class="owner-title">主持人专区</view>
+        <view class="muted owner-desc">所有嘉宾完成评分后，结束品鉴即可揭晓盲品答案与平均分统计（此操作不可撤销）。</view>
+        <button class="btn-secondary close-btn" loading="{{closing}}" disabled="{{closing || submitting || loading}}" bindtap="onCloseTaste">结束品鉴 · 揭晓结果</button>
+      </view>
+    </view>
+  </view>
+</view>

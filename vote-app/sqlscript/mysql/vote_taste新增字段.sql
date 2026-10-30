@@ -1,0 +1,1 @@
+ALTER TABLE vote_taste ADD taste_url varchar(1024) NULL DEFAULT NULL COMMENT '现场酒图片'

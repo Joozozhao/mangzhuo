@@ -1,0 +1,11 @@
+# ---------------------------------------------------------------
+# 小程序(原生)独立配置 —— 与公众号 wechat.* 配置完全分离
+# 启用：--spring.profiles.active=applet
+# 凭证只从环境变量读取，禁止把真实 AppSecret 写入任何源码文件：
+#   export APPLET_APP_ID=wxxxxxxxxxxxxxxx
+#   export APPLET_APP_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+# 未配置时 /taste/applet/login 会返回 503「小程序登录尚未配置」。
+# ---------------------------------------------------------------
+applet:
+  app-id: ${APPLET_APP_ID:}
+  app-secret: ${APPLET_APP_SECRET:}

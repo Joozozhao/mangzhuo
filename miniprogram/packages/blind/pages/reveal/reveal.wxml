@@ -1,0 +1,73 @@
+<view class="container" wx:if="{{room}}">
+  <view class="reveal-hero card">
+    <view class="rh-badge">🏆 盲品正式揭晓</view>
+    <view class="rh-title">真相大白，好酒见真章</view>
+    <view class="rh-sub">共品鉴 {{samples.length}} 款酒 · 参与人数 {{members.length}} 人</view>
+    
+    <view class="nav-shortcuts">
+      <button class="btn-dark shortcut-btn" bindtap="goToRanking">查看排行榜 🏅</button>
+      <button class="btn-primary shortcut-btn" bindtap="goToReport">酒局报告 📊</button>
+    </view>
+  </view>
+
+  <!-- 酒样开奖卡片列表 -->
+  <view class="reveal-list">
+    <view class="sample-reveal-card card" wx:for="{{sampleStats}}" wx:key="sampleId">
+      <view class="src-top">
+        <view class="src-bottle-tag">{{item.bottleTag}}</view>
+        <view class="src-score-badge">
+          <text class="sb-label">大众盲品评分</text>
+          <text class="sb-val">{{item.avgOverall}}</text>
+        </view>
+      </view>
+
+      <view class="src-real-info">
+        <image wx:if="{{item.photo}}" class="src-sample-photo" src="{{item.photo}}" mode="aspectFill" bindtap="previewPhoto" data-photo="{{item.photo}}" />
+        <view class="real-brand">{{item.brand}}</view>
+        <view class="real-product">{{item.product}}</view>
+      </view>
+
+      <view class="src-tags-row">
+        <text class="info-pill">{{item.aromaType}}</text>
+        <text class="info-pill">{{item.alcoholDegree}}</text>
+        <text class="info-pill">{{item.year}}年产</text>
+        <text class="info-pill price-pill">真实参考价: ¥{{item.marketPrice}}</text>
+      </view>
+
+      <!-- 盲测关键对比数据 -->
+      <view class="comparison-bar">
+        <view class="comp-col">
+          <text class="comp-k">盲测平均估价</text>
+          <text class="comp-v">¥{{item.avgEstimatedPrice}}</text>
+        </view>
+        <view class="comp-divider">|</view>
+        <view class="comp-col">
+          <text class="comp-k">品牌猜中率</text>
+          <text class="comp-v">{{item.brandAccuracy}}%</text>
+        </view>
+        <view class="comp-divider">|</view>
+        <view class="comp-col">
+          <text class="comp-k">估价偏差</text>
+          <text class="comp-v {{item.priceDiff > 0 ? 'diff-high' : 'diff-low'}}">
+            {{item.priceDiff > 0 ? ('高估¥' + item.priceDiff) : (item.priceDiff < 0 ? ('低估¥' + (-item.priceDiff)) : '精准')}}
+          </text>
+        </view>
+      </view>
+
+      <view class="notes-quote" wx:if="{{item.notes}}">
+        “{{item.notes}}”
+      </view>
+
+      <view class="reveal-knowledge" wx:if="{{item.knowledgeEntry}}">
+        <view class="knowledge-caption">揭晓之后，再认识这一杯</view>
+        <button class="knowledge-link" bindtap="goToKnowledge" data-type="{{item.knowledgeEntry.type}}" data-id="{{item.knowledgeEntry.id}}">{{item.knowledgeEntry.title}}　→</button>
+      </view>
+
+      <view class="card-btn-row">
+        <button class="btn-secondary mini-btn" bindtap="goToCompare" data-sample-id="{{item.sampleId}}">
+          查看该酒全员推测对比 ›
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

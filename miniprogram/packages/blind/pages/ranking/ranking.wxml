@@ -1,0 +1,57 @@
+<view class="container">
+  <!-- 榜单类型切换 Tab -->
+  <view class="rank-nav card">
+    <view class="nav-tab {{activeTab === 'guess' ? 'active' : ''}}" bindtap="switchTab" data-tab="guess">
+      🏅 猜酒高手榜
+    </view>
+    <view class="nav-tab {{activeTab === 'taste' ? 'active' : ''}}" bindtap="switchTab" data-tab="taste">
+      🍶 大众口味榜
+    </view>
+  </view>
+
+  <!-- 1. 猜酒高手榜 -->
+  <view class="ranking-content" wx:if="{{activeTab === 'guess'}}">
+    <view class="rank-intro">根据盲猜品牌、产品、香型、度数、年份及价格命中加权总分排序</view>
+    <view class="rank-list">
+      <view class="rank-card card {{item.rank <= 3 ? ('top-' + item.rank) : ''}}" wx:for="{{guessRanking}}" wx:key="userId">
+        <view class="rank-num">
+          <text wx:if="{{item.rank === 1}}">🥇</text>
+          <text wx:elif="{{item.rank === 2}}">🥈</text>
+          <text wx:elif="{{item.rank === 3}}">🥉</text>
+          <text wx:else>{{item.rank}}</text>
+        </view>
+        <image wx:if="{{item.avatarImg}}" class="user-avatar user-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
+        <view wx:else class="user-avatar">{{item.avatar}}</view>
+        <view class="user-meta">
+          <view class="user-name">{{item.nickname}}</view>
+          <view class="user-detail">品牌命中率：{{item.hitBrandsCount}} 款酒</view>
+        </view>
+        <view class="user-score-box">
+          <text class="score-val">{{item.totalScore}}</text>
+          <text class="score-unit">总分</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 2. 大众口味榜 -->
+  <view class="ranking-content" wx:if="{{activeTab === 'taste'}}">
+    <view class="rank-intro">抛开品牌与价格光环，仅由现场所有人盲品主观打分决出的口感之王</view>
+    <view class="rank-list">
+      <view class="taste-card card" wx:for="{{tasteRanking}}" wx:key="sampleId">
+        <view class="taste-rank-badge">NO.{{item.rank}}</view>
+        <view class="taste-main">
+          <view class="t-bottle">{{item.bottleTag}}</view>
+          <view class="t-name">{{item.brand}} · {{item.product}}</view>
+          <view class="t-meta">真实售价: ¥{{item.marketPrice}} · 盲测估价: ¥{{item.avgEstimatedPrice}}</view>
+        </view>
+        <view class="taste-score-box">
+          <text class="t-score">{{item.avgOverall}}</text>
+          <text class="t-unit">综合分</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <button class="btn-primary" bindtap="goToReport">查看本场深度分析《酒局报告》›</button>
+</view>

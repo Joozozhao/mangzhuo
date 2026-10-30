@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <meta name="wechat-enable-text-zoom-em" content="true">
+    <title>品酒</title>
+    <script src="/lib/layui-v2.10.3/layui.js"></script>
+    <link rel="stylesheet" href="../dist/style/weui.min.css"/>
+    <link rel="stylesheet" href="../dist/example/example.css"/>
+    <script rel="stylesheet" src="../lib/jquery/jquery.min.js"></script>
+    <script rel="stylesheet" src="../lib/swiper/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="../lib/swiper/swiper-bundle.min.css" />
+    <link href="/lib/layui-v2.10.3/css/layui.css" rel="stylesheet">
+</head>
+<body ontouchstart>
+    <div class="container" id="container">
+        <div class="page js_show" style="background-color: #fff">
+            <div class="page__hd" style="padding: 0px;">
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="../image/1.png" alt="" width="100%" height="200"/></div>
+                        <div class="swiper-slide"><img src="../image/2.png" alt="" width="100%" height="200"/></div>
+                        <div class="swiper-slide"><img src="../image/3.png" alt="" width="100%" height="200"/></div>
+                        <div class="swiper-slide"><img src="../image/4.jpg" alt="" width="100%" height="200"/></div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+            <div class="page__bd">
+                <div class="weui-panel">
+                    <div class="weui-panel__bd">
+                        <div class="weui-media-box weui-media-box_small-appmsg">
+                            <div class="weui-cells" id="html_list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div role="tablist" aria-label="" class="weui-tabbar" style="position: fixed;bottom: 0;width: 100%" onclick="openAddTaste()">
+                <div id="tab1" role="tab" aria-labelledby="t1_title" aria-describedby="t1_tips" aria-selected="true" aria-controls="panel1" class="weui-tabbar__item weui-bar__item_on">
+                    <div id="t1_tips" aria-hidden="true" style="display: inline-block; position: relative;">
+                        <i class="layui-icon layui-icon-add-circle-fine" style="font-size: 20px; "> 新增</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    var swiper = new Swiper(".mySwiper", {
+        pagination: {
+            el: ".swiper-pagination",
+        },
+    });
+    $(function(){
+        $.ajax({
+            type:'POST',
+            url:'/taste/wechat/tastelist',
+            data:{},
+            dataType:'json',
+            success:function(json){
+                if(json.code == 0){
+                    var html = "";
+                    for (var i=0;i<json.data.length;i++){
+                        var data = json.data;
+                        var createTime = new Date(data[i]['createTime']);
+                        var formattedDate = createTime.toLocaleString();
+                        var str = "<a aria-labelledby=\"t1 t2\" class=\"weui-cell weui-cell_active weui-cell_access weui-cell_example\" href=\"/page/tastedetail.html?id="+data[i]['id']+"\">\n" +
+                            "                                    <div aria-hidden=\"true\" id=\"t1\" class=\"weui-cell__hd\"><img width=\"60\" src=\""+data[i]['imgUrl']+"\" alt=\"\"></div>\n" +
+                            "                                    <div aria-hidden=\"true\" id=\"t2\" class=\"weui-cell__bd weui-cell_primary\" style=\"margin-left: 10px;\">\n" +
+                            "                                        <p>"+data[i]['tasteName']+"</p>\n" +
+                            "                                        <p class=\"weui-media-box__desc\">"+data[i]['nickname']+" | "+formattedDate +"</p>\n" +
+                            "                                    </div>\n" +
+                            "                                    <div class=\"weui-cell__ft\"></div>\n" +
+                            "                                </a>";
+                        html = str+html;
+                    }
+                    $("#html_list").html(html);
+                }else{
+                    if(json.msg == "relogin"){
+                        window.location.href = "/page/wechat.html";
+                    }else{
+                        layer.msg(json.msg, {icon: -1});
+                    }
+                }
+            }
+        });
+    });
+    //新增
+    function openAddTaste(){
+        window.location.href="/page/createtaste.html"
+    }
+</script>

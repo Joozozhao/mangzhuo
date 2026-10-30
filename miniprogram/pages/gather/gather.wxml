@@ -1,0 +1,57 @@
+<brand-nav/>
+<view class="journal organized-page gather-page">
+  <view class="page-intro">
+    <view class="heading-copy"><view class="compact-title">和知己，品一局</view><view class="heading-desc">藏起酒标，让味道先开口。</view></view>
+    <image class="compact-art" src="/assets/brand/libai-gather.png" mode="aspectFit"/>
+  </view>
+  <view class="content-panel surface-panel gather-start">
+    <view class="mode-tabs">
+      <button class="mode-tab {{currentTab === 'local' ? 'active' : ''}}" bindtap="switchTabMode" data-tab="local" aria-label="桌上品鉴" aria-pressed="{{currentTab === 'local'}}">桌上品鉴</button>
+      <button class="mode-tab {{currentTab === 'online' ? 'active' : ''}}" bindtap="switchTabMode" data-tab="online" aria-label="在线品鉴" aria-pressed="{{currentTab === 'online'}}">在线品鉴</button>
+    </view>
+    <block wx:if="{{currentTab === 'local'}}">
+      <view class="mode-explanation">同一设备记录，一起品鉴、一起揭晓。</view>
+      <view class="gather-actions"><button class="btn-primary" bindtap="goToCreate">发起一场酒局</button><button class="btn-secondary" bindtap="goToJoin">输入房间号加入</button></view>
+      <button class="inline-action" bindtap="openDemoRoom"><text>第一次盲品？先看看示例酒局</text><text class="action-arrow">→</text></button>
+    </block>
+    <block wx:else>
+      <view class="mode-explanation">各自用微信参与，活动与评分保存在后台。</view>
+      <view wx:if="{{!isLoggedIn}}" class="login-guide">
+        <view class="guide-title">先登录，再与朋友在线品鉴</view>
+        <view class="muted">登录后可发起、加入并查看在线活动。</view>
+        <button class="btn-primary" bindtap="goToProfileLogin">去登录 · 完善资料</button>
+      </view>
+      <block wx:else>
+        <button class="btn-primary" bindtap="goToOnlineCreate">发起在线品鉴</button>
+        <view class="join-by-id">
+          <view class="join-id-label">已有活动编号？直接加入</view>
+          <view class="join-id-row"><input class="input join-id-input" type="number" placeholder="输入活动编号" value="{{inputOnlineId}}" bindinput="onInputOnlineId"/><button class="btn-secondary join-id-btn" bindtap="onJoinOnlineById">进入</button></view>
+        </view>
+      </block>
+    </block>
+  </view>
+  <view class="content-panel room-panel" wx:if="{{currentTab === 'local'}}">
+    <view class="panel-heading"><view class="panel-title">酒局记录</view><view class="meta">{{rooms.length}} 场</view></view>
+    <button class="room-entry" wx:for="{{rooms}}" wx:key="roomId" bindtap="onTapRoom" data-room-id="{{item.roomId}}">
+      <view class="room-title-line"><view class="row-title">{{item.name}}</view><text class="room-status {{item.status === 'revealed' ? 'status-done' : ''}}">{{item.status === 'revealed' ? '已揭晓' : (item.status === 'finished' ? '品评结束' : '进行中')}}</text></view>
+      <view class="muted room-description">{{item.description || '编号入杯，独立记录，一起品鉴。'}}</view>
+      <view class="room-summary"><text>房间 {{item.roomCode}} · {{item.sampleCount}} 款 · {{item.memberCount}} 人</text><text class="room-link">{{item.status === 'revealed' ? '看结果' : '进入酒局'}} →</text></view>
+    </button>
+    <view wx:if="{{!rooms.length}}" class="panel-empty"><view class="row-title">还没有酒局</view><view class="muted">邀请朋友，从一场真实的品鉴开始。</view></view>
+  </view>
+  <view class="content-panel room-panel" wx:else>
+    <view class="panel-heading"><view class="panel-title">在线品鉴活动</view><view class="meta" wx:if="{{isLoggedIn}}">{{onlineCount}} 场</view></view>
+    <view wx:if="{{!isLoggedIn}}" class="panel-empty"><view class="muted">登录后，这里会显示在线活动。</view></view>
+    <view wx:elif="{{onlineLoading && !onlineListCount}}" class="panel-empty"><view class="muted">正在加载在线活动…</view></view>
+    <view wx:elif="{{onlineError && !onlineListCount}}" class="panel-empty"><view class="muted">{{onlineError}}</view><button class="text-link" bindtap="loadOnlineTastes">点击重试 →</button></view>
+    <block wx:elif="{{onlineListCount}}">
+      <button class="room-entry" wx:for="{{onlineList}}" wx:key="id" bindtap="onTapOnlineItem" data-id="{{item.id}}">
+        <view class="room-title-line"><view class="row-title">{{item.title}}</view><view class="online-tags"><text wx:if="{{item.isOwner}}" class="owner-badge">我发起的</text><text class="room-status {{item.status === 1 ? 'status-done' : ''}}">{{item.status === 1 ? '已揭晓' : '进行中'}}</text></view></view>
+        <view class="room-summary"><text>活动 #{{item.id}} · {{item.createdAtText || '近期活动'}}</text><text class="room-link">{{item.status === 1 ? '看结果' : '参与品鉴'}} →</text></view>
+      </button>
+      <view class="list-tail" wx:if="{{onlineLoading}}">正在加载更多…</view><view class="list-tail" wx:elif="{{hasMoreOnline}}">上拉加载更多</view><view class="list-tail" wx:else>已加载全部活动</view>
+    </block>
+    <view wx:else class="panel-empty"><view class="muted">还没有在线活动，发起一场邀朋友来品鉴吧。</view></view>
+  </view>
+  <view class="quiet-footer">编号酒样 · 独立品评 · 一起揭晓</view>
+</view>

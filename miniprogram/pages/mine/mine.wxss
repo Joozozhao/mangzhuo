@@ -1,0 +1,15 @@
+.organized-page .profile-panel{padding-bottom:0;}
+.organized-page .profile-entry{display:flex;align-items:center;width:100%;padding:0 0 24rpx;margin:0;background:transparent;text-align:left;white-space:normal;line-height:1.5;}
+.pe-avatar{width:88rpx;height:88rpx;border-radius:50%;background:#e6d9c3;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.pe-emoji{font-size:48rpx;}
+.pe-info{flex:1;margin-left:20rpx;min-width:0;}
+.pe-name{font-size:34rpx;font-weight:600;color:#28251f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pe-state{font-size:22rpx;color:#706355;margin-top:6rpx;}
+.pe-link{font-size:23rpx;color:#893e32;flex-shrink:0;margin-left:12rpx;}
+.profile-stats{display:flex;background:#f0e8db;border-radius:12rpx;padding:20rpx 0;margin-top:24rpx;}
+.stat-item{flex:1;text-align:center;min-width:0;}
+.stat-item+.stat-item{border-left:1rpx solid #d8cdbb;}
+.stat-number{font-size:42rpx;line-height:1.25;color:#893e32;font-variant-numeric:tabular-nums;}
+.organized-page button.stat-link{background:transparent;white-space:normal;margin:0;padding:0;line-height:1.5;border-radius:0;}
+.stat-item .meta{font-size:22rpx;margin-top:6rpx;}
+.organized-page .settings-panel{padding-top:0;padding-bottom:0;border-top:1rpx solid #ddd2c1;}

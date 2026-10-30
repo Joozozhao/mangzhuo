@@ -1,0 +1,8 @@
+{
+  "initialRenderingCache": "static",
+  "navigationBarTitleText": "我的",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "brand-nav": "/components/brand-nav/brand-nav"
+  }
+}

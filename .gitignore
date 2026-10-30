@@ -1,0 +1,48 @@
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE / Editors
+.idea/
+**/.idea/
+*.iml
+**/*.iml
+*.iws
+*.ipr
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+
+# Maven / Java Build Artifacts
+target/
+**/target/
+build/
+**/build/
+*.class
+
+# Logs
+logs/
+**/logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Node / Dependencies
+node_modules/
+**/node_modules/
+
+# Local Dev / CLI caches
+.workbuddy/
+.playwright-cli/
+
+# WeChat Devtools
+project.private.config.json

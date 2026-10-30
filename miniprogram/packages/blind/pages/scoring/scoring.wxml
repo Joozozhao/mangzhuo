@@ -1,0 +1,42 @@
+<view class="container" wx:if="{{currentSample}}">
+  <view class="stage-banner">
+    <view class="stage-tag tag-gold">第二阶段 · 品鉴</view>
+    <view class="stage-title">抛开品牌，你真正喜欢它吗？</view>
+    <view class="stage-desc">白酒盲品的最高价值，是在不知品牌价格时探寻最真实的口腔喜好</view>
+  </view>
+
+  <view class="sample-header card">
+    <view class="sample-badge">{{currentSample.number}}号酒品鉴</view>
+    <view class="total-preview">当前综合评分：<text class="score-num">{{overallScore}}</text> 分</view>
+  </view>
+
+  <!-- 5大感官维度评分滑块 -->
+  <view class="card dim-card">
+    <view class="dim-item" wx:for="{{dimensions}}" wx:key="key">
+      <view class="dim-top">
+        <text class="dim-label">{{item.name}} ({{item.sub}})</text>
+        <text class="dim-val">{{rating[item.key]}} 分</text>
+      </view>
+      <slider 
+        min="5" max="10" step="0.1" 
+        value="{{rating[item.key]}}" 
+        activeColor="#a97832" 
+        backgroundColor="#ede4d3" 
+        block-size="20"
+        block-color="#171714"
+        bindchange="onSliderChange" 
+        bindchanging="onSliderChange"
+        data-dim="{{item.key}}"
+      />
+    </view>
+  </view>
+
+  <view class="card comment-card">
+    <text class="form-label">本杯酒的口感评价 / 盲品吐槽</text>
+    <input class="input" placeholder="例：入口丝滑、中段稍辣、回甘绵长..." value="{{rating.comment}}" bindinput="onInputComment" />
+  </view>
+
+  <button class="btn-primary" bindtap="submitRating">
+    {{isLastSample ? "提交并完成本局盲测" : "保存，继续评下一款酒 ›"}}
+  </button>
+</view>

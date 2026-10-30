@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>品酒</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script src="/lib/layui-v2.10.3/layui.js"></script>
+    <link rel="stylesheet" href="../dist/style/weui.min.css"/>
+    <link rel="stylesheet" href="../dist/example/example.css"/>
+    <script rel="stylesheet" src="../lib/jquery/jquery.min.js"></script>
+    <link href="/lib/layui-v2.10.3/css/layui.css" rel="stylesheet">
+</head>
+<body>
+<div class="page js_show">
+    <div class="swiper-slide"><img id="taste-img" src="../image/1.png" alt="" width="100%" height="200"/></div>
+    <div class="weui-form" style="padding-top: 20px;">
+        <div class="weui-form__bd">
+            <div class="weui-form__text-area">
+                <h2 class="weui-form__title"><span id="tasteName"></span>-评分</h2>
+            </div>
+            <div class="weui-form__control-area" style="margin-top: 20px;-webkit-box-flex: 0;-webkit-flex: 0;flex: 0;">
+                <div class="weui-cells__group weui-cells__group_form">
+                    <div class="weui-cells" id="vote-div"></div>
+                </div>
+            </div>
+            <div class="weui-bottom-fixed-opr" id="js_opr" style="margin-top: 10px;">
+                <a href="javascript:;" role="button" class="weui-btn weui-btn_primary" id="btnSubmit"><span class="weui-btn__inner">提交</span></a>
+                <a href="javascript:history.back();" role="button" class="weui-btn weui-btn_default">取消</a>
+                <input type="hidden" id="tasteId" value="0" />
+            </div>
+        </div>
+        <input type="text" id="typeNumId" style="display: none;">
+<!--        <div class="weui-form__ft">-->
+<!--            <div class="weui-form__opr-area">-->
+<!--                <a role="button" class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">确定</a>-->
+<!--            </div>-->
+<!--        </div>-->
+
+    </div>
+</div>
+
+<script>
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+    function syncVote(id){
+        $.ajax({
+            type:'POST',
+            url:'/taste/wechat/syncvote',
+            data:{
+                id:id
+            },
+            dataType:'json',
+            success:function(json){
+                if(json.code == 0){
+                    var data = json.data;
+                    for (var i=0;i<data.length;i++){
+                        $("select[name='type_name"+(i+1)+"'] option").filter(function(){
+                            return $(this).text() == data[i]['typeName'];
+                        }).prop('selected',true);
+                        $("input[name=score"+(i+1)+"]").val(data[i]['score']);
+                    }
+                }
+            }
+        });
+    }
+    $(function(){
+        var id = getParameterByName("id");
+        if(id == "" || id==null || id==undefined){
+            window.location.href="/page/tasteindex.html";
+        }
+        $("#tasteId").val(id);
+        $.ajax({
+            type:'POST',
+            url:'/taste/wechat/gettaste',
+            data:{
+                id:id,
+                sort: "",
+            },
+            dataType:'json',
+            success:function(json){
+                if(json.code == 0){
+                    var data = json.data;
+                    $("#taste-img").attr("src",data.imgUrl);
+                    $("#tasteName").html(data.tasteName);
+                    var str = "";
+                    var options = "";
+                    $("#typeNumId").val(data.listVoteTasteType.length)
+                    for (var i=0;i<data.listVoteTasteType.length;i++){
+                        var getVoteTasteType = data.selectItemsType;
+                        var html1="<label for=\"select2\" class=\"weui-cell weui-cell_active weui-cell_select weui-cell_select-after\">\n" +
+                            "                            <div class=\"weui-cell__hd\">\n" +
+                            "                                <span class=\"weui-label\">酒名"+(i+1)+"</span>\n" +
+                            "                            </div>\n" +
+                            "                            <div class=\"weui-cell__bd\">\n" +
+                            "                                <select class=\"weui-select\" data=\""+getVoteTasteType[i].id+"\" name=\"type_name"+(i+1)+"\" >\n" +
+                            "                                </select>\n" +
+                            "                            </div>\n" +
+                            "                        </label>";
+                        var html="<label for=\"taste_name\" class=\"weui-cell weui-cell_active\" id=\"js_cell\">\n" +
+                            "                            <div class=\"weui-cell__hd\"><span class=\"weui-label\">分数</span></div>\n" +
+                            "                            <div class=\"weui-cell__bd weui-flex\">\n" +
+                            "                                <input id=\"taste_name\" data=\""+getVoteTasteType[i].id+"\" name=\"score"+(i+1)+"\" class=\"weui-input\" type=\"text\" placeholder=\"请输入分数\" />\n" +
+                            "                            </div>\n" +
+                            "                        </label>";
+                        str = str+html1+html;
+                        var option = "<option value=\""+getVoteTasteType[i].id+"\">"+getVoteTasteType[i].tasteType+"</option>";
+                        options = options+option;
+                    }
+                    $("#vote-div").empty().html(str);
+                    for (var i=0;i<data.listVoteTasteType.length;i++) {
+                        $("select[name='type_name"+(i+1)+"']").each(function () {
+                            $(this).html(options);
+                        });
+                    }
+                    syncVote(id);
+                }else{
+                    // window.location.href="/page/tasteindex.html";
+                    if(json.msg == "relogin"){
+                        window.location.href = "/page/wechat.html";
+                    }else{
+                        window.location.href="/page/tasteindex.html";
+                    }
+                }
+            }
+        });
+        $(document).on("click",'#btnSubmit',function (){
+            var id = $("#tasteId").val();
+            var typeNameArr = "";
+            var tasteTypeIdArr = "";
+            var scoreArr = "";
+            var reg = /^(100|[1-9]?\d)$/;
+            var error = 0;
+            var tNum = parseInt($("#typeNumId").val());
+            for (var i =1;i<=tNum;i++) {
+                var taste_type_id = $("select[name='type_name"+i+"']").val();
+                var type_name = $("select[name='type_name"+i+"']").attr("data");
+                tasteTypeIdArr = tasteTypeIdArr+","+taste_type_id;
+                typeNameArr = typeNameArr+","+type_name;
+
+                var score = $("input[name='score"+i+"']").val();
+                if(!reg.test(score)){
+                    layer.msg("评分不能超过100的正整数！", {icon: -1});
+                    return;
+                }
+                scoreArr = scoreArr +","+ score;
+            }
+            $.ajax({
+                type:'POST',
+                url:'/taste/wechat/savescore',
+                data:{
+                    keyStr:tasteTypeIdArr,//选中的ID
+                    scoreStr:scoreArr,//分数
+                    tasteId:id,
+                    typeName:typeNameArr//该选的
+                },
+                xhrFields: { // 设置 xhrFields，用以设置 withCredentials 属性
+                    withCredentials: true // 开启跨域请求时携带凭证信息（如 cookies）
+                },
+                dataType:'json',
+                success:function(json){
+                    if(json.code == 0){
+                        //成功
+                        layer.msg('评分成功！', {time: 500, icon: 1}, function() {
+                            window.location.href="/page/tastedetail.html?id="+id;
+                        });
+                    }else{
+                        if(json.msg == "relogin"){
+                            window.location.href = "/page/wechat.html";
+                        }else{
+                            layer.msg(json.msg, {icon: -1});
+                        }
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>盲酌小程序 · 后台配置操作清单</title>
+<style>
+:root{--bg:#f7f6f3;--card:#fff;--ink:#1f2328;--muted:#6b7280;--line:#e6e3dd;--accent:#8b5e3c;--accent-soft:#f6efe8;--ok:#1a7f4b;--warn:#b45309;--warn-bg:#fef6e7;--danger:#b42318}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;padding:32px 16px 80px}
+.wrap{max-width:860px;margin:0 auto}
+header{max-width:860px;margin:0 auto 24px}
+h1{font-size:26px;margin:0 0 6px;letter-spacing:.5px}
+.sub{color:var(--muted);font-size:14px}
+.meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:13px;color:var(--muted)}
+.meta span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.card h2{font-size:18px;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.badge{font-size:12px;font-weight:600;padding:2px 9px;border-radius:6px;background:var(--accent-soft);color:var(--accent);letter-spacing:.5px}
+.badge.must{background:#fdeceb;color:var(--danger)}
+.badge.opt{background:#eef2f7;color:#475569}
+.path{font-size:13px;color:var(--muted);margin:0 0 14px}
+ol,ul{margin:8px 0 0;padding-left:22px}
+li{margin-bottom:8px}
+code{background:#f2efe9;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all}
+.field{display:flex;align-items:flex-start;gap:10px;background:#faf9f6;border:1px dashed var(--line);border-radius:10px;padding:12px 14px;margin:10px 0}
+.field .k{flex:0 0 120px;color:var(--muted);font-size:13px}
+.field .v{flex:1;min-width:0}
+.copy{float:right;border:1px solid var(--line);background:#fff;color:var(--muted);font-size:12px;border-radius:6px;padding:3px 9px;cursor:pointer}
+.copy:hover{color:var(--accent);border-color:var(--accent)}
+.note{background:var(--warn-bg);border-left:3px solid var(--warn);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:14px}
+.ok{background:#eefaf2;border-left:3px solid var(--ok);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:14px}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#faf9f6;font-weight:600}
+.chk{list-style:none;padding-left:0}
+.chk li{padding-left:28px;position:relative;cursor:pointer;user-select:none}
+.chk li::before{content:"";position:absolute;left:0;top:5px;width:16px;height:16px;border:1.5px solid #c9c4bb;border-radius:4px;background:#fff}
+.chk li.done::after{content:"✓";position:absolute;left:3px;top:0;color:var(--ok);font-weight:700;font-size:15px}
+.chk li.done{color:var(--muted);text-decoration:line-through}
+footer{max-width:860px;margin:24px auto 0;text-align:right;color:#bbb;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>盲酌小程序 · 后台配置操作清单</h1>
+<div class="sub">以下 5 项必须在 mp.weixin.qq.com 后台人工完成，代码无法替代。按顺序做，约 15 分钟。</div>
+<div class="meta">
+  <span>AppID：wxb011d82a1326e1da</span>
+  <span>后端：https://applet.51welink.com</span>
+  <span>更新：2026-10-21</span>
+</div>
+</header>
+
+<div class="wrap">
+
+<div class="card">
+<h2><span class="badge must">必做 1</span>配置服务器域名</h2>
+<p class="path">路径：开发管理 → 开发设置 → 服务器域名 → 修改</p>
+<ol>
+<li>点击「修改」，需管理员微信扫码确认身份</li>
+<li>在 <b>request 合法域名</b> 中新增：</li>
+</ol>
+<div class="field"><div class="k">request 合法域名</div><div class="v"><button class="copy" onclick="cp(this)">复制</button><code>https://applet.51welink.com</code></div></div>
+<div class="note">注意：必须是 <b>https</b> 且已备案域名；域名每月只能修改 <b>5 次</b>，务必一次填对。若后端还有 WebSocket，再在 socket 合法域名填 <code>wss://applet.51welink.com</code>（当前未见使用，可不填）。</div>
+<div class="ok">配完后，开发者工具「详情 → 项目配置」里应能看到该域名；真机预览时在线品鉴才能正常请求。</div>
+</div>
+
+<div class="card">
+<h2><span class="badge must">必做 2</span>用户隐私保护指引</h2>
+<p class="path">路径：设置 → 服务内容声明 → 用户隐私保护指引 → 更新（或「去完善」）</p>
+<p>后台会根据已提交代码自动列出涉及隐私的接口，<b>每一项都要填用途，空着会导致线上接口被拦截</b>。盲酌实际用到：</p>
+<table>
+<tr><th style="width:150px">信息类型</th><th>用途说明（直接复制填入）</th></tr>
+<tr><td>相册（仅写入）权限</td><td><button class="copy" onclick="cp(this)">复制</button><span class="cptext">用于将用户生成的品鉴酒卡图片保存到手机相册，便于分享与留存。</span></td></tr>
+<tr><td>用户信息（微信昵称、头像）</td><td><button class="copy" onclick="cp(this)">复制</button><span class="cptext">用户主动填写后，用于在酒卡与品鉴手记上展示昵称与头像。</span></td></tr>
+</table>
+<div class="note">如果后台还自动识别出「剪切板」等项，一律如实填写用途；<b>不要勾选代码里根本没用的项</b>，审核会核对调用。</div>
+<p>页面继续往下的几项也必须填：</p>
+<ul>
+<li><b>你的权益</b>：填客服邮箱或电话（必填）</li>
+<li><b>信息存储期限</b>：勾选「实现处理目的所必要的最短时间」</li>
+<li><b>信息使用规则</b>：填「弹窗提示」</li>
+<li>底部勾选「本小程序已对用户的信息处理进行了逐一说明」，点<b>确定并提交</b></li>
+</ul>
+<div class="ok">提交后需等审核通过（一般 1–2 个工作日）才会正式生效；生效前线上保存酒卡仍会报 <code>privacy permission is not authorized</code>。</div>
+</div>
+
+<div class="card">
+<h2><span class="badge must">必做 3</span>确认服务类目</h2>
+<p class="path">路径：设置 → 基本设置 → 服务类目</p>
+<div class="note">盲酌<b>没有任何酒类销售行为</b>（不含商城、不含支付下单），不要选「商家自营 - 酒」，该类目需《食品经营许可证》等资质，选了必被打回。</div>
+<p>建议选择：</p>
+<ul>
+<li><b>工具 → 信息查询</b> 或 <b>工具 → 效率</b>（品鉴记录、打分工具）</li>
+<li>如需体现内容属性，可加 <b>教育 → 生活常识/知识科普</b>（酒识页属知识内容）</li>
+</ul>
+</div>
+
+<div class="card">
+<h2><span class="badge">必做 4</span>提审前自查</h2>
+<p class="path">路径：开发者工具 + 后台版本管理</p>
+<ul class="chk">
+<li>开发者工具「详情 → 基本信息」确认<b>主包 &lt; 2MB</b>（当前约 472KB，盲品流程已在分包）</li>
+<li>工具顶部「代码质量分析」跑一遍，处理所有体验评分项</li>
+<li>真机预览四个 tab + 完整走一遍在线品鉴流程，确认域名白名单生效</li>
+<li>提交审核时填写<b>测试账号</b>（可填「无需登录，打开即用」，并附功能路径说明）</li>
+<li>备注中写明：本小程序不销售酒类，仅为品鉴记录与评分工具，已内置理性饮酒与未成年人禁饮提示</li>
+</ul>
+</div>
+
+<div class="card">
+<h2><span class="badge">后端侧</span>vote-app 部署核对</h2>
+<p class="path">路径：服务器环境变量 / 数据库（非小程序后台，需运维执行）</p>
+<table>
+<tr><th style="width:180px">项目</th><th>要求</th></tr>
+<tr><td>APPLET_APP_ID</td><td>必须与 <code>wxb011d82a1326e1da</code> 一致，否则 <code>/login</code> 返回 503</td></tr>
+<tr><td>APPLET_APP_SECRET</td><td>后台「开发管理 → 开发设置 → AppSecret」获取</td></tr>
+<tr><td>数据库初始化</td><td>执行 <code>sqlscript/mysql/品酒功能初始数据库.sql</code> 建四张品鉴表</td></tr>
+<tr><td>主持人口令</td><td>规则 = secretKey + 当日 yyyyMMdd（Asia/Shanghai），需确定线下发放方式</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2><span class="badge opt">已完成</span>本次代码侧同步修复</h2>
+<ul>
+<li>酒卡保存按钮改为 <code>open-type="agreePrivacyAuthorization"</code>，未同意隐私协议时由微信客户端弹官方授权窗，同意后再保存</li>
+<li><code>app.json</code> 开启 <code>__usePrivacyCheck__: true</code>（隐私校验总开关）</li>
+</ul>
+<div class="note">这两处是配合「必做 2」生效的：后台指引配好 + 按钮走官方授权，线上保存相册才不会被拦截。</div>
+</div>
+
+</div>
+
+<footer>mimo</footer>
+
+<script>
+function cp(btn){
+  var t=btn.parentElement.querySelector('.cptext')||btn.parentElement.querySelector('code');
+  var txt=t?t.textContent.trim():'';
+  navigator.clipboard.writeText(txt).then(function(){btn.textContent='已复制';setTimeout(function(){btn.textContent='复制'},1500)});
+}
+document.querySelectorAll('.chk li').forEach(function(li){
+  li.addEventListener('click',function(){li.classList.toggle('done')});
+});
+</script>
+</body>
+</html>

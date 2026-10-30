@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>盲酌小程序 · 提交审核材料</title>
+<style>
+:root{--bg:#f7f6f3;--card:#fff;--ink:#1f2328;--muted:#6b7280;--line:#e6e3dd;--accent:#8b5e3c;--accent-soft:#f6efe8;--ok:#1a7f4b;--warn:#b45309;--warn-bg:#fef6e7;--danger:#b42318}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;padding:32px 16px 90px}
+.wrap,header{max-width:880px;margin:0 auto}
+header{margin-bottom:24px}
+h1{font-size:26px;margin:0 0 6px;letter-spacing:.5px}
+.sub{color:var(--muted);font-size:14px}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:13px;color:var(--muted)}
+.meta span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.card h2{font-size:18px;margin:0 0 6px;display:flex;align-items:center;gap:10px}
+.badge{font-size:12px;font-weight:600;padding:2px 9px;border-radius:6px;background:var(--accent-soft);color:var(--accent)}
+.badge.g{background:#eefaf2;color:var(--ok)}
+.badge.w{background:var(--warn-bg);color:var(--warn)}
+.path{font-size:13px;color:var(--muted);margin:0 0 12px}
+.box{background:#faf9f6;border:1px dashed var(--line);border-radius:10px;padding:14px 16px;margin:10px 0;white-space:pre-wrap;font-size:14px;line-height:1.8;position:relative}
+.copy{position:absolute;top:10px;right:10px;border:1px solid var(--line);background:#fff;color:var(--muted);font-size:12px;border-radius:6px;padding:3px 10px;cursor:pointer}
+.copy:hover{color:var(--accent);border-color:var(--accent)}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#faf9f6;font-weight:600}
+code{background:#f2efe9;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace}
+.note{background:var(--warn-bg);border-left:3px solid var(--warn);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:14px}
+.ok{background:#eefaf2;border-left:3px solid var(--ok);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:14px}
+ul,ol{margin:8px 0 0;padding-left:22px}
+li{margin-bottom:6px}
+.stat{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
+.stat div{flex:1;min-width:130px;background:#faf9f6;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.stat b{display:block;font-size:20px;color:var(--accent)}
+.stat span{font-size:12px;color:var(--muted)}
+footer{max-width:880px;margin:26px auto 0;text-align:right;color:#bbb;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>盲酌小程序 · 提交审核材料</h1>
+<div class="sub">照抄即可。提交入口：mp 后台 → 版本管理 → 开发版本 → 提交审核。</div>
+<div class="meta">
+  <span>AppID：wxb011d82a1326e1da</span>
+  <span>主包 328KB / 分包 104KB</span>
+  <span>静态验收 0 问题</span>
+  <span>2026-10-21</span>
+</div>
+</header>
+
+<div class="wrap">
+
+<div class="card">
+<h2><span class="badge">1</span>测试账号（提交时直接填）</h2>
+<p class="path">提交审核页 → 测试账号</p>
+<div class="box" id="t1"><button class="copy" onclick="cp('t1')">复制</button>无需账号，打开即可体验。全部功能对游客开放，不设登录门槛。</div>
+<div class="note">若审核员要求账号密码，微信审核系统允许填「无」。盲酌确实没有账号体系（本地手记存设备，在线品鉴用微信一键登录）。</div>
+</div>
+
+<div class="card">
+<h2><span class="badge">2</span>功能页面路径（提交时填「补充说明」或备注）</h2>
+<div class="box" id="t2"><button class="copy" onclick="cp('t2')">复制</button>盲酌是一款白酒盲品品鉴工具，用于线下/线上品酒活动的记录、打分与结果揭晓，不涉及任何酒类销售、交易或支付。
+
+【核心功能与路径】
+1. 首页（pages/index/index）：开始盲品、查看今日推荐、品鉴手记入口
+2. 酒局 tab（pages/gather/gather）：本地酒局列表 + 在线品鉴列表（按编号进入）
+3. 盲品流程（分包 packages/blind）：创建酒局 → 设置酒样 → 邀请加入 → 盲品打分 → 提交 → 揭晓 → 对比 → 排行 → 生成报告
+4. 在线品鉴（分包 packages/online）：发起在线品鉴（主持人口令）→ 进入场次竞猜与打分 → 结束并揭晓
+5. 酒识（pages/knowledge/knowledge）：白酒香型、工艺等知识科普
+6. 我的（pages/mine/mine）：我的手记、打卡、关于与隐私协议
+7. 关于/隐私（pages/about/about）：隐私政策摘要、用户协议、免责声明、理性饮酒提示
+
+【合规说明】
+- 本小程序不销售酒类商品，无商城、无购物车、无支付下单功能，不属于电商经营行为；
+- 首屏与酒识页常驻「理性饮酒 · 未成年人请勿饮酒」提示，首次启动弹出确认；
+- 仅采集用户主动填写的昵称头像（用于酒卡署名）与相册写入权限（用于保存酒卡图片），数据本地存储，无第三方 SDK。</div>
+</div>
+
+<div class="card">
+<h2><span class="badge">3</span>提交前最后确认</h2>
+<table>
+<tr><th style="width:190px">项目</th><th>当前状态</th></tr>
+<tr><td>主包体积</td><td>328 KB（上限 2 MB，含 assets 114KB、services 73KB、pages 63KB）</td></tr>
+<tr><td>分包</td><td>packages/blind 76KB、packages/online 29KB，均已配置 preloadRule</td></tr>
+<tr><td>页面跳转</td><td>静态校验 0 失效路径（含分包内 15 处已修正）</td></tr>
+<tr><td>组件 / require</td><td>引用全部可解析，0 失效</td></tr>
+<tr><td>隐私合规</td><td><code>__usePrivacyCheck__: true</code>，保存相册走官方授权按钮</td></tr>
+<tr><td>分享能力</td><td>6 个页面有 onShareAppMessage，首页与酒识支持朋友圈分享</td></tr>
+<tr><td>禁饮提示</td><td>首页首启弹窗 + 页脚常驻 + 酒识页提示 + 关于页声明</td></tr>
+<tr><td>服务类目</td><td>需为「工具」类，避免「商家自营-酒」（无食品经营许可）</td></tr>
+</table>
+<div class="ok">代码侧已就绪。上传前在开发者工具点一次「代码质量分析」，处理完提示项再上传。</div>
+</div>
+
+<div class="card">
+<h2><span class="badge w">4</span>常见驳回点与应对</h2>
+<table>
+<tr><th style="width:170px">驳回理由</th><th>应对</th></tr>
+<tr><td>涉及酒类销售需资质</td><td>备注中强调「无销售/无支付」，类目选工具类；若仍被拒，补充《不涉及经营说明》截图</td></tr>
+<tr><td>涉及酒类内容需提示</td><td>已内置理性饮酒与未成年人禁饮提示，备注中写明位置</td></tr>
+<tr><td>隐私指引未配置</td><td>确认后台「用户隐私保护指引」已<b>审核通过</b>并生效（不是仅保存草稿）</td></tr>
+<tr><td>功能无法体验/白屏</td><td>真机预览确认在线品鉴域名已加入白名单；离线功能不依赖网络</td></tr>
+<tr><td>诱导分享</td><td>现有分享仅为结果卡片与活动邀请，无「分享得奖励」文案，保持现状</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2><span class="badge g">5</span>提交步骤</h2>
+<ol>
+<li>开发者工具 → 右上角「上传」，版本号建议 <code>1.0.0</code>，备注填本次改动</li>
+<li>「代码质量分析」跑一遍，处理所有体验评分项后再上传</li>
+<li>mp 后台 → 版本管理 → 开发版本 → 提交审核</li>
+<li>粘贴上文「测试账号」和「功能页面路径」两段文案</li>
+<li>提交后关注审核通知，一般 1–3 个工作日</li>
+</ol>
+<div class="note">若审核员反馈「在线品鉴无法进入」：那是后端 <code>https://applet.51welink.com</code> 未返回数据，先确认后端已部署且 SQL 已初始化，可在备注中说明该功能依赖服务端，本地盲品功能不受影响。</div>
+</div>
+
+</div>
+<footer>mimo</footer>
+<script>
+function cp(id){var el=document.getElementById(id);var t=el.childNodes[el.childNodes.length-1].textContent.trim();navigator.clipboard.writeText(t).then(function(){var b=el.querySelector('.copy');b.textContent='已复制';setTimeout(function(){b.textContent='复制'},1500)})}
+</script>
+</body>
+</html>

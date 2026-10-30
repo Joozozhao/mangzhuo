@@ -1,0 +1,5 @@
+.picker-value{line-height:86rpx}.save{margin-top:40rpx}
+.flavor-desc{font-size:24rpx;margin:-4rpx 0 12rpx}
+.flavor-terms{display:flex;flex-wrap:wrap;gap:12rpx;margin:6rpx 0 16rpx}
+.journal button.flavor-chip{width:auto !important;min-width:0;margin:0 !important;flex:none;padding:0 22rpx;line-height:60rpx;background:#eee7dc;color:#716454;font-size:24rpx;border-radius:6rpx}
+.journal button.flavor-chip.active{background:#893e32;color:#fff}

@@ -1,0 +1,40 @@
+<view class="container profile-page">
+  <view class="page-header">
+    <view class="page-title">品鉴资料</view>
+    <view class="page-desc">头像与昵称将展示在酒局名片、排行榜与分享酒卡上</view>
+  </view>
+
+  <!-- 头像与昵称 -->
+  <view class="card profile-card">
+    <view class="avatar-row">
+      <button class="avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+        <image wx:if="{{pendingImg || avatarImg}}" class="avatar-img" src="{{pendingImg ? pendingAvatar : avatar}}" mode="aspectFill" />
+        <text wx:else class="avatar-emoji">{{avatar || '🍶'}}</text>
+      </button>
+      <view class="avatar-tip">点击头像可从微信相册/头像中选择，未选择时沿用当前头像</view>
+    </view>
+    <view class="form-item">
+      <text class="form-label">品鉴昵称</text>
+      <input class="input nickname-input" type="nickname" maxlength="20" placeholder="点击可填入微信昵称，也可自定义" value="{{nickname}}" bindinput="onNicknameInput" bindblur="onNicknameInput" bindchange="onNicknameInput" />
+    </view>
+    <view class="nickname-tip">微信昵称仅在你点击建议后填入，盲酌不会自动读取你的微信昵称。</view>
+  </view>
+
+  <!-- 微信身份 -->
+  <view class="card identity-card">
+    <view class="identity-row">
+      <view class="identity-info">
+        <view class="identity-title">微信身份</view>
+        <view class="identity-state {{loginState === 'wechat' ? 'state-ok' : ''}}">
+          {{loginState === 'wechat' ? '✓ 已确认微信身份' : '游客模式 · 未连接微信身份'}}
+        </view>
+      </view>
+      <button wx:if="{{loginState !== 'wechat'}}" class="login-btn" loading="{{loggingIn}}" disabled="{{loggingIn}}" bindtap="onLogin">微信登录</button>
+    </view>
+    <view class="identity-tip" wx:if="{{provider === 'welink'}}">在线品鉴通过后台确认微信身份并同步昵称，头像仅保存在本机。</view>
+    <view class="identity-tip" wx:elif="{{!cloudReady}}">登录服务暂不可用，可先保存品鉴资料；浏览酒识与本地打卡不受影响。</view>
+  </view>
+
+  <button class="btn-primary" loading="{{saving}}" disabled="{{saving}}" bindtap="onSave">保存资料</button>
+  <button class="cancel-link" bindtap="onCancel">取消，保留原资料</button>
+</view>

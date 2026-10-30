@@ -1,0 +1,31 @@
+<view class="journal about-page">
+  <view class="drink-warning" aria-label="理性饮酒提示">
+    <view class="dw-title">理性饮酒 · 未成年人请勿饮酒</view>
+    <view class="meta">本小程序内容仅面向达到法定饮酒年龄的用户。酒后请勿驾车，孕期及哺乳期不宜饮酒，饮酒过量有害健康。</view>
+  </view>
+
+  <view class="paper-row about-block">
+    <view class="row-title">隐私政策摘要</view>
+    <view class="muted about-p">1. 品酒手记与「桌上品鉴」记录保存在当前设备，不会因微信登录自动上传或跨设备同步。清除小程序数据可能导致这些记录丢失。</view>
+    <view class="muted about-p">2. 头像与昵称由你主动选择填写（头像来自相册或拍照，昵称由你输入），我们不会静默读取你的微信资料。</view>
+    <view class="muted about-p">3. 使用「在线品鉴」时，微信登录凭证由品鉴后台校验；后台保存小程序身份标识、你同步的昵称，以及你创建的活动、猜酒与评分。当前后台不接收头像，头像仍保存在本机。若使用云开发登录配置，资料同步范围以资料页提示为准。</view>
+    <view class="muted about-p">4. 「保存酒卡到相册」需要相册写入权限，仅在你点击保存时使用，可在系统设置中随时关闭。</view>
+    <view class="muted about-p">5. 退出微信身份会清除本机登录会话，不会删除后台已有的活动与评分。我们不收集位置、通讯录、麦克风信息，不接入第三方广告或统计 SDK。</view>
+  </view>
+
+  <view class="paper-row about-block">
+    <view class="row-title">用户协议与免责声明</view>
+    <view class="muted about-p">1. 盲酌是一款白酒品鉴记录与知识工具，所有酒识文章、风味描述、估价与评分仅供品鉴交流参考，不构成任何购买建议或投资依据。</view>
+    <view class="muted about-p">2. 页面中出现的品牌名称、商标与产品信息，版权归原品牌所有，引用仅为品鉴学习目的。</view>
+    <view class="muted about-p">3. 「桌上品鉴」供同一设备使用；「在线品鉴」通过品鉴后台共享活动与评分，需要网络与微信身份。两种模式的记录分别保存。</view>
+    <view class="muted about-p">4. 请遵守所在法律法规理性饮酒；因不当饮酒行为产生的后果由行为人自行承担。</view>
+  </view>
+
+  <view class="paper-row about-block">
+    <view class="row-title">联系我们</view>
+    <view class="muted about-p">对内容或功能有疑问、建议或侵权反馈，欢迎通过邮箱联系我们。</view>
+    <button class="text-link" bindtap="copyContact">复制联系邮箱 →</button>
+  </view>
+
+  <view class="chapter-foot">盲酌 v{{version}} · 只凭味道</view>
+</view>

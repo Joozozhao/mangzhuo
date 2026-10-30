@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.welink.vote.common.data.dao.VoteScoreMapper">
+    <select id="getGroupScore" parameterType="map" resultType="Integer">
+        SELECT SUM(vs.score) sum FROM vote_score vs LEFT JOIN vote_task vt ON vs.task_id = vt.id
+        WHERE
+            1=1
+            <if test="actyId!=null and actyId!=''">
+                AND vt.acty_id = #{actyId}
+            </if>
+            <if test="groupId!=null and groupId!=''">
+                AND vs.group_id = #{groupId}
+            </if>
+        GROUP BY vs.group_id;
+    </select>
+    <select id="getMemberScore" resultType="com.welink.vote.common.data.model.GroupMemberScore" >
+        SELECT
+            *
+        FROM
+            (
+                SELECT
+                    vote_user.user_name as userName,
+                    vote_group.group_name as groupName,
+                    vote_user.user_img as userImg,
+                    vote_group.id as groupId,
+                    SUM( vote_score.score ) AS sumScore
+                FROM
+                    vote_score
+                        LEFT JOIN vote_user ON vote_user.id = vote_score.user_id
+                        LEFT JOIN vote_group ON vote_group.id = vote_user.group_id
+                WHERE
+                    vote_score.user_id != 0
+                GROUP BY
+                    vote_score.user_id
+            ) a
+        ORDER BY
+            a.sumScore DESC
+            LIMIT 10
+    </select>
+</mapper>

@@ -1,0 +1,16 @@
+.stage-banner { margin-bottom: 24rpx; }
+.stage-tag { display: inline-block; font-size: 22rpx; font-weight: 700; background: #171714; color: #fff; padding: 4rpx 14rpx; border-radius: 10rpx; margin-bottom: 12rpx; }
+.tag-gold { background: #a97832; }
+.stage-title { font-size: 38rpx; font-weight: 800; color: #181713; }
+.stage-desc { font-size: 24rpx; color: #7f786d; margin-top: 6rpx; }
+.sample-header { display: flex; justify-content: space-between; align-items: center; padding: 24rpx 32rpx; margin-bottom: 24rpx; }
+.sample-badge { font-size: 32rpx; font-weight: 800; color: #181713; }
+.total-preview { font-size: 26rpx; color: #736b5e; font-weight: 600; }
+.score-num { font-size: 38rpx; font-weight: 800; color: #a97832; }
+.dim-card { padding: 32rpx; margin-bottom: 28rpx; }
+.dim-item { margin-bottom: 24rpx; }
+.dim-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6rpx; }
+.dim-label { font-size: 26rpx; font-weight: 700; color: #353026; }
+.dim-val { font-size: 28rpx; font-weight: 800; color: #a97832; }
+.comment-card { padding: 28rpx 32rpx; margin-bottom: 40rpx; }
+.form-label { font-size: 26rpx; font-weight: 700; color: #2e2a22; margin-bottom: 12rpx; display: block; }

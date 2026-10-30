@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <meta name="wechat-enable-text-zoom-em" content="true">
+    <title>品酒</title>
+    <script src="/lib/layui-v2.10.3/layui.js"></script>
+    <link rel="stylesheet" href="../dist/style/weui.min.css"/>
+    <link rel="stylesheet" href="../dist/example/example.css"/>
+    <script rel="stylesheet" src="../lib/jquery/jquery.min.js"></script>
+    <link href="/lib/layui-v2.10.3/css/layui.css" rel="stylesheet">
+</head>
+<body ontouchstart>
+<div class="container" id="container">
+    <div class="page js_show" style="background-color: #fff">
+        <div class="page__hd" style="padding: 0px;">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img id="taste-img" src="../image/1.png" alt="" width="100%" height="200"/></div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+        <div class="page__bd">
+            <div class="weui-panel">
+                <div class="weui-panel__bd">
+                    <div class="weui-media-box weui-media-box_small-appmsg">
+                        <div class="weui-cells" id="html_list">
+                            <div class="weui-cells">
+                                <a class="weui-cell weui-cell_access taste_edit" href="javascript:" onclick="showEdit()">
+                                    <div class="weui-cell__bd"><p><i class="layui-icon layui-icon-edit" style="font-size: 20px; "> 编辑</i></p></div>
+                                    <div class="weui-cell__ft"></div>
+                                </a>
+                                <a class="weui-cell weui-cell_access taste_vote" href="javascript:" onclick="showVote()">
+                                    <div class="weui-cell__bd"><p><i class="layui-icon layui-icon-reply-fill" style="font-size: 20px; ">投票</i></p></div>
+                                    <div class="weui-cell__ft"></div>
+                                </a>
+                                <a class="weui-cell weui-cell_access taste_detail" href="javascript:" onclick="showVoteDetail()">
+                                    <div class="weui-cell__bd"><p><i class="layui-icon layui-icon-about" style="font-size: 20px; ">详情</i></p></div>
+                                    <div class="weui-cell__ft"></div>
+                                </a>
+                                <label for="switchCP" class="weui-cell weui-cell_active weui-cell_switch taste_status">
+                                    <div class="weui-cell__bd" id="cp_txt" aria-hidden="true"><i class="layui-icon layui-icon-survey" style="font-size: 20px; ">状态</i></div>
+                                    <div class="weui-cell__ft">
+                                        <input aria-labelledby="cb1_txt" id="switchCP" class="weui-switch" checked="" type="checkbox" onclick="changeStatus()"/>
+                                    </div>
+                                </label>
+                                <a class="weui-cell weui-cell_access" href="/page/tasteindex.html">
+                                    <div class="weui-cell__bd"><p><i class="layui-icon layui-icon-return" style="font-size: 20px; ">返回</i></p></div>
+                                    <div class="weui-cell__ft"></div>
+                                    <input type="hidden" id="tasteId" value=""/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+    $(function(){
+        var id = getParameterByName("id");
+        if(id == "" || id==null || id==undefined){
+            window.location.href="/page/tasteindex.html";
+        }
+        $("#tasteId").val(id);
+        $.ajax({
+            type:'POST',
+            url:'/taste/wechat/gettaste',
+            data:{
+                id:id,
+                sort: "",
+            },
+            dataType:'json',
+            success:function(json){
+                if(json.code == 0){
+                    $("#taste-img").attr("src",json.data.imgUrl);
+                    $("#taste-img").attr("src",json.data.imgUrl);
+                    if(json.data.status == 1){
+                        //停止
+                        $("#switchCP").removeAttr("checked");
+                        $(".taste_vote").hide();
+                        $(".taste_detail").show();
+                        if(json.data.isShow != 1){
+                            $("#switchCP").attr("disabled","disabled");
+                            if(json.data.status == 1){
+                                $("#switchCP").css("background-color","#000000");
+                            }else{
+                                $("#switchCP").css("background-color","#07c160");
+                            }
+                            $(".taste_edit").hide();
+                        }else{
+                            $("#switchCP").removeAttr("disabled");
+                            $(".taste_edit").show();
+                        }
+                    }else{
+                        //开启
+                        $("#switchCP").attr("checked","checked");
+                        $(".taste_vote").show();
+                        $(".taste_detail").hide();
+                        if(json.data.isShow != 1){
+                            $("#switchCP").attr("disabled","disabled");
+                            if(json.data.status == 1){
+                                $("#switchCP").css("background-color","#000000");
+                            }else{
+                                $("#switchCP").css("background-color","#07c160");
+                            }
+                            $(".taste_edit").hide();
+                        }else{
+                            $("#switchCP").removeAttr("disabled");
+                            $(".taste_edit").show();
+                        }
+                    }
+                    if(json.data.status == 1){
+                        $("#switchCP").attr("disabled","disabled");
+                        $(".taste_edit").hide();
+                    }
+                }else{
+                    if(json.msg == "relogin"){
+                        window.location.href = "/page/wechat.html";
+                    }else{
+                        window.location.href="/page/tasteindex.html";
+                    }
+                }
+            }
+        });
+    });
+    function changeStatus(){
+        var status = 1;
+        if($("#switchCP").is(":checked")){
+            status = 0;
+        }
+        var id = $("#tasteId").val();
+        $.ajax({
+            type:'POST',
+            url:'/taste/wechat/updatetastestatus',
+            data:{
+                id:id,
+                status:status
+            },
+            xhrFields: { // 设置 xhrFields，用以设置 withCredentials 属性
+                withCredentials: true // 开启跨域请求时携带凭证信息（如 cookies）
+            },
+            dataType:'json',
+            success:function(json){
+                if(json.code != 0){
+                    layer.msg('保存失败！', {time: 500, icon: -1},function(){
+                        window.location.reload();
+                    });
+                    // //成功
+                    // layer.msg('保存成功！',  {time: 500,icon: 1});
+                }else{
+                    window.location.reload();
+                }
+            }
+        });
+    }
+
+    function showVoteDetail(){
+        var id = $("#tasteId").val();
+        window.location.href = "/page/votedetail.html?id="+id;
+    }
+    function showVote(){
+        var id = $("#tasteId").val();
+        window.location.href = "/page/votetaste.html?id="+id;
+    }
+    function showEdit(){
+        var id = $("#tasteId").val();
+        window.location.href = "/page/updatetaste.html?id="+id;
+    }
+</script>

@@ -1,0 +1,8 @@
+{
+  "initialRenderingCache": "static",
+  "navigationBarTitleText": "酒识",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "brand-nav": "/components/brand-nav/brand-nav"
+  }
+}

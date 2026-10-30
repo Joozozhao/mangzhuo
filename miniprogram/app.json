@@ -1,0 +1,89 @@
+{
+  "__usePrivacyCheck__": true,
+  "pages": [
+    "pages/index/index",
+    "pages/gather/gather",
+    "pages/knowledge/knowledge",
+    "pages/mine/mine",
+    "pages/profile/profile",
+    "pages/checkin/checkin",
+    "pages/card/card",
+    "pages/about/about"
+  ],
+  "subpackages": [
+    {
+      "root": "packages/blind",
+      "pages": [
+        "pages/create/create",
+        "pages/setup/setup",
+        "pages/join/join",
+        "pages/room/room",
+        "pages/tasting/tasting",
+        "pages/scoring/scoring",
+        "pages/submitted/submitted",
+        "pages/reveal/reveal",
+        "pages/compare/compare",
+        "pages/ranking/ranking",
+        "pages/report/report"
+      ]
+    },
+    {
+      "root": "packages/online",
+      "pages": [
+        "pages/create/create",
+        "pages/detail/detail"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/gather/gather": {
+      "network": "all",
+      "packages": [
+        "packages/blind",
+        "packages/online"
+      ]
+    }
+  },
+  "window": {
+    "navigationBarBackgroundColor": "#F7F3EB",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "盲酌",
+    "backgroundColor": "#F7F3EB"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "tabBar": {
+    "color": "#82796d",
+    "selectedColor": "#893e32",
+    "backgroundColor": "#e5d8c3",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/brand/tab-home.png",
+        "selectedIconPath": "assets/brand/tab-home.png"
+      },
+      {
+        "pagePath": "pages/gather/gather",
+        "text": "酒局",
+        "iconPath": "assets/brand/tab-gather.png",
+        "selectedIconPath": "assets/brand/tab-gather.png"
+      },
+      {
+        "pagePath": "pages/knowledge/knowledge",
+        "text": "酒识",
+        "iconPath": "assets/brand/tab-knowledge.png",
+        "selectedIconPath": "assets/brand/tab-knowledge.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "assets/brand/tab-mine.png",
+        "selectedIconPath": "assets/brand/tab-mine.png"
+      }
+    ],
+    "custom": true
+  }
+}

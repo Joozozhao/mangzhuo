@@ -1,0 +1,311 @@
+@import "styles/organized.wxss";
+/** app.wxss - 盲酌设计系统 **/
+page {
+  background: #f7f3eb;
+  color: #181713;
+  font-family: "Songti SC", "STSong", "SimSun", "Noto Serif CJK SC", serif;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+view, text, input, button, scroll-view {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #f7f3eb;
+  --card: #fffdf8;
+  --card-tint: #fbf7ee;
+  --text-primary: #181713;
+  --text-secondary: #777167;
+  --text-light: #aaa399;
+  --gold: #a97832;
+  --gold-light: #d7b36d;
+  --gold-bg: #f4e7ca;
+  --gold-gradient: linear-gradient(135deg, #d6b06a, #9b692b);
+  --black: #171714;
+  --border: #e6dfd3;
+  --border-subtle: #f0eae0;
+  --green: #2e8b57;
+  --green-bg: #eaf4ed;
+  --red: #c94b40;
+  --red-bg: #faebea;
+  --radius-sm: 12rpx;
+  --radius-md: 20rpx;
+  --radius-lg: 28rpx;
+  --shadow-sm: 0 4rpx 16rpx rgba(24, 23, 19, 0.04);
+  --shadow-md: 0 10rpx 28rpx rgba(24, 23, 19, 0.07);
+}
+
+.container {
+  min-height: 100vh;
+  padding: 32rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  background: #fffdf8;
+  border-radius: 24rpx;
+  border: 1rpx solid #e6dfd3;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 16rpx rgba(24, 23, 19, 0.04);
+  margin-bottom: 24rpx;
+}
+
+.page-header {
+  margin-bottom: 32rpx;
+}
+
+.page-title {
+  font-size: 44rpx;
+  line-height: 1.35;
+  font-weight: 700;
+  color: #181713;
+  letter-spacing: 1rpx;
+}
+
+.page-desc {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: #777167;
+  line-height: 1.6;
+}
+
+.gold-text {
+  color: #a97832;
+}
+
+.gold-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 18rpx;
+  background: #f4e7ca;
+  color: #8c5d1e;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  border-radius: 16rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.badge-gray {
+  background: #eee8dc;
+  color: #655e53;
+}
+
+.badge-green {
+  background: #eaf4ed;
+  color: #2e8b57;
+}
+
+.badge-gold {
+  background: #f4e7ca;
+  color: #8c5d1e;
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96rpx;
+  border-radius: 20rpx;
+  background: linear-gradient(135deg, #d6b06a, #9b692b);
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+  box-shadow: 0 8rpx 20rpx rgba(169, 120, 50, 0.25);
+  border: none;
+}
+
+.btn-primary:active {
+  opacity: 0.9;
+  transform: scale(0.99);
+}
+
+.btn-dark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96rpx;
+  border-radius: 20rpx;
+  background: #171714;
+  color: #ffffff;
+  font-size: 30rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+  border: none;
+}
+
+.btn-dark:active {
+  opacity: 0.88;
+}
+
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90rpx;
+  border-radius: 20rpx;
+  background: #fffdf8;
+  color: #181713;
+  font-size: 28rpx;
+  font-weight: 600;
+  border: 2rpx solid #ded6c9;
+}
+
+.btn-secondary:active {
+  background: #f7f2e7;
+}
+
+.input {
+  height: 90rpx;
+  width: 100%;
+  padding: 0 24rpx;
+  background: #ffffff;
+  border: 2rpx solid #ded6c9;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  color: #181713;
+}
+
+.input:focus {
+  border-color: #a97832;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 40rpx;
+  text-align: center;
+}
+
+.empty-title {
+  font-size: 32rpx;
+  color: #555047;
+  font-weight: 600;
+  margin-top: 24rpx;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: #999183;
+  margin-top: 12rpx;
+}
+
+/* 品鉴手记：四个一级页面共享的排版 */
+button,input,textarea,picker { font-family: "Songti SC", "STSong", "SimSun", "Noto Serif CJK SC", serif; }
+button::after { border: 0; }
+.eyebrow { color:#893e32; font-size:23rpx; letter-spacing:5rpx; margin:18rpx 0 24rpx; }
+.journal { padding:36rpx 38rpx 60rpx; }
+.journal-title { font-size:64rpx; line-height:1.4; font-weight:500; letter-spacing:5rpx; }
+.muted { color:#797266; font-size:26rpx; line-height:1.8; }
+.rule { height:1rpx; background:#dcd3c4; margin:36rpx 0; }
+.section-line { display:flex; justify-content:space-between; align-items:center; margin:38rpx 0 20rpx; }
+.section-line text { font-size:34rpx; }
+.text-link { color:#893e32; font-size:25rpx; padding:12rpx 0; background:transparent; margin:0; }
+.paper-row { border-bottom:1rpx solid #ddd5c8; padding:26rpx 0; }
+.row-title { font-size:34rpx; line-height:1.5; margin:8rpx 0; }
+.meta { font-size:23rpx; color:#897b68; line-height:1.8; }
+.empty-note { padding:36rpx 0; color:#797266; font-size:28rpx; line-height:1.8; }
+.btn-primary { background:#893e32; box-shadow:none; border-radius:8rpx; }
+.btn-secondary,.btn-dark,.card { border-radius:8rpx; box-shadow:none; }
+.field-label { display:block; font-size:28rpx; margin:30rpx 0 14rpx; }
+textarea.input { height:190rpx; padding:20rpx; line-height:1.7; }
+
+.brand-lockup{display:flex;align-items:center;gap:12rpx}.brand-logo{width:100rpx;height:100rpx;flex-shrink:0}.knowledge-brand{display:flex;justify-content:space-between;align-items:center}.knowledge-brand .brand-logo{width:130rpx;height:130rpx}
+
+/* 李白四章：诗、酒、识、记 */
+.journal{padding:28rpx 36rpx 48rpx;}
+.journal button{box-sizing:border-box;}
+.journal .btn-primary,.journal .btn-secondary{width:100%;margin-left:0;margin-right:0;}
+.chapter-mast{display:flex;align-items:center;justify-content:space-between;padding:4rpx 0 24rpx;border-bottom:1rpx solid #d8cdbb;}
+.chapter-brand{font-size:35rpx;letter-spacing:8rpx;}
+.chapter-no{font-size:20rpx;letter-spacing:3rpx;color:#8c7964;}
+.chapter-hero{display:flex;align-items:center;min-height:310rpx;padding:32rpx 0 26rpx;gap:12rpx;}
+.chapter-copy{flex:1;min-width:0;}
+.chapter-label{color:#893e32;font-size:22rpx;letter-spacing:3rpx;margin-bottom:16rpx;}
+.chapter-title{font-size:48rpx;line-height:1.42;letter-spacing:2rpx;font-weight:500;}
+.chapter-desc{font-size:25rpx;line-height:1.8;color:#766b5d;margin-top:16rpx;}
+.chapter-art{width:280rpx;height:290rpx;flex-shrink:0;}
+.chapter-foot{color:#8c7f6d;font-size:22rpx;text-align:center;letter-spacing:3rpx;padding-top:34rpx;}
+.section-line{margin:32rpx 0 12rpx;}
+.section-line text{font-size:32rpx;}
+.section-line .text-link{width:auto;flex-shrink:0;font-size:24rpx;}
+.journal .text-link{width:auto;}
+.paper-row .row-title{font-size:31rpx;}
+.paper-row .muted{font-size:25rpx;}
+.journal .empty-note{padding:30rpx 0;}
+.action-caption{font-size:23rpx;color:#877869;line-height:1.65;}
+@media(max-width:350px){.chapter-art{width:235rpx;height:260rpx;}.chapter-title{font-size:44rpx;}}
+
+/* 全身李白品牌标识；原生 tabBar 固定于屏幕底部 */
+.chapter-lockup{display:flex;align-items:center;gap:12rpx;}
+.chapter-logo{width:64rpx;height:86rpx;flex-shrink:0;transform:translateY(-18rpx) scale(1.5);transform-origin:center;}
+.chapter-lockup .chapter-brand{font-size:35rpx;letter-spacing:7rpx;}
+
+/* 品牌文字与导航区李白并排，移至用户指定位置 */
+.chapter-lockup{position:relative;min-width:300rpx;height:52rpx;}
+.chapter-lockup .brand-positioned{position:absolute;left:112rpx;top:-18rpx;font-size:70rpx;font-weight:800;letter-spacing:7rpx;line-height:1;white-space:nowrap;}
+
+/* 自定义固定菜单预留空间，避免遮挡末尾内容 */
+.journal{padding-bottom:calc(152rpx + env(safe-area-inset-bottom));max-width:900rpx;margin:0 auto;}
+
+/* 主页面统一节奏：品牌更轻，内容更早进入首屏。 */
+.journal{padding:6rpx 40rpx calc(152rpx + env(safe-area-inset-bottom));}
+.chapter-mast{min-height:48rpx;padding:0 0 18rpx;}
+.chapter-no{font-size:22rpx;letter-spacing:2rpx;color:#806f5b;}
+.chapter-hero{min-height:246rpx;padding:24rpx 0 28rpx;gap:24rpx;}
+.chapter-label{font-size:23rpx;letter-spacing:2rpx;margin-bottom:12rpx;}
+.chapter-title{font-size:46rpx;line-height:1.36;letter-spacing:2rpx;}
+.chapter-desc{font-size:25rpx;line-height:1.7;margin-top:14rpx;color:#706456;}
+.chapter-art{width:224rpx;height:224rpx;}
+.chapter-foot{padding-top:32rpx;color:#80715f;}
+.section-line{margin:36rpx 0 12rpx;min-height:48rpx;}
+.section-line>text:first-child{font-size:32rpx;font-weight:600;letter-spacing:1rpx;}
+.section-line .text-link{min-height:64rpx;display:flex;align-items:center;}
+.paper-row{padding:24rpx 0;}
+.paper-row .row-title{font-size:30rpx;line-height:1.5;margin:6rpx 0 8rpx;}
+.paper-row .muted{font-size:25rpx;line-height:1.7;color:#71685c;}
+.meta{font-size:23rpx;color:#7f6e59;}
+.journal .btn-primary{height:88rpx;font-size:28rpx;border-radius:12rpx;}
+.journal .btn-secondary{height:88rpx;border-radius:12rpx;}
+.journal button{transition:background-color .18s ease,opacity .18s ease;}
+.journal button:active{opacity:.78;}
+.rational-note{padding:20rpx 0 0;font-size:21rpx;line-height:1.7;}
+@media(max-width:350px){
+  .journal{padding-left:32rpx;padding-right:32rpx;}
+  .chapter-hero{gap:12rpx;}
+  .chapter-art{width:184rpx;height:200rpx;}
+  .chapter-title{font-size:42rpx;}
+  .chapter-no{font-size:20rpx;letter-spacing:1rpx;}
+}
+@media(min-width:768px){.journal{padding-left:64rpx;padding-right:64rpx;}}
+
+/* 资料完善提示条（发起/加入酒局、分享酒卡复用） */
+.profile-hint{margin:0 0 24rpx;padding:20rpx 28rpx;background:#f4e7ca;border:1rpx solid #e3cf9f;border-radius:16rpx;color:#8c5d1e;font-size:24rpx;font-weight:600;line-height:1.5;}
+/* 合规提示与关于入口 */
+.rational-note{padding:20rpx 0 0;text-align:center;letter-spacing:1rpx;}
+.about-entry{width:100%;text-align:left;}
+
+/* Consistent action buttons across journal and tasting flows. */
+button.btn-primary,button.btn-secondary,button.btn-dark{
+  display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;height:88rpx;
+  padding:0 20rpx;border-radius:12rpx;box-shadow:none;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;
+  font-size:28rpx;font-weight:500;letter-spacing:0;line-height:1.4;white-space:normal;
+}
+button.btn-primary{background:#893e32;color:#fff;border:0;}
+button.btn-secondary{background:#f7f3eb;color:#514639;border:1rpx solid #d8cdbb;}
+button.btn-dark{background:#28251f;color:#fff;border:0;}
+button.btn-primary[disabled],.organized-page button.btn-primary[disabled]{background:#c4aaa2;color:#fff;opacity:1;}
+button.btn-secondary[disabled],button.btn-dark[disabled],.organized-page button.btn-secondary[disabled]{opacity:.5;}

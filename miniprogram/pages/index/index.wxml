@@ -1,0 +1,24 @@
+<brand-nav/>
+<view class="journal organized-page home-page">
+  <view class="content-panel surface-panel home-start">
+    <view class="compact-heading">
+      <view class="heading-copy">
+        <view class="panel-kicker">品酒手记</view>
+        <view class="compact-title">记下这一杯</view>
+        <view class="heading-desc">记酒款，记风味，也记相聚。</view>
+      </view>
+      <image class="compact-art home-art" src="/assets/brand/libai-home.png" mode="aspectFit"/>
+    </view>
+    <button class="btn-primary" bindtap="checkin">品酒打卡 · 开始记录</button>
+    <button class="inline-action share-latest" bindtap="shareLatest"><view><view class="inline-title">制作分享酒卡</view><view class="inline-subtitle">把最近一杯的风味分享出去</view></view><text class="action-arrow">→</text></button>
+  </view>
+  <view class="content-panel record-panel">
+    <view class="panel-heading"><view class="panel-title">最近手记</view><button class="text-link" bindtap="mine">查看全部 →</button></view>
+    <button class="record-row" wx:for="{{notes}}" wx:key="id" bindtap="openNote" data-id="{{item.id}}">
+      <view class="record-body"><view class="meta">{{item.date}} · {{item.aromaType}}</view><view class="row-title">{{item.title}}</view><view class="muted record-excerpt">{{item.note || '这一杯的风味，已经留在手记里。'}}</view></view>
+      <text class="record-arrow">›</text>
+    </button>
+    <view wx:if="{{!notes.length}}" class="panel-empty"><view class="row-title">把今天的第一杯留在这里</view><view class="muted">记录真实的感受，慢慢认识自己的口味。</view><button class="text-link" bindtap="checkin">写下第一篇 →</button></view>
+  </view>
+  <view class="quiet-footer">理性饮酒 · 未成年人请勿饮酒 · 酒后请勿驾车</view>
+</view>

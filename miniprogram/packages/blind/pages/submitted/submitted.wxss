@@ -1,0 +1,9 @@
+.success-card { text-align: center; padding: 60rpx 40rpx; margin-bottom: 30rpx; }
+.success-icon { font-size: 100rpx; margin-bottom: 20rpx; }
+.success-title { font-size: 44rpx; font-weight: 800; color: #181713; margin-bottom: 16rpx; }
+.success-desc { font-size: 26rpx; color: #787063; line-height: 1.6; margin-bottom: 30rpx; }
+.room-code-tag { display: inline-block; background: #f4ebd9; color: #8c5d1e; padding: 10rpx 28rpx; border-radius: 16rpx; font-weight: 700; font-size: 28rpx; }
+.tip-card { padding: 32rpx; margin-bottom: 50rpx; background: #fcf9f2; border: 1rpx solid #ede4d3; }
+.tip-head { font-size: 28rpx; font-weight: 700; color: #8c5d1e; margin-bottom: 12rpx; }
+.tip-body { font-size: 24rpx; color: #7f786d; line-height: 1.6; }
+.action-stack { display: flex; flex-direction: column; gap: 20rpx; }

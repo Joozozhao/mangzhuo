@@ -1,0 +1,9 @@
+{
+  "name": "login",
+  "version": "1.1.0",
+  "description": "盲酌微信身份确认与品鉴资料存取",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

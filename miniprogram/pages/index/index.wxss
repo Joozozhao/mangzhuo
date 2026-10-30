@@ -1,0 +1,6 @@
+.home-page .home-start{background:#f0e8db;border-color:#e5d8c4;}
+.home-page .home-art{width:144rpx;height:144rpx;}
+.home-page .share-latest{margin-top:12rpx;padding-bottom:0;border-top:1rpx solid #ded1bd;}
+.home-page .inline-title{font-size:25rpx;color:#4f4032;}
+.home-page .inline-subtitle{font-size:21rpx;color:#7a6a57;margin-top:4rpx;}
+.home-page .record-panel{margin-top:4rpx;}

@@ -1,0 +1,9 @@
+{
+  "name": "getRoomSamples",
+  "version": "1.0.0",
+  "description": "盲酌酒样查询（开奖前防作弊脱敏）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

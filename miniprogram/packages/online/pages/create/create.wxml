@@ -1,0 +1,42 @@
+<view class="journal create-page">
+  <view class="chapter-mast">
+    <view class="chapter-brand">盲酌 · 发起在线品鉴</view>
+    <view class="chapter-no">品鉴局设定</view>
+  </view>
+
+  <view class="card form-card">
+    <view class="form-title">基本信息</view>
+    <view class="form-item">
+      <view class="form-label">酒局名称</view>
+      <input class="input" placeholder="例如：酱香经典盲品会" maxlength="32" value="{{title}}" bindinput="onTitleInput" />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">主持人口令</view>
+      <input class="input" placeholder="请输入今日口令（不会保存在本机）" password maxlength="64" value="{{authentication}}" bindinput="onAuthInput" />
+      <view class="hint-text">口令仅用于本次创建，发起后不会下发或持久化存储。</view>
+    </view>
+  </view>
+
+  <view class="card form-card">
+    <view class="form-header-row">
+      <view class="form-title">酒样清单（2 至 20 款）</view>
+      <view class="sample-count-badge">当前 {{sampleCount}} 款</view>
+    </view>
+    <view class="hint-text">按编号顺序填写真实酒款名称，参与者在品评时将猜测每号对应酒款。</view>
+
+    <view class="sample-row" wx:for="{{names}}" wx:key="index">
+      <view class="sample-badge">{{index + 1}} 号</view>
+      <input class="input sample-input" placeholder="填写第 {{index + 1}} 号真实酒款名称" maxlength="100" value="{{item}}" data-index="{{index}}" bindinput="onNameInput" />
+      <view class="btn-del" wx:if="{{sampleCount > 2}}" data-index="{{index}}" bindtap="onRemoveSample">删除</view>
+    </view>
+
+    <view class="add-action" wx:if="{{sampleCount < 20}}">
+      <button class="btn-secondary add-btn" bindtap="onAddSample">+ 增加一款酒样</button>
+    </view>
+  </view>
+
+  <view class="action-footer">
+    <button class="btn-primary" loading="{{submitting}}" disabled="{{submitting || created}}" bindtap="onSubmit">确认发起在线品鉴</button>
+  </view>
+</view>

@@ -1,0 +1,62 @@
+<view class="container" wx:if="{{currentSample}}">
+  <view class="stage-banner">
+    <view class="stage-tag">第一阶段 · 盲猜</view>
+    <view class="stage-title">你觉得这是什么酒？</view>
+    <view class="stage-desc">凭色泽、酒花、挂杯与闻香、口感，大胆写下你的推测</view>
+  </view>
+
+  <view class="sample-header card">
+    <view class="sample-badge">{{currentSample.number}}号酒盲样</view>
+    <view class="sample-steps">第 {{currentIndex + 1}} 款 / 共 {{samples.length}} 款</view>
+  </view>
+
+  <view class="card form-card">
+    <view class="form-item">
+      <text class="form-label">猜测品牌 (25分)</text>
+      <input class="input" placeholder="输入品牌关键词自动联想（如：茅台 / 习酒 / 郎酒 / 剑南春）" value="{{guess.brand}}" bindinput="onInputBrand" />
+      <!-- 品牌联想浮层 -->
+      <view class="suggestion-box" wx:if="{{suggestions.length > 0}}">
+        <view class="sug-header">智能名优白酒匹配 (点击一键填入)：</view>
+        <view class="sug-item" wx:for="{{suggestions}}" wx:key="product" bindtap="applySuggestion" data-item="{{item}}">
+          <view class="sug-left">
+            <text class="sug-brand">{{item.brand}}</text>
+            <text class="sug-product">{{item.product}}</text>
+          </view>
+          <text class="sug-pill">{{item.aromaType}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">猜测具体产品名称 (25分)</text>
+      <input class="input" placeholder="例：飞天 / 普五 / 红花郎15 / 水晶剑" value="{{guess.product}}" bindinput="onInput" data-f="product" />
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">推断香型 (10分)</text>
+      <view class="tag-grid">
+        <view class="tag {{guess.aromaType === item ? 'active' : ''}}" wx:for="{{aromaOptions}}" wx:key="*this" bindtap="selectAroma" data-val="{{item}}">{{item}}</view>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">推断酒精度数 (10分)</text>
+      <view class="tag-grid">
+        <view class="tag {{guess.alcoholDegree === item ? 'active' : ''}}" wx:for="{{degreeOptions}}" wx:key="*this" bindtap="selectDegree" data-val="{{item}}">{{item}}</view>
+      </view>
+    </view>
+
+    <view class="form-row">
+      <view class="col">
+        <text class="form-label">猜测年份 (15分)</text>
+        <input class="input" type="number" placeholder="如 2021" value="{{guess.year}}" bindinput="onInput" data-f="year" />
+      </view>
+      <view class="col">
+        <text class="form-label">猜测单瓶售价 (15分)</text>
+        <input class="input" type="digit" placeholder="¥ 如 680" value="{{guess.estimatedPrice}}" bindinput="onInput" data-f="estimatedPrice" />
+      </view>
+    </view>
+  </view>
+
+  <button class="btn-primary" bindtap="nextToScoring">下一步：给 {{currentSample.number}} 号酒主观打分 ›</button>
+</view>

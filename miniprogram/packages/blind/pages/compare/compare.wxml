@@ -1,0 +1,60 @@
+<view class="container" wx:if="{{currentSample}}">
+  <view class="sample-target card">
+    <view class="st-tag">{{currentSample.bottleTag}} 揭晓标准答案</view>
+    <image wx:if="{{currentSample.photo}}" class="st-sample-photo" src="{{currentSample.photo}}" mode="aspectFill" />
+    <view class="st-brand">{{currentSample.brand}} · {{currentSample.product}}</view>
+    <view class="st-meta">{{currentSample.aromaType}} · {{currentSample.alcoholDegree}} · {{currentSample.year}}年 · 真实价: ¥{{currentSample.marketPrice}}</view>
+  </view>
+
+  <view class="section-title">全员推断明细与得分 (满分100分)</view>
+  <view class="guess-card card" wx:for="{{comparisonList}}" wx:key="userId">
+    <view class="gc-top">
+      <view class="gc-user">
+        <image wx:if="{{item.avatarImg}}" class="u-avatar u-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
+        <text wx:else class="u-avatar">{{item.avatar}}</text>
+        <text class="u-name">{{item.nickname}}</text>
+      </view>
+      <view class="gc-score">
+        得分 <text class="score-bold">{{item.scoreResult.totalScore}}</text>
+      </view>
+    </view>
+
+    <!-- 计分得分点拆解 -->
+    <view class="score-breakdown">
+      <view class="sb-item {{item.scoreResult.breakdown.brand.isMatch ? 'hit' : 'miss'}}">
+        <text class="sb-k">品牌推测</text>
+        <text class="sb-val">{{item.guess.brand || '未填写'}} (+{{item.scoreResult.breakdown.brand.score}}分)</text>
+      </view>
+      <view class="sb-item {{item.scoreResult.breakdown.product.isMatch ? 'hit' : 'miss'}}">
+        <text class="sb-k">产品名称</text>
+        <text class="sb-val">{{item.guess.product || '未填写'}} (+{{item.scoreResult.breakdown.product.score}}分)</text>
+      </view>
+      <view class="sb-item {{item.scoreResult.breakdown.aromaType.isMatch ? 'hit' : 'miss'}}">
+        <text class="sb-k">推测香型</text>
+        <text class="sb-val">{{item.guess.aromaType || '未填写'}} (+{{item.scoreResult.breakdown.aromaType.score}}分)</text>
+      </view>
+      <view class="sb-item {{item.scoreResult.breakdown.alcoholDegree.isMatch ? 'hit' : 'miss'}}">
+        <text class="sb-k">推测度数</text>
+        <text class="sb-val">{{item.guess.alcoholDegree || '未填写'}} (+{{item.scoreResult.breakdown.alcoholDegree.score}}分)</text>
+      </view>
+      <view class="sb-item {{item.scoreResult.breakdown.year.isMatch ? 'hit' : 'miss'}}">
+        <text class="sb-k">年份推测</text>
+        <text class="sb-val">{{item.guess.year ? item.guess.year + '年' : '未填写'}} (+{{item.scoreResult.breakdown.year.score}}分)</text>
+      </view>
+      <view class="sb-item {{item.scoreResult.breakdown.price.isMatch ? 'hit' : 'miss'}}">
+        <text class="sb-k">估价推测</text>
+        <text class="sb-val">¥{{item.guess.estimatedPrice || '0'}} (+{{item.scoreResult.breakdown.price.score}}分)</text>
+      </view>
+    </view>
+
+    <!-- 他的主观口感评分与评价 -->
+    <view class="user-taste-box" wx:if="{{item.rating}}">
+      <view class="ut-head">
+        <text>TA的主观口感打分：<text class="gold-text font-bold">{{item.rating.overall}}分</text></text>
+      </view>
+      <view class="ut-comment" wx:if="{{item.rating.comment}}">
+        评价：“{{item.rating.comment}}”
+      </view>
+    </view>
+  </view>
+</view>

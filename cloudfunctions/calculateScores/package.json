@@ -1,0 +1,9 @@
+{
+  "name": "calculateScores",
+  "version": "1.0.0",
+  "description": "盲酌开奖计分与榜单计算引擎",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

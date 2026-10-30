@@ -1,0 +1,48 @@
+<view class="container">
+  <view class="page-header">
+    <view class="page-title">发起盲品局</view>
+    <view class="page-desc">设置酒局基本规则，随后由发起人统一密填真实酒样答案</view>
+  </view>
+  <view wx:if="{{!profileCompleted}}" class="profile-hint" bindtap="goProfile">完善头像昵称，酒局名片与排行榜将展示你的资料 →</view>
+  <view class="card">
+    <view class="form-item">
+      <text class="form-label">酒局名称</text>
+      <input class="input" placeholder="例：周末老友浓酱风云会" value="{{name}}" bindinput="onInputName" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">酒局寄语 / 盲饮说明</text>
+      <input class="input" placeholder="例：撕掉酒标，只凭舌尖见真章" value="{{description}}" bindinput="onInputDesc" />
+    </view>
+    <view class="form-item">
+      <view class="label-row">
+        <text class="form-label">盲品酒款数量</text>
+        <text class="gold-badge">{{sampleCount}} 款酒</text>
+      </view>
+      <view class="chip-row">
+        <view class="chip {{sampleCount === item ? 'active' : ''}}" wx:for="{{[2, 3, 4, 5, 6, 8]}}" wx:key="*this" bindtap="selectCount" data-val="{{item}}">{{item}} 款</view>
+      </view>
+    </view>
+    <view class="form-item">
+      <view class="label-row">
+        <text class="form-label">最大参与人数</text>
+        <text class="badge badge-gray">{{maxMembers}} 人</text>
+      </view>
+      <view class="chip-row">
+        <view class="chip {{maxMembers === item ? 'active' : ''}}" wx:for="{{[4, 6, 8, 10, 12]}}" wx:key="*this" bindtap="selectMembers" data-val="{{item}}">{{item}} 人</view>
+      </view>
+    </view>
+  </view>
+  <view class="card rule-box">
+    <view class="rule-title">🎯 盲酌标准评分规则 (满分100分)</view>
+    <view class="rule-grid">
+      <view class="rule-item"><text class="r-k">品牌正确</text><text class="r-v">25分</text></view>
+      <view class="rule-item"><text class="r-k">具体产品</text><text class="r-v">25分</text></view>
+      <view class="rule-item"><text class="r-k">香型正确</text><text class="r-v">10分</text></view>
+      <view class="rule-item"><text class="r-k">酒精度数</text><text class="r-v">10分</text></view>
+      <view class="rule-item"><text class="r-k">酿造年份</text><text class="r-v">15分</text></view>
+      <view class="rule-item"><text class="r-k">估价区间</text><text class="r-v">15分</text></view>
+    </view>
+    <view class="rule-tip">开奖前答案全程密存，仅在房主揭晓时生成对比战报与大众口味榜。</view>
+  </view>
+  <button class="btn-primary" bindtap="submitCreate">下一步：密填真实酒样</button>
+</view>

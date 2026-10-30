@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <meta name="wechat-enable-text-zoom-em" content="true">
+    <title>品酒</title>
+    <script src="/lib/layui-v2.10.3/layui.js"></script>
+    <link rel="stylesheet" href="../dist/style/weui.min.css"/>
+    <link rel="stylesheet" href="../dist/example/example.css"/>
+    <script rel="stylesheet" src="../lib/jquery/jquery.min.js"></script>
+    <script rel="stylesheet" src="../lib/upload/ajaxfileupload.js"></script>
+    <script rel="stylesheet" src="../lib/swiper/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="../lib/swiper/swiper-bundle.min.css" />
+    <link href="/lib/layui-v2.10.3/css/layui.css" rel="stylesheet">
+</head>
+<body ontouchstart >
+<div class="container" id="container">
+    <div class="page js_show" style="background-color: #fff">
+        <div class="page__hd" style="padding: 0px;">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="../image/1.png" alt="" width="100%" height="200"/></div>
+                    <div class="swiper-slide"><img src="../image/2.png" alt="" width="100%" height="200"/></div>
+                    <div class="swiper-slide"><img src="../image/3.png" alt="" width="100%" height="200"/></div>
+                    <div class="swiper-slide"><img src="../image/4.jpg" alt="" width="100%" height="200"/></div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+        <style>
+            .weui-cells::before{
+                border: 0px;
+            }
+        </style>
+        <div class="page__bd">
+            <div class="weui-panel">
+                <div class="weui-cells">
+                    <div class="weui-cells__group weui-cells__group_form">
+                        <div class="weui-cells">
+                            <label for="taste_name" class="weui-cell weui-cell_active">
+                                <div class="weui-cell__hd"><span class="weui-label">身份验证</span></div>
+                                <div class="weui-cell__bd weui-flex">
+                                    <input id="authentication" name="authentication" class="weui-input" type="text" placeholder="请输入身份验证" />
+                                </div>
+                            </label>
+                            <label for="taste_name" class="weui-cell weui-cell_active">
+                                <div class="weui-cell__hd"><span class="weui-label">名称</span></div>
+                                <div class="weui-cell__bd weui-flex">
+                                    <input id="taste_name" name="taste_name" class="weui-input" type="text" placeholder="请输入名称" />
+                                </div>
+                            </label>
+                            <label for="tasteType" class="weui-cell weui-cell_active div-data">
+                                <div class="weui-cell__hd"><span class="weui-label">酒名</span></div>
+                                <div class="weui-cell__bd weui-flex">
+                                    <input id="tasteType" name="tasteType" class="weui-input tasteType" type="text" placeholder="请输入酒名" />
+                                    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm addBtn" style="height: 25px;line-height: 25px;padding: 0 2px;font-size: 12px;">
+                                        <i class="layui-icon">&#xe654;</i>
+                                    </button>
+                                    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm removeBtn" style="height: 25px;line-height: 25px;padding: 0 2px;font-size: 12px;margin-left: 5px;">
+                                        <i class="layui-icon">&#x1006;</i>
+                                    </button>
+                                </div>
+                            </label>
+                            <label for="taste_name" class="weui-cell weui-cell_active">
+                                <div class="weui-cell__hd"><span class="weui-label">封面图上传</span></div>
+                                <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+                                <div class="weui-uploader__input-box">
+                                    <input id="addfile" name="addfile" class="weui-uploader__input" type="file" accept="image/*" multiple/>
+                                    <input type="hidden" id="imgUrl" value=""/>
+                                </div>
+                            </label>
+                            <label class="weui-cell weui-cell_active" id="js_cell1">
+                                <div class="weui-cell__hd"><span class="weui-label">对应图上传</span></div>
+                                <ul class="weui-uploader__files" id="uploaderTasteFiles"></ul>
+                                <div class="weui-uploader__input-box">
+                                    <input type="hidden" id="tasteUrl" value=""/>
+                                    <input id="addTasteFile" name="addTasteFile" class="weui-uploader__input" type="file" accept="image/*" multiple/>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-bottom-fixed-opr" id="js_opr" style="margin-top: 10px;">
+                <a href="javascript:;" role="button" class="weui-btn weui-btn_primary" id="btnSubmit"><span class="weui-btn__inner">提交</span></a>
+                <a href="/page/tasteindex.html" role="button" class="weui-btn weui-btn_default">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    var swiper = new Swiper(".mySwiper", {
+        pagination: {
+            el: ".swiper-pagination",
+        },
+    });
+    $(function(){
+        var currentDate = new Date();  // 创建一个Date对象
+        var day = currentDate.getDate();  // 获取当前日期
+        var month = currentDate.getMonth() + 1;  // 月份从0开始，因此需要加1
+        var year = currentDate.getFullYear();  // 获取年份
+        $("#taste_name").val(year+(month<10?'0'+month:month)+day);
+        $(document).on("click",'.addBtn',function (){
+            // var index = parseInt($(this).closest('.div-data').attr('data'));
+            var index = $(".tasteType").length;
+            var html = "<label for=\"tasteType\" class=\"weui-cell weui-cell_active div-data\" >\n" +
+                "                                <div class=\"weui-cell__hd\"><span class=\"weui-label\">酒名</span></div>\n" +
+                "                                <div class=\"weui-cell__bd weui-flex\">\n" +
+                "                                    <input id=\"tasteType\" name=\"tasteType\" class=\"weui-input tasteType\" type=\"text\" placeholder=\"请输入酒名\" />\n" +
+                "                                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm addBtn\" style=\"height: 25px;line-height: 25px;padding: 0 2px;font-size: 12px;\">\n" +
+                "                                        <i class=\"layui-icon\">&#xe654;</i>\n" +
+                "                                    </button>\n" +
+                "                                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm removeBtn\" style=\"height: 25px;line-height: 25px;padding: 0 2px;font-size: 12px;margin-left: 5px;\">\n" +
+                "                                        <i class=\"layui-icon\">&#x1006;</i>\n" +
+                "                                    </button>\n" +
+                "                                </div>\n" +
+                "                            </label>"
+            $(this).closest('.div-data').after(html);
+        })
+
+        $(document).on("click",'.removeBtn',function (){
+            var count = $(".tasteType").length;
+            if(count>1){
+                $(this).closest('.div-data').remove();
+            }else{
+                layer.msg("最少设置一个分类！", {icon: -1});
+            }
+        })
+        var tmpl = '<li class="weui-uploader__file" role="img" tabindex="0" style="background-image:url(#url#)"></li>';
+        $("#addfile").on("change", function(e){
+            var fId = "addfile";
+            $.ajaxFileUpload({
+                type:'POST',
+                url:'/taste/wechat/uploadImgUrl',
+                secureuri : false,
+                fileElementId : fId,
+                data:{
+                    'fileId':fId,
+                    addfile:addfile,
+                },
+                xhrFields: { // 设置 xhrFields，用以设置 withCredentials 属性
+                    withCredentials: true // 开启跨域请求时携带凭证信息（如 cookies）
+                },
+                dataType:'json',
+                success:function(json){
+                    if(json.code == 0){
+                        var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
+                        for (var i = 0, len = files.length; i < len; ++i) {
+                            var file = files[i];
+                            if (url) {
+                                src = url.createObjectURL(file);
+                            } else {
+                                src = e.target.result;
+                            }
+                            $("#uploaderFiles").html($(tmpl.replace('#url#', src)));
+                        }
+                        $("#imgUrl").val(json.data);
+                    }else{
+                        layer.msg(json.msg, {icon: -1});
+                        return;
+                    }
+                }
+            });
+        });
+        $("#addTasteFile").on("change", function(e){
+            var fId = "addTasteFile";
+            $.ajaxFileUpload({
+                type:'POST',
+                url:'/taste/wechat/uploadImgUrl',
+                secureuri : false,
+                fileElementId : fId,
+                data:{
+                    'fileId':fId,
+                    addfile:addfile,
+                },
+                xhrFields: { // 设置 xhrFields，用以设置 withCredentials 属性
+                    withCredentials: true // 开启跨域请求时携带凭证信息（如 cookies）
+                },
+                dataType:'json',
+                success:function(json){
+                    if(json.code == 0){
+                        var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
+                        for (var i = 0, len = files.length; i < len; ++i) {
+                            var file = files[i];
+                            if (url) {
+                                src = url.createObjectURL(file);
+                            } else {
+                                src = e.target.result;
+                            }
+                            $("#uploaderTasteFiles").html($(tmpl.replace('#url#', src)));
+                        }
+                        $("#tasteUrl").val(json.data);
+                    }else{
+                        layer.msg(json.msg, {icon: -1});
+                        return;
+                    }
+                }
+            });
+
+        });
+        //提交
+        $(document).on("click",'#btnSubmit',function (){
+            var authentication = $("#authentication").val();
+            if(authentication == "" || authentication == null || authentication == undefined){
+                layer.msg("请输入身份验证", {icon: -1});
+                return;
+            }
+            var tasteName = $("#taste_name").val();
+            var tasteTypeArr = [];
+            $(".tasteType").each(function(){
+                var tasteType = $(this).val().trim();
+                if(tasteType!="" && tasteType!=null && tasteType!=undefined){
+                    tasteTypeArr.push(tasteType);
+                }
+            });
+            var str = "";
+            if(tasteTypeArr.length>0){
+                str = tasteTypeArr.join(",");
+            }
+            if(tasteName == "" || tasteName == null || tasteName == undefined){
+                layer.msg("请输入名称", {icon: -1});
+                return;
+            }
+            if(str == "" || str == null || str == undefined){
+                layer.msg("请输入酒名", {icon: -1});
+                return;
+            }
+            var imgUrl = $("#imgUrl").val();
+            if(imgUrl == "" || imgUrl == null || imgUrl == undefined){
+                layer.msg("请上传一张封面照片", {icon: -1});
+                return;
+            }
+            var tasteUrl = $("#tasteUrl").val();
+            if(tasteUrl == "" || tasteUrl == null || tasteUrl == undefined){
+                layer.msg("请上传一张现场照片", {icon: -1});
+                return;
+            }
+            $.ajaxFileUpload({
+                type:'POST',
+                url:'/taste/wechat/savetastetype',
+                secureuri : false,
+                data:{
+                    tasteName:tasteName,
+                    tasteType:str,
+                    imgUrl:imgUrl,
+                    tasteUrl:tasteUrl,
+                    authentication:authentication
+                },
+                xhrFields: { // 设置 xhrFields，用以设置 withCredentials 属性
+                    withCredentials: true // 开启跨域请求时携带凭证信息（如 cookies）
+                },
+                dataType:'json',
+                success:function(json){
+                    if(json.code == 0){
+                        //成功
+                        layer.msg('保存成功！', {time: 500, icon: 1}, function() {
+                            window.location.href="/page/tasteindex.html";
+                        });
+                    }else{
+                        if(json.msg == "relogin"){
+                            window.location.href = "/page/wechat.html";
+                        }else{
+                            layer.msg(json.msg, {icon: -1});
+                        }
+                    }
+                }
+            });
+        });
+    });
+    //新增
+    function openAddTaste(){
+        window.location.href="/page/createtaste.html"
+    }
+</script>

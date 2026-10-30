@@ -1,0 +1,9 @@
+{
+  "initialRenderingCache": "static",
+  "navigationBarTitleText": "盲酌",
+  "enablePullDownRefresh": true,
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "brand-nav": "/components/brand-nav/brand-nav"
+  }
+}

@@ -1,0 +1,101 @@
+<view class="container" wx:if="{{insights}}">
+  <!-- 报告仪式感封面卡片 -->
+  <view class="report-cover card">
+    <view class="cover-brand">🍶 盲酌 · 酒局报告</view>
+    <view class="cover-title">{{room.name}}</view>
+    <view class="cover-quote">“去掉酒标，只凭味道。这是现场 {{insights.totalMembers}} 位品鉴官用味蕾票选出的真实结果。”</view>
+    <view class="cover-divider"></view>
+    <view class="cover-stats">
+      <view class="cs-col"><text class="cs-v">{{insights.totalMembers}}</text><text class="cs-k">参与品鉴官</text></view>
+      <view class="cs-col"><text class="cs-v">{{insights.totalSamples}}</text><text class="cs-k">盲测酒样数</text></view>
+      <view class="cs-col"><text class="cs-v">100%</text><text class="cs-k">双盲公平度</text></view>
+    </view>
+  </view>
+
+  <!-- 4 大核心趣味酒局奖项 -->
+  <view class="award-grid">
+    <!-- 1. 全场最受欢迎 -->
+    <view class="award-card card gold-glow" wx:if="{{insights.mostPopular}}">
+      <view class="award-header">
+        <text class="award-icon">🌟</text>
+        <text class="award-badge">全场最受欢迎酒款</text>
+      </view>
+      <view class="award-main">
+        <view class="award-sample">{{insights.mostPopular.bottleTag}}</view>
+        <view class="award-wine">{{insights.mostPopular.brand}} · {{insights.mostPopular.product}}</view>
+        <view class="award-score">盲品平均评分 <text class="hl-score">{{insights.mostPopular.avgOverall}}</text> 分</view>
+      </view>
+      <view class="award-footer">在完全隐藏品牌与外观下，征服了现场大多数挑剔味蕾。</view>
+    </view>
+
+    <!-- 2. 最大黑马 -->
+    <view class="award-card card" wx:if="{{insights.biggestDarkHorse}}">
+      <view class="award-header">
+        <text class="award-icon">🐴</text>
+        <text class="award-badge tag-green">全场最大性价比黑马</text>
+      </view>
+      <view class="award-main">
+        <view class="award-sample">{{insights.biggestDarkHorse.bottleTag}}</view>
+        <view class="award-wine">{{insights.biggestDarkHorse.brand}} · {{insights.biggestDarkHorse.product}}</view>
+        <view class="price-compare-box">
+          <text>真实售价：¥{{insights.biggestDarkHorse.marketPrice}}</text>
+          <text class="sep">VS</text>
+          <text class="high-tag">盲品均估：¥{{insights.biggestDarkHorse.avgEstimatedPrice}}</text>
+        </view>
+      </view>
+      <view class="award-footer">口感高级感远超其实际售价，堪称今夜最具性价比酒款！</view>
+    </view>
+
+    <!-- 3. 最难猜酒款 -->
+    <view class="award-card card" wx:if="{{insights.hardestSample}}">
+      <view class="award-header">
+        <text class="award-icon">🎭</text>
+        <text class="award-badge tag-dark">最神秘/最难猜酒款</text>
+      </view>
+      <view class="award-main">
+        <view class="award-sample">{{insights.hardestSample.bottleTag}}</view>
+        <view class="award-wine">{{insights.hardestSample.brand}} · {{insights.hardestSample.product}}</view>
+        <view class="hard-stat">品牌猜中率仅 <text class="hl-hard">{{insights.hardestSample.brandAccuracy}}%</text></view>
+      </view>
+      <view class="award-footer">极具迷惑性的口感风格，骗过了绝大部分品鉴老饕。</view>
+    </view>
+
+    <!-- 4. 本场猜酒王 -->
+    <view class="award-card card" wx:if="{{insights.topGuesser}}">
+      <view class="award-header">
+        <text class="award-icon">👑</text>
+        <text class="award-badge tag-gold">本场猜酒王</text>
+      </view>
+      <view class="award-main">
+        <view class="guesser-user">
+          <image wx:if="{{insights.topGuesser.avatarImg}}" class="guesser-avatar guesser-avatar-img" src="{{insights.topGuesser.avatar}}" mode="aspectFill" />
+          <text wx:else class="guesser-avatar">{{insights.topGuesser.avatar}}</text>
+          <text class="guesser-name">{{insights.topGuesser.nickname}}</text>
+        </view>
+        <view class="guesser-score">总竞猜积分 <text class="hl-score">{{insights.topGuesser.totalScore}}</text> 分</view>
+      </view>
+      <view class="award-footer">味觉灵敏、博闻强识，全场当之无愧的白酒品鉴大师！</view>
+    </view>
+  </view>
+
+  <!-- 底部操作按钮 -->
+  <view class="report-actions">
+    <button class="btn-primary" bindtap="generatePoster">🎨 生成酒局战报海报 (朋友圈)</button>
+    <button class="btn-secondary" bindtap="backToHome">返回首页发起新盲品</button>
+  </view>
+
+  <!-- 海报渲染隐藏 Canvas -->
+  <canvas type="2d" id="posterCanvas" class="hidden-canvas" style="width: 320px; height: 500px; position: fixed; left: -9999px;"></canvas>
+
+  <!-- 海报弹窗预览 -->
+  <view class="poster-modal" wx:if="{{posterUrl}}">
+    <view class="modal-mask" bindtap="closePoster"></view>
+    <view class="modal-content">
+      <image class="poster-img" src="{{posterUrl}}" mode="widthFix" show-menu-by-longpress="true"></image>
+      <view class="modal-btns">
+        <button class="btn-primary" bindtap="savePosterToAlbum">保存到手机相册</button>
+        <button class="btn-secondary" bindtap="closePoster">关闭</button>
+      </view>
+    </view>
+  </view>
+</view>

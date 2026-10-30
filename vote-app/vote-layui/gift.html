@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <title>北京微网通联 - 投票控制中心</title>
+    <link rel="stylesheet" type="text/css" href="lib/semantic/dist/reset.css">
+    <link rel="stylesheet" type="text/css" href="lib/semantic/dist/components/menu.css">
+    <link rel="stylesheet" type="text/css" href="lib/semantic/dist/components/grid.css">
+    <link rel="stylesheet" type="text/css" href="lib/semantic/dist/semantic.css">
+    <link rel="stylesheet" href="lib/layui/css/layui.css"   media="all">
+    <style type="text/css">
+        .txt-ellipsis p {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body class="change-color">
+<div class="layui-layout layui-layout-admin" style="padding: 20px;">
+    <blockquote class="layui-elem-quote" style="font-size: 20px;margin-bottom: 20px;">投票控制中心</blockquote>
+    <button type="button"  data-method="setTop" class="layui-btn delsort" style="margin-bottom: 20px;">清空排序</button>
+    <span class="text-right"><a href="xx">sss</a></span>
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;"></fieldset>
+</div>
+<script type="text/html" id="state">
+    {{#  if(d.state == 0){ }}
+    <a class="layui-btn layui-btn-blue  layui-btn-sm" lay-event="changestate">未开始</a>
+    {{#  } }}
+    {{#  if(d.state == 1){ }}
+    <a class="layui-btn  layui-btn-danger layui-btn-sm" lay-event="changestate">投票中</a>
+    {{#  } }}
+</script>
+<script src="lib/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.use(['element','util','table','jquery'], function(){
+        let $ = layui.$,
+            layer = layui.layer,
+            element = layui.element,
+            table = layui.table;
+        var tableIns = table.render({
+            elem: '#test'
+            ,url: '/vote/task/list'
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,toolbar: '#state'
+            ,cols: [[
+                {field:'id', title: 'ID',align:'center'}
+                ,{field:'taskName',align:'center',  title: '任务名'}
+                ,{field:'performer',align:'center', title: '员工'}
+                ,{field:'state',align:'center', title: '状态',toolbar: '#state'}
+                ,{field:'startTime',align:'center',  title: '开始时间'}
+                ,{field:'endTime',align:'center', title: '结束时间'}
+            ]]
+            ,page: true
+        });
+        $(".delsort").click(function(){
+            layer.confirm("确定清除当前排序吗", {
+                btn: ['确定', '取消'] //可以无限个按钮
+            }, function(index, layero){
+                $.ajax({
+                    type:'POST',
+                    url:'/vote/task/delSort',
+                    data:{},
+                    dataType:'json',
+                    success:function(json){
+                        layer.msg("清除成功！", {icon: 1});
+                    }
+                });
+                layer.close(index);
+            }, function(index){
+                layer.close(index);
+            });
+        });
+        //监听头工具栏事件
+        table.on('tool(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id)
+                ,data = checkStatus.data; //获取选中的数据
+            if(obj.event == 'changestate'){
+                var title = "";
+                var state = 0;
+                if(obj.data.state == 0){
+                    title = "确定开始投票吗？";
+                    state = 1;
+                } else{
+                    title = "确定停止投票吗？";
+                    state = 0;
+                }
+                layer.confirm(title, {
+                    btn: ['确定', '取消'] //可以无限个按钮
+                }, function(index, layero){
+                    $.ajax({
+                        type:'POST',
+                        url:'/vote/task/update',
+                        data:{id:obj.data.id,state:state},
+                        dataType:'json',
+                        success:function(json){
+                            tableIns.reload();
+                        }
+                    });
+                    layer.close(index);
+                }, function(index){
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

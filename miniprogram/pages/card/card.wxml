@@ -1,0 +1,23 @@
+<view class="journal card-page">
+  <block wx:if="{{note}}">
+    <view class="card-heading">
+      <view class="card-kicker">品鉴手记 · {{note.date}}</view>
+      <view class="page-title">这一杯，值得留存</view>
+      <view class="card-description">保存图片，或分享小程序给朋友。</view>
+    </view>
+    <button wx:if="{{!profileCompleted}}" class="card-profile-hint" bindtap="goProfile">完善头像昵称，让酒卡署上你的名字 →</button>
+    <view class="card-actions">
+      <button wx:if="{{imagePath}}" class="btn-primary" open-type="agreePrivacyAuthorization" bindagreeprivacyauthorization="save">保存酒卡图片</button>
+      <button wx:else class="btn-primary" loading="{{busy}}" disabled="{{busy}}" bindtap="renderCard">{{busy ? '正在生成酒卡' : '重新生成酒卡'}}</button>
+      <button class="btn-secondary" open-type="share" disabled="{{busy || !imagePath}}">分享小程序</button>
+    </view>
+    <view class="card-action-note">保存图片可发朋友圈；好友打开分享后进入小程序首页。</view>
+    <canvas type="2d" id="poster" class="poster-canvas"></canvas>
+    <view class="preview-heading"><text>酒卡预览</text><text wx:if="{{imagePath}}" class="preview-hint">点击查看大图</text></view>
+    <image wx:if="{{imagePath}}" src="{{imagePath}}" mode="widthFix" class="poster-image" show-menu-by-longpress bindtap="preview" aria-label="预览分享酒卡"/>
+    <view wx:elif="{{busy}}" class="card-placeholder">正在生成酒卡，请稍候…</view>
+    <view wx:elif="{{renderError}}" class="card-placeholder">酒卡没有生成成功，请点击上方按钮重试。</view>
+  </block>
+  <view wx:else class="empty-note">没有找到这条记录，请回首页重新选择。</view>
+  <button class="text-link card-home" bindtap="home">返回首页</button>
+</view>

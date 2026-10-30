@@ -1,0 +1,41 @@
+/* Shared grouping and rhythm for the four main pages. */
+.journal.organized-page{padding:20rpx 32rpx calc(144rpx + env(safe-area-inset-bottom));font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#28251f;}
+.organized-page .content-panel{padding:0;margin-bottom:36rpx;}
+.organized-page .surface-panel{background:#fffdf8;border:1rpx solid #e3dacd;border-radius:16rpx;padding:28rpx;overflow:hidden;}
+.organized-page .compact-heading{display:flex;align-items:center;justify-content:space-between;gap:20rpx;padding:0 0 20rpx;}
+.organized-page .heading-copy{flex:1;min-width:0;}
+.organized-page .panel-kicker{font-size:22rpx;letter-spacing:2rpx;color:#893e32;margin-bottom:10rpx;}
+.organized-page .compact-title{font-family:"Songti SC","STSong","SimSun",serif;font-size:42rpx;line-height:1.35;font-weight:600;letter-spacing:1rpx;}
+.organized-page .heading-desc{font-size:24rpx;line-height:1.65;color:#706456;margin-top:10rpx;}
+.organized-page .compact-art{display:block;width:112rpx;height:112rpx;flex-shrink:0;}
+.organized-page .page-intro{display:flex;align-items:center;gap:20rpx;padding:4rpx 4rpx 28rpx;}
+.organized-page .page-intro .heading-copy{flex:1;min-width:0;}
+.organized-page .page-intro .compact-title{font-size:38rpx;}
+.organized-page .page-intro .heading-desc{margin-top:6rpx;}
+.organized-page .panel-heading{display:flex;align-items:center;justify-content:space-between;gap:16rpx;min-height:88rpx;padding:0 0 16rpx;border-bottom:1rpx solid #ded4c5;}
+.organized-page .panel-title{font-size:30rpx;font-weight:600;line-height:1.45;}
+.organized-page .panel-heading .text-link{flex-shrink:0;white-space:nowrap;}
+.organized-page button{font-family:inherit;font-weight:400;}
+.organized-page button::after{border:0;}
+.organized-page .btn-primary,.organized-page .btn-secondary{min-height:44px;height:88rpx;line-height:1.4;display:flex;align-items:center;justify-content:center;font-size:28rpx;font-weight:500;border-radius:12rpx;letter-spacing:0;}
+.organized-page .btn-primary{background:#893e32;color:#fff;box-shadow:none;}
+.organized-page .btn-secondary{background:#f7f3eb;border:1rpx solid #d8cdbb;color:#514639;box-shadow:none;}
+.organized-page .text-link{display:flex;align-items:center;min-height:44px;margin:0;padding:0;font-size:24rpx;line-height:1.4;letter-spacing:0;color:#893e32;background:transparent;}
+.organized-page button.inline-action{width:100%;min-height:44px;display:flex;justify-content:space-between;align-items:center;gap:16rpx;background:transparent;padding:16rpx 0;margin:0;line-height:1.5;white-space:normal;font-size:25rpx;text-align:left;color:#5d4e3e;}
+.organized-page .inline-action+.inline-action{border-top:1rpx solid #e7dfd3;}
+.organized-page .action-arrow{color:#893e32;flex-shrink:0;}
+.organized-page button.record-row{display:flex;align-items:center;gap:20rpx;width:100%;margin:0;padding:24rpx 0;background:transparent;text-align:left;white-space:normal;line-height:1.5;border-radius:0;border-bottom:1rpx solid #e7dfd3;}
+.organized-page button.record-row:last-of-type{border-bottom:0;padding-bottom:4rpx;}
+.organized-page .record-panel{border-top:1rpx solid #ddd2c1;padding-top:8rpx;}
+.organized-page .record-body{flex:1;min-width:0;}
+.organized-page .record-arrow{font-family:serif;font-size:34rpx;color:#8b7256;flex-shrink:0;}
+.organized-page .row-title{font-size:30rpx;font-weight:500;line-height:1.5;margin:6rpx 0;overflow-wrap:anywhere;}
+.organized-page .meta{font-size:22rpx;color:#746653;line-height:1.6;}
+.organized-page .muted{font-size:24rpx;color:#706456;line-height:1.65;}
+.organized-page .record-excerpt{overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.organized-page .panel-empty{padding:28rpx 0 8rpx;}
+.organized-page .panel-empty .text-link{margin-top:12rpx;}
+.organized-page .panel-note{font-size:22rpx;line-height:1.65;color:#746653;padding-top:16rpx;margin-top:4rpx;}
+.organized-page .quiet-footer{font-size:21rpx;line-height:1.8;text-align:center;color:#7a6b58;padding:0 4rpx 20rpx;}
+.organized-page .content-panel .input{min-width:0;}
+@media(max-width:350px){.journal.organized-page{padding-left:24rpx;padding-right:24rpx;}.organized-page .surface-panel{padding:24rpx;}.organized-page .compact-title{font-size:38rpx;}.organized-page .compact-art{width:92rpx;height:92rpx;}.organized-page .heading-desc{font-size:23rpx;}}
