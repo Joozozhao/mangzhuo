@@ -25,11 +25,13 @@
     </view>
     <view class="hint-text">按编号顺序填写真实酒款名称，参与者在品评时将猜测每号对应酒款。</view>
 
-    <view class="sample-row" wx:for="{{names}}" wx:key="index">
+    <view class="catalog-feedback"><text wx:if="{{catalogLoading}}">正在更新酒款目录…</text><block wx:elif="{{catalogError}}"><text>{{catalogSource === 'cache' ? '暂用最近目录' : '暂用离线目录'}}，可继续手动填写。</text><button class="catalog-retry" bindtap="retryWineCatalog">重试</button></block><text wx:else>输入品牌或酒名，从酒款目录选填。</text></view>
+    <block wx:for="{{names}}" wx:key="index"><view class="sample-row">
       <view class="sample-badge">{{index + 1}} 号</view>
       <input class="input sample-input" placeholder="填写第 {{index + 1}} 号真实酒款名称" maxlength="100" value="{{item}}" data-index="{{index}}" bindinput="onNameInput" />
       <view class="btn-del" wx:if="{{sampleCount > 2}}" data-index="{{index}}" bindtap="onRemoveSample">删除</view>
     </view>
+    <view class="wine-suggestions" wx:if="{{activeSuggestionIndex === index ? suggestions.length : false}}"><button wx:for="{{suggestions}}" wx:for-item="wine" wx:for-index="wineIndex" wx:key="wineIndex" class="wine-suggestion" data-index="{{index}}" data-item="{{wine}}" bindtap="applyWineSuggestion"><view class="wine-suggestion-title">{{wine.product}}</view><view class="wine-suggestion-meta">{{wine.brand}} · {{wine.aromaType}} · {{wine.degree}}</view></button></view></block>
 
     <view class="add-action" wx:if="{{sampleCount < 20}}">
       <button class="btn-secondary add-btn" bindtap="onAddSample">+ 增加一款酒样</button>

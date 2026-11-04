@@ -1,1 +1,6 @@
-<view class="brand-navigation" style="padding-top:{{statusHeight}}px;"><view class="navigation-row" style="height:{{navHeight}}px;"><image class="navigation-lockup-image" src="/assets/brand/mangzhuo-lockup-v6.png" mode="aspectFit" aria-label="盲酌"/></view></view>
+<view class="brand-navigation" style="padding-top:{{statusHeight}}px;">
+  <view class="navigation-row" style="height:{{navHeight}}px;">
+    <image class="navigation-lockup-image" src="/assets/brand/mangzhuo-lockup-v6.png" mode="aspectFit" aria-label="盲酌"/>
+    <view class="navigation-motto"><text>去掉酒标</text><text>只凭味道</text></view>
+  </view>
+</view>

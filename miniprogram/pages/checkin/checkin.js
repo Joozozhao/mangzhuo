@@ -1,5 +1,6 @@
 const journal = require('../../services/journal');
 const kb = require('../../utils/liquorKnowledge');
+const { searchLiquors, refreshLiquors } = require('../../utils/liquorDb');
 
 const aromas = ['暂不判断', ...kb.aromaOptions, '其他'];
 const placeholders = { aroma: '你闻到了什么？', taste: '写下第一口的感受', finish: '咽下后，留下了什么？' };
@@ -11,9 +12,31 @@ function mergeField(text, words) {
 }
 
 Page({
-  data: { aromas, index: 0, saving: false, groups: [], placeholders },
+  data: { aromas, index: 0, saving: false, groups: [], placeholders, title: '', suggestions: [], catalogLoading: false, catalogSource: 'builtin', catalogError: '' },
   onLoad() {
+    this._disposed = false;
     this.setData({ groups: kb.getFlavorGroups() });
+    this.loadWineCatalog();
+  },
+  async loadWineCatalog(force = false) {
+    this.setData({ catalogLoading: true });
+    const result = await refreshLiquors({ force: force === true });
+    if (this._disposed) return;
+    this.setData({ catalogLoading: false, catalogSource: result.source, catalogError: result.error, suggestions: searchLiquors(this._suggestionQuery || '') });
+  },
+  retryWineCatalog() { this.loadWineCatalog(true); },
+  onUnload() { this._disposed = true; },
+  onTitleInput(e) {
+    this._suggestionQuery = e.detail.value;
+    this.setData({ title: e.detail.value, suggestions: searchLiquors(e.detail.value) });
+  },
+  applyWineSuggestion(e) {
+    const wine = e.currentTarget.dataset.item;
+    const title = wine.product;
+    if (title.length > 40) { wx.showToast({ title: '酒名较长，请手动填写简称', icon: 'none' }); return; }
+    this._suggestionQuery = '';
+    const index = this.data.aromas.indexOf(wine.aromaType);
+    this.setData({ title, suggestions: [], index: index >= 0 ? index : this.data.index });
   },
   choose(e) {
     this.setData({ index: Number(e.detail.value) });
@@ -46,7 +69,7 @@ Page({
         aroma: merged.aroma || '',
         taste: merged.taste || '',
         finish: merged.finish || '',
-        aromaType: aromas[this.data.index],
+        aromaType: this.data.aromas[this.data.index],
         flavorTagIds
       });
       wx.redirectTo({ url: '/pages/card/card?id=' + row.id });

@@ -1,6 +1,5 @@
 /**
- * liquorDb.js - 常用经典名优白酒题库与自动联想
- * 覆盖茅台、习酒、郎酒、五粮液、泸州老窖、剑南春、汾酒、西凤、董酒、古井贡等
+ * 酒款联想：优先公开接口与最近成功缓存；内置目录仅作离线兜底。
  */
 const LIQUOR_DATABASE = [
   // 酱香型
@@ -56,15 +55,38 @@ const LIQUOR_DATABASE = [
   { brand: '河北衡水老白干', product: '衡水老白干 古法20', aromaType: '老白干香型', degree: '67°', defaultPrice: 460 }
 ];
 
+const wineCatalog = require('../services/wineCatalog');
+
+function getLiquors() {
+  const cached = wineCatalog.getCachedWineCatalog();
+  return cached ? cached.list : LIQUOR_DATABASE;
+}
+
+async function refreshLiquors(options) {
+  try {
+    const list = await wineCatalog.loadWineCatalog(options);
+    return { list, source: 'remote', error: '' };
+  } catch (err) {
+    const cached = wineCatalog.getCachedWineCatalog();
+    return {
+      list: cached ? cached.list : LIQUOR_DATABASE,
+      source: cached ? 'cache' : 'builtin',
+      error: err.message || '酒款目录暂不可用'
+    };
+  }
+}
+
 function searchLiquors(keyword) {
   if (!keyword || !keyword.trim()) return [];
   const kw = keyword.trim().toLowerCase();
-  return LIQUOR_DATABASE.filter(item => {
+  return getLiquors().filter(item => {
     return item.brand.toLowerCase().includes(kw) || item.product.toLowerCase().includes(kw);
   }).slice(0, 6);
 }
 
 module.exports = {
   LIQUOR_DATABASE,
+  getLiquors,
+  refreshLiquors,
   searchLiquors
 };

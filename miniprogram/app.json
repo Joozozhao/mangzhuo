@@ -45,18 +45,18 @@
     }
   },
   "window": {
-    "navigationBarBackgroundColor": "#F7F3EB",
+    "navigationBarBackgroundColor": "#F7F6EF",
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "盲酌",
-    "backgroundColor": "#F7F3EB"
+    "backgroundColor": "#F7F6EF"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
   "tabBar": {
-    "color": "#82796d",
-    "selectedColor": "#893e32",
-    "backgroundColor": "#e5d8c3",
+    "color": "#687365",
+    "selectedColor": "#274D3B",
+    "backgroundColor": "#F7F6EF",
     "borderStyle": "white",
     "list": [
       {

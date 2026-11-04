@@ -1,12 +1,14 @@
 <brand-nav/>
 <view class="journal organized-page mine-page">
+  <view class="page-kicker"><text>一 册 风 味 记 忆</text><text class="chapter-number">第四章 · 藏</text></view>
   <view class="content-panel profile-panel">
     <button class="profile-entry" bindtap="editProfile">
       <image wx:if="{{avatarImg}}" class="pe-avatar" src="{{user.avatar}}" mode="aspectFill"/>
-      <view wx:else class="pe-avatar pe-emoji">{{user.avatar || '🍶'}}</view>
+      <view wx:else class="pe-avatar pe-emoji">{{user.avatar || '知味'}}</view>
       <view class="pe-info"><view class="pe-name">{{user.nickname}}</view><view class="pe-state">{{isWechat ? '已确认微信身份' : '游客模式 · 资料保存在本机'}}</view></view>
-      <text class="pe-link">{{profileCompleted ? '编辑资料' : '完善资料'}} →</text>
+      <text class="pe-link">{{isWechat ? (profileCompleted ? '编辑资料' : '完善资料') : '注册 / 登录'}} →</text>
     </button>
+    <view class="profile-stats-label">我的品鉴档案</view>
     <view class="profile-stats">
       <view class="stat-item"><view class="stat-number">{{count}}</view><view class="meta">品酒手记</view></view>
       <button class="stat-item stat-link" bindtap="rooms"><view class="stat-number">{{roomCount}}</view><view class="meta">参与酒局 →</view></button>
@@ -14,14 +16,15 @@
     </view>
   </view>
   <view class="content-panel record-panel">
-    <view class="panel-heading"><view class="panel-title">我的品酒档案</view><button class="text-link" bindtap="checkin">再记一杯 →</button></view>
+    <view class="panel-heading"><view class="panel-title">个人手记</view><button class="text-link" bindtap="checkin">再记一杯 →</button></view>
     <button class="record-row" wx:for="{{notes}}" wx:key="id" bindtap="openNote" data-id="{{item.id}}">
-      <view class="record-body"><view class="meta">{{item.date}} · {{item.aromaType}}</view><view class="row-title">{{item.title}}</view><view class="muted record-excerpt">{{item.note || '打开手记，回顾这一杯的风味。'}}</view></view><text class="record-arrow">›</text>
+      <text class="record-number">{{index > 8 ? index + 1 : '0' + (index + 1)}}</text><view class="record-body"><view class="meta">{{item.date}} · {{item.aromaType}}</view><view class="row-title">{{item.title}}</view><view class="muted record-excerpt">{{item.note || '打开手记，回顾这一杯的风味。'}}</view></view><text class="record-arrow">›</text>
     </button>
     <view class="panel-empty" wx:if="{{!notes.length}}"><view class="row-title">手记尚空，杯中有待。</view><view class="muted">从今天的一杯开始，留下自己的风味偏好。</view><button class="text-link" bindtap="checkin">写下第一篇 →</button></view>
     <view class="panel-note">手记保存在本机，打开即可制作分享酒卡。</view>
   </view>
   <view class="content-panel settings-panel">
+    <button wx:if="{{!isWechat}}" class="inline-action register-action" bindtap="register"><text class="register-text">微信一键注册 / 登录</text><text class="action-arrow">›</text></button>
     <button class="inline-action" bindtap="goAbout"><text>关于盲酌 · 隐私与协议</text><text class="action-arrow">›</text></button>
     <button wx:if="{{isWechat}}" class="inline-action" bindtap="logout"><text>退出微信登录</text><text class="action-arrow">›</text></button>
   </view>

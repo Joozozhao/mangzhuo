@@ -1,7 +1,7 @@
 <view class="container profile-page">
   <view class="page-header">
-    <view class="page-title">品鉴资料</view>
-    <view class="page-desc">头像与昵称将展示在酒局名片、排行榜与分享酒卡上</view>
+    <view class="page-title">{{loginState === "wechat" ? "品鉴资料" : "注册 / 登录"}}</view>
+    <view class="page-desc">{{loginState === "wechat" ? "头像与昵称将展示在酒局名片、排行榜与分享酒卡上" : "使用微信一键注册登录，同步品鉴资料与酒局记录"}}</view>
   </view>
 
   <!-- 头像与昵称 -->
@@ -26,12 +26,12 @@
       <view class="identity-info">
         <view class="identity-title">微信身份</view>
         <view class="identity-state {{loginState === 'wechat' ? 'state-ok' : ''}}">
-          {{loginState === 'wechat' ? '✓ 已确认微信身份' : '游客模式 · 未连接微信身份'}}
+          {{loginState === 'wechat' ? '✓ 已完成微信注册登录' : '未注册 · 游客模式'}}
         </view>
       </view>
-      <button wx:if="{{loginState !== 'wechat'}}" class="login-btn" loading="{{loggingIn}}" disabled="{{loggingIn}}" bindtap="onLogin">微信登录</button>
+      <button wx:if="{{loginState !== 'wechat'}}" class="login-btn" loading="{{loggingIn}}" disabled="{{loggingIn}}" bindtap="onLogin">微信注册 / 登录</button>
     </view>
-    <view class="identity-tip" wx:if="{{provider === 'welink'}}">在线品鉴通过后台确认微信身份并同步昵称，头像仅保存在本机。</view>
+    <view class="identity-tip" wx:if="{{provider === 'welink'}}">注册登录后可通过微信身份参与在线品鉴并同步昵称，头像保存在本机。</view>
     <view class="identity-tip" wx:elif="{{!cloudReady}}">登录服务暂不可用，可先保存品鉴资料；浏览酒识与本地打卡不受影响。</view>
   </view>
 

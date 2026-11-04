@@ -1,5 +1,6 @@
 const kb = require('../../utils/liquorKnowledge');
 const knowledgeNav = require('../../utils/knowledgeNavigation');
+const { refreshLiquors } = require('../../utils/liquorDb');
 const LAST_READ_KEY = 'mz_knowledge_last_read_v1';
 
 const sections = kb.sections;
@@ -23,15 +24,18 @@ Page({
     categories,
     articleCategory: '全部',
     selected: null,
+    selectedWine: null, catalogWines: [], catalogCount: 0, catalogLoading: false, catalogSource: 'builtin', catalogError: '',
     lastRead: null
   },
   onLoad() {
+    this._disposed = false;
     try {
       this.setData({ lastRead: wx.getStorageSync(LAST_READ_KEY) || null });
     } catch (err) {
       this.setData({ lastRead: null });
     }
     this.refresh();
+    this.loadWineCatalog();
   },
   onShow() {
     const tabBar = this.getTabBar && this.getTabBar();
@@ -39,12 +43,30 @@ Page({
     const pending = knowledgeNav.consume();
     if (pending) this.openDetail(pending.type, pending.id);
   },
+  onUnload() { this._disposed = true; },
+  async loadWineCatalog(force = false) {
+    this.setData({ catalogLoading: true });
+    const result = await refreshLiquors({ force: force === true });
+    if (this._disposed) return;
+    this._catalogRows = result.list;
+    this.setData({ catalogLoading: false, catalogSource: result.source, catalogError: result.error });
+    this.refresh();
+  },
+  retryWineCatalog() { this.loadWineCatalog(true); },
+  openWine(e) {
+    const wine = (this._catalogRows || []).find(item => item.brand === e.currentTarget.dataset.brand && item.product === e.currentTarget.dataset.product);
+    if (!wine) return;
+    this.setData({ selected: null, selectedWine: wine });
+    wx.pageScrollTo({ scrollTop: 0, duration: 0 });
+  },
   refresh() {
     let results = kb.search(this.data.section, this.data.query) || [];
     if (this.data.section === 'articles' && this.data.articleCategory !== '全部') {
       results = results.filter(item => item.category === this.data.articleCategory);
     }
-    this.setData({ results });
+    const query = this.data.query.toLowerCase();
+    const catalogWines = (this._catalogRows || []).filter(wine => [wine.brand, wine.product, wine.aromaType, wine.degree].join(' ').toLowerCase().includes(query));
+    this.setData({ results, catalogWines, catalogCount: (this._catalogRows || []).length });
   },
   search(e) {
     this.setData({ query: e.detail.value.trim() });
@@ -78,7 +100,7 @@ Page({
       wx.showToast({ title: '这篇内容还在整理中', icon: 'none' });
       return;
     }
-    this.setData({ selected: detail });
+    this.setData({ selected: detail, selectedWine: null });
     const lastRead = {
       type: detail.type,
       id: detail.id,
@@ -106,7 +128,7 @@ Page({
     if (item) this.openDetail(item.type, item.id);
   },
   close() {
-    this.setData({ selected: null });
+    this.setData({ selected: null, selectedWine: null });
   },
   copy(e) {
     wx.setClipboardData({ data: e.currentTarget.dataset.url });

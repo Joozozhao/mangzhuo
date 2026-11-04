@@ -9,7 +9,7 @@
   width: 48rpx;
   height: 48rpx;
   border: 4rpx solid #e6dfd3;
-  border-top-color: #893e32;
+  border-top-color: #274d3b;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin: 0 auto 24rpx;
@@ -46,7 +46,7 @@
   white-space: nowrap;
 }
 .status-open {
-  color: #893e32;
+  color: #274d3b;
   background: #faebea;
 }
 .status-closed {
@@ -62,7 +62,7 @@
   gap: 12rpx;
 }
 .owner-tag {
-  color: #893e32;
+  color: #274d3b;
   background: #faebea;
   padding: 2rpx 10rpx;
   border-radius: 4rpx;
@@ -70,7 +70,7 @@
 }
 .choices-card {
   background: #fbf7ee;
-  border: 1rpx dashed #d8cdbb;
+  border: 1rpx dashed #ccd4c4;
 }
 .choices-title {
   font-size: 26rpx;
@@ -111,7 +111,7 @@
 .sample-tag {
   font-size: 30rpx;
   font-weight: 500;
-  color: #893e32;
+  color: #274d3b;
   background: #faebea;
   padding: 6rpx 18rpx;
   border-radius: 6rpx;
@@ -137,7 +137,7 @@
 .score-display {
   font-size: 30rpx;
   font-weight: 600;
-  color: #893e32;
+  color: #274d3b;
 }
 .picker-value {
   height: 80rpx;
@@ -180,12 +180,12 @@
 }
 .owner-controls {
   margin-top: 36rpx;
-  border-left: 6rpx solid #893e32;
+  border-left: 6rpx solid #274d3b;
 }
 .owner-title {
   font-size: 28rpx;
   font-weight: 500;
-  color: #893e32;
+  color: #274d3b;
   margin-bottom: 8rpx;
 }
 .owner-desc {
@@ -224,7 +224,7 @@
 .result-score {
   font-size: 38rpx;
   font-weight: 600;
-  color: #893e32;
+  color: #274d3b;
 }
 .score-unit {
   font-size: 22rpx;
@@ -269,6 +269,6 @@
   font-weight: 500;
 }
 .my-score {
-  color: #893e32;
+  color: #274d3b;
   margin-left: auto;
 }

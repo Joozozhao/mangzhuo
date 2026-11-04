@@ -1,3 +1,5 @@
-.brand-navigation{position:relative;z-index:5;background:#f7f3eb;border-bottom:2rpx solid #d8cdbb;padding-bottom:6rpx;}
-.navigation-row{position:relative;display:flex;align-items:center;}
-.navigation-lockup-image{width:128rpx;height:60rpx;margin-left:24rpx;}
+.brand-navigation{position:relative;z-index:5;background:#f7f6ef;border-bottom:1rpx solid #d6ddcf;padding-bottom:10rpx;}
+.navigation-row{position:relative;display:flex;align-items:center;gap:24rpx;padding-left:46rpx;padding-right:200rpx;box-sizing:border-box;}
+.navigation-lockup-image{width:136rpx;height:62rpx;flex-shrink:0;filter:brightness(0) saturate(100%) invert(26%) sepia(14%) saturate(1159%) hue-rotate(93deg) brightness(92%) contrast(90%);}
+.navigation-motto{display:flex;flex-direction:column;justify-content:center;border-left:1rpx solid #d6ddcf;padding-left:22rpx;color:#4c5c4b;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;font-size:11px;line-height:1.7;white-space:nowrap;}
+@media(max-width:350px){.navigation-row{padding-left:36rpx;gap:16rpx;}.navigation-motto{padding-left:16rpx;}}

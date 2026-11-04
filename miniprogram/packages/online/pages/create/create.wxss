@@ -18,7 +18,7 @@
 }
 .sample-count-badge {
   font-size: 24rpx;
-  color: #893e32;
+  color: #274d3b;
   background: #faebea;
   padding: 4rpx 16rpx;
   border-radius: 20rpx;
@@ -57,7 +57,7 @@
 .sample-badge {
   font-size: 24rpx;
   font-weight: 500;
-  color: #893e32;
+  color: #274d3b;
   background: #faebea;
   padding: 10rpx 16rpx;
   border-radius: 6rpx;

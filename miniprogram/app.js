@@ -1,6 +1,7 @@
 // app.js
 const storageService = require('./services/storage');
 const identity = require('./services/identity');
+const liquorDb = require('./utils/liquorDb');
 
 App({
   onLaunch() {
@@ -8,6 +9,8 @@ App({
     storageService.initInitialData();
     // 初始化微信云环境并恢复当前用户资料（云未配置时自动保持游客模式）
     identity.bootstrap();
+    // Public catalogue needs no login; a failed load keeps offline/manual entry available.
+    liquorDb.refreshLiquors();
     console.log('【盲酌】白酒盲品小程序已启动，数据层已就绪');
   },
   globalData: {

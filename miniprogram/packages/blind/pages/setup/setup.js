@@ -1,13 +1,14 @@
 const storageService = require("../../../../services/storage");
-const { searchLiquors } = require("../../../../utils/liquorDb");
+const { searchLiquors, refreshLiquors } = require("../../../../utils/liquorDb");
 
 Page({
   data: {
     roomId: "", currentIndex: 0, samples: [], currentSample: null,
     aromaOptions: storageService.AROMA_TYPES, degreeOptions: storageService.DEGREE_OPTIONS,
-    suggestions: [], photoSaving: false
+    catalogLoading: false, catalogSource: 'builtin', catalogError: '', suggestions: [], photoSaving: false
   },
   onLoad(options) {
+    this._disposed = false;
     const roomId = options.roomId || "room_demo_01";
     const count = parseInt(options.count, 10) || 4;
     let samples = storageService.getSamples(roomId);
@@ -21,26 +22,37 @@ Page({
       }
     }
     this.setData({ roomId, samples, currentIndex: 0, currentSample: samples[0] });
+    this.loadWineCatalog();
   },
   switchTab(e) {
     const idx = e.currentTarget.dataset.index;
     this.setData({ currentIndex: idx, currentSample: this.data.samples[idx], suggestions: [] });
   },
+  async loadWineCatalog(force = false) {
+    this.setData({ catalogLoading: true });
+    const result = await refreshLiquors({ force: force === true });
+    if (this._disposed) return;
+    this.setData({ catalogLoading: false, catalogSource: result.source, catalogError: result.error, suggestions: searchLiquors(this._suggestionQuery || '') });
+  },
+  retryWineCatalog() { this.loadWineCatalog(true); },
+  onUnload() { this._disposed = true; },
   onInputBrand(e) {
     const val = e.detail.value;
+    this._suggestionQuery = val;
     const { samples, currentIndex } = this.data;
     samples[currentIndex].brand = val;
     const suggestions = searchLiquors(val);
     this.setData({ samples, currentSample: samples[currentIndex], suggestions });
   },
   applySuggestion(e) {
+    this._suggestionQuery = '';
     const item = e.currentTarget.dataset.item;
     const { samples, currentIndex } = this.data;
     samples[currentIndex].brand = item.brand;
     samples[currentIndex].product = item.product;
-    samples[currentIndex].aromaType = item.aromaType;
-    samples[currentIndex].alcoholDegree = item.degree;
-    samples[currentIndex].marketPrice = item.defaultPrice;
+    if (item.aromaType) samples[currentIndex].aromaType = item.aromaType;
+    if (item.degree) samples[currentIndex].alcoholDegree = item.degree;
+    if (item.defaultPrice !== null) samples[currentIndex].marketPrice = item.defaultPrice;
     this.setData({ samples, currentSample: samples[currentIndex], suggestions: [] });
     wx.showToast({ title: "已匹配名酒配置", icon: "none" });
   },

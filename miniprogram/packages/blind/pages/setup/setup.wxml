@@ -31,6 +31,7 @@
     <view class="form-item">
       <text class="form-label">品牌 (输入关键词支持名酒库自动联想)</text>
       <input class="input" placeholder="输入品牌 (如：茅台 / 习酒 / 五粮液 / 汾酒)" value="{{currentSample.brand}}" bindinput="onInputBrand" />
+      <view class="catalog-feedback"><text wx:if="{{catalogLoading}}">正在更新酒款目录…</text><block wx:elif="{{catalogError}}"><text>{{catalogSource === 'cache' ? '暂用最近目录' : '暂用离线目录'}}，可手动填写。</text><button class="catalog-retry" bindtap="retryWineCatalog">重试</button></block><text wx:else>从酒款目录选填，参考价可自行修改。</text></view>
       <!-- 智能名酒联想匹配 -->
       <view class="suggestion-box" wx:if="{{suggestions.length > 0}}">
         <view class="sug-header">名酒库匹配 (点击一键带出全套参数)：</view>
@@ -65,7 +66,7 @@
         <input class="input" type="number" placeholder="如 2021" value="{{currentSample.year}}" bindinput="onInput" data-f="year" />
       </view>
       <view class="col">
-        <text class="form-label">官方参考市场价 (元)</text>
+        <text class="form-label">目录参考价 (元，可修改)</text>
         <input class="input" type="digit" placeholder="如 1499" value="{{currentSample.marketPrice}}" bindinput="onInput" data-f="marketPrice" />
       </view>
     </view>

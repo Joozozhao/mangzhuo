@@ -1,6 +1,6 @@
 /* about 页专属样式 */
 .drink-warning{margin:24rpx 32rpx;padding:28rpx 32rpx;background:#fdf2ee;border:1rpx solid #e8c8bc;border-radius:16rpx;}
-.dw-title{font-size:30rpx;font-weight:700;color:#893e32;letter-spacing:2rpx;margin-bottom:10rpx;}
+.dw-title{font-size:30rpx;font-weight:700;color:#274d3b;letter-spacing:2rpx;margin-bottom:10rpx;}
 .about-block{margin-bottom:20rpx;}
 .about-p{margin-bottom:12rpx;line-height:1.75;}
 .about-block .text-link{display:inline-block;margin-top:8rpx;}

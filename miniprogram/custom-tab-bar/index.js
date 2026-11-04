@@ -1,9 +1,9 @@
 Component({
  data: { selected: 0, tabs: [
-  {path:'/pages/index/index',text:'首页',image:'/assets/brand/libai-home.png'},
-  {path:'/pages/gather/gather',text:'酒局',image:'/assets/brand/libai-gather.png'},
-  {path:'/pages/knowledge/knowledge',text:'酒识',image:'/assets/brand/libai-knowledge.png'},
-  {path:'/pages/mine/mine',text:'我的',image:'/assets/brand/libai-mine.png'}
+  {path:'/pages/index/index',text:'首页',image:'/assets/icons/home.svg'},
+  {path:'/pages/gather/gather',text:'酒局',image:'/assets/icons/gather.svg'},
+  {path:'/pages/knowledge/knowledge',text:'酒识',image:'/assets/icons/knowledge.svg'},
+  {path:'/pages/mine/mine',text:'我的',image:'/assets/icons/mine.svg'}
  ] },
  lifetimes: { attached() { this.syncSelected(); } },
  pageLifetimes: { show() { this.syncSelected(); } },

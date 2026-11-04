@@ -14,6 +14,7 @@
     <view class="form-item">
       <text class="form-label">猜测品牌 (25分)</text>
       <input class="input" placeholder="输入品牌关键词自动联想（如：茅台 / 习酒 / 郎酒 / 剑南春）" value="{{guess.brand}}" bindinput="onInputBrand" />
+      <view class="catalog-feedback"><text wx:if="{{catalogLoading}}">正在更新酒款目录…</text><block wx:elif="{{catalogError}}"><text>{{catalogSource === 'cache' ? '暂用最近目录' : '暂用离线目录'}}，可手动填写。</text><button class="catalog-retry" bindtap="retryWineCatalog">重试</button></block><text wx:else>从酒款目录选填，参考价可自行修改。</text></view>
       <!-- 品牌联想浮层 -->
       <view class="suggestion-box" wx:if="{{suggestions.length > 0}}">
         <view class="sug-header">智能名优白酒匹配 (点击一键填入)：</view>

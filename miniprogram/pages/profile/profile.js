@@ -67,7 +67,7 @@ Page({
           patch.nickname = u.nickname || '';
         }
         this.setData(patch);
-        wx.showToast({ title: '微信身份已确认', icon: 'success' });
+        wx.showToast({ title: '注册登录成功', icon: 'success' });
       } else {
         wx.showModal({
           title: '微信登录未完成',

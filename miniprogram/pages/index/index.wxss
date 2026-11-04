@@ -1,6 +1,10 @@
-.home-page .home-start{background:#f0e8db;border-color:#e5d8c4;}
-.home-page .home-art{width:144rpx;height:144rpx;}
-.home-page .share-latest{margin-top:12rpx;padding-bottom:0;border-top:1rpx solid #ded1bd;}
-.home-page .inline-title{font-size:25rpx;color:#4f4032;}
-.home-page .inline-subtitle{font-size:21rpx;color:#7a6a57;margin-top:4rpx;}
-.home-page .record-panel{margin-top:4rpx;}
+.home-page .home-start{margin-bottom:48rpx;}
+.home-hero{position:relative;min-height:390rpx;margin-top:10rpx;display:flex;align-items:flex-start;gap:32rpx;border-bottom:1rpx solid #d6ddcf;overflow:hidden;}
+.home-title{position:relative;z-index:1;display:flex;flex-direction:row-reverse;gap:20rpx;padding-top:4rpx;font-family:"Songti SC","STSong","SimSun",serif;font-size:82rpx;line-height:1.1;letter-spacing:0;color:#274d3b;flex-shrink:0;}
+.title-column{display:flex;flex-direction:column;gap:8rpx;}
+.vertical-note{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;line-height:1.7;color:#687365;font-size:12px;padding-top:24rpx;}
+.home-page .home-art{position:absolute;width:420rpx;height:420rpx;right:-124rpx;bottom:-20rpx;}
+.home-description{font-size:14px;color:#4c5c4b;line-height:1.8;margin:28rpx 0 30rpx;}
+.home-page .share-latest{padding:16rpx 0 0;}
+.home-page .panel-heading{border-bottom:0;padding-bottom:4rpx;}
+@media(max-width:350px){.home-hero{gap:24rpx;min-height:410rpx;}.home-title{font-size:88rpx;gap:16rpx;}.vertical-note{font-size:12px;}.home-page .home-art{right:-145rpx;width:410rpx;height:410rpx;}}

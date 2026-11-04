@@ -1,15 +1,22 @@
-.organized-page .profile-panel{padding-bottom:0;}
-.organized-page .profile-entry{display:flex;align-items:center;width:100%;padding:0 0 24rpx;margin:0;background:transparent;text-align:left;white-space:normal;line-height:1.5;}
-.pe-avatar{width:88rpx;height:88rpx;border-radius:50%;background:#e6d9c3;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.pe-emoji{font-size:48rpx;}
-.pe-info{flex:1;margin-left:20rpx;min-width:0;}
-.pe-name{font-size:34rpx;font-weight:600;color:#28251f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.pe-state{font-size:22rpx;color:#706355;margin-top:6rpx;}
-.pe-link{font-size:23rpx;color:#893e32;flex-shrink:0;margin-left:12rpx;}
-.profile-stats{display:flex;background:#f0e8db;border-radius:12rpx;padding:20rpx 0;margin-top:24rpx;}
-.stat-item{flex:1;text-align:center;min-width:0;}
-.stat-item+.stat-item{border-left:1rpx solid #d8cdbb;}
-.stat-number{font-size:42rpx;line-height:1.25;color:#893e32;font-variant-numeric:tabular-nums;}
-.organized-page button.stat-link{background:transparent;white-space:normal;margin:0;padding:0;line-height:1.5;border-radius:0;}
-.stat-item .meta{font-size:22rpx;margin-top:6rpx;}
-.organized-page .settings-panel{padding-top:0;padding-bottom:0;border-top:1rpx solid #ddd2c1;}
+.mine-page .profile-panel{margin-top:26rpx;}
+.organized-page button.profile-entry{display:flex;align-items:center;gap:24rpx;width:100%;padding:0 0 36rpx;margin:0;background:transparent;text-align:left;border-radius:0;}
+.pe-avatar{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:112rpx;height:112rpx;background:#e6ebdf;border:1rpx solid #c8d3be;border-radius:0;overflow:hidden;}
+.pe-emoji{font-family:"Songti SC","STSong",serif;font-size:40rpx;color:#274d3b;}
+.pe-info{flex:1;min-width:0;}
+.pe-name{font-family:"Songti SC","STSong",serif;font-size:44rpx;font-weight:400;color:#28382e;line-height:1.4;overflow-wrap:anywhere;}
+.pe-state{font-size:12px;color:#687365;margin-top:10rpx;line-height:1.7;}
+.pe-link{font-size:12px;color:#274d3b;flex-shrink:0;}
+.profile-stats-label{font-size:12px;color:#687365;letter-spacing:4rpx;margin:8rpx 0 18rpx;}
+.profile-stats{display:flex;padding:28rpx 0;border-top:1rpx solid #c8d3be;border-bottom:1rpx solid #d6ddcf;}
+.stat-item{flex:1;min-width:0;text-align:left;padding:0 24rpx;}
+.stat-item:first-child{padding-left:0;}
+.stat-item+.stat-item{border-left:1rpx solid #d6ddcf;}
+.stat-number{font-family:Georgia,"Songti SC",serif;font-size:60rpx;line-height:1.2;color:#274d3b;font-weight:400;font-variant-numeric:tabular-nums;}
+.organized-page button.stat-link{display:block;margin:0;background:transparent;border-radius:0;text-align:left;}
+.stat-item .meta{font-size:12px;margin-top:12rpx;white-space:nowrap;}
+.mine-page .settings-panel{border-top:1rpx solid #d6ddcf;}
+.mine-page .settings-panel .inline-action+.inline-action{border-top:1rpx solid #dfe3d9;}
+@media(max-width:350px){.organized-page button.profile-entry{gap:16rpx;}.pe-avatar{width:96rpx;height:96rpx;}.pe-name{font-size:42rpx;}.pe-link{max-width:76rpx;}.stat-item{padding:0 16rpx;}}
+
+.register-text{color:#274d3b;font-weight:600;}
+.register-action{background:#eef3eb;padding-left:20rpx;padding-right:20rpx;margin-bottom:10rpx;border-radius:8rpx;}

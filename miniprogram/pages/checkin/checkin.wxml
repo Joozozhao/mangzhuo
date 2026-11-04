@@ -4,7 +4,9 @@
   <view class="muted">不必猜对，真实的感受就是好记录。</view>
   <form bindsubmit="submit">
     <text class="field-label">酒款 / 盲样名称 *</text>
-    <input class="input" name="title" maxlength="40" placeholder="例如：青花汾酒，或 01 号盲样" />
+    <input class="input" name="title" value="{{title}}" bindinput="onTitleInput" maxlength="40" placeholder="例如：青花汾酒，或 01 号盲样" />
+    <view class="catalog-feedback"><text wx:if="{{catalogLoading}}">正在更新酒款目录…</text><block wx:elif="{{catalogError}}"><text>{{catalogSource === 'cache' ? '暂用最近目录' : '暂用离线目录'}}，也可手动填写。</text><button class="catalog-retry" bindtap="retryWineCatalog">重试</button></block><text wx:else>输入品牌或酒名，可从酒款目录选填。</text></view>
+    <view class="wine-suggestions" wx:if="{{suggestions.length}}"><button wx:for="{{suggestions}}" wx:key="index" class="wine-suggestion" data-item="{{item}}" bindtap="applyWineSuggestion"><view class="wine-suggestion-title">{{item.product}}</view><view class="wine-suggestion-meta">{{item.brand}} · {{item.aromaType}} · {{item.degree}}</view></button></view>
     <text class="field-label">香型</text>
     <picker range="{{aromas}}" value="{{index}}" bindchange="choose">
       <view class="input picker-value">{{aromas[index]}}　⌄</view>

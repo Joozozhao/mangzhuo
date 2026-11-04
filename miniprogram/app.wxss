@@ -1,7 +1,7 @@
 @import "styles/organized.wxss";
 /** app.wxss - 盲酌设计系统 **/
 page {
-  background: #f7f3eb;
+  background: #f7f6ef;
   color: #181713;
   font-family: "Songti SC", "STSong", "SimSun", "Noto Serif CJK SC", serif;
   box-sizing: border-box;
@@ -13,7 +13,7 @@ view, text, input, button, scroll-view {
 }
 
 :root {
-  --bg: #f7f3eb;
+  --bg: #f7f6ef;
   --card: #fffdf8;
   --card-tint: #fbf7ee;
   --text-primary: #181713;
@@ -206,19 +206,19 @@ view, text, input, button, scroll-view {
 /* 品鉴手记：四个一级页面共享的排版 */
 button,input,textarea,picker { font-family: "Songti SC", "STSong", "SimSun", "Noto Serif CJK SC", serif; }
 button::after { border: 0; }
-.eyebrow { color:#893e32; font-size:23rpx; letter-spacing:5rpx; margin:18rpx 0 24rpx; }
+.eyebrow { color:#274d3b; font-size:23rpx; letter-spacing:5rpx; margin:18rpx 0 24rpx; }
 .journal { padding:36rpx 38rpx 60rpx; }
 .journal-title { font-size:64rpx; line-height:1.4; font-weight:500; letter-spacing:5rpx; }
 .muted { color:#797266; font-size:26rpx; line-height:1.8; }
 .rule { height:1rpx; background:#dcd3c4; margin:36rpx 0; }
 .section-line { display:flex; justify-content:space-between; align-items:center; margin:38rpx 0 20rpx; }
 .section-line text { font-size:34rpx; }
-.text-link { color:#893e32; font-size:25rpx; padding:12rpx 0; background:transparent; margin:0; }
+.text-link { color:#274d3b; font-size:25rpx; padding:12rpx 0; background:transparent; margin:0; }
 .paper-row { border-bottom:1rpx solid #ddd5c8; padding:26rpx 0; }
 .row-title { font-size:34rpx; line-height:1.5; margin:8rpx 0; }
 .meta { font-size:23rpx; color:#897b68; line-height:1.8; }
 .empty-note { padding:36rpx 0; color:#797266; font-size:28rpx; line-height:1.8; }
-.btn-primary { background:#893e32; box-shadow:none; border-radius:8rpx; }
+.btn-primary { background:#274d3b; box-shadow:none; border-radius:8rpx; }
 .btn-secondary,.btn-dark,.card { border-radius:8rpx; box-shadow:none; }
 .field-label { display:block; font-size:28rpx; margin:30rpx 0 14rpx; }
 textarea.input { height:190rpx; padding:20rpx; line-height:1.7; }
@@ -229,12 +229,12 @@ textarea.input { height:190rpx; padding:20rpx; line-height:1.7; }
 .journal{padding:28rpx 36rpx 48rpx;}
 .journal button{box-sizing:border-box;}
 .journal .btn-primary,.journal .btn-secondary{width:100%;margin-left:0;margin-right:0;}
-.chapter-mast{display:flex;align-items:center;justify-content:space-between;padding:4rpx 0 24rpx;border-bottom:1rpx solid #d8cdbb;}
+.chapter-mast{display:flex;align-items:center;justify-content:space-between;padding:4rpx 0 24rpx;border-bottom:1rpx solid #ccd4c4;}
 .chapter-brand{font-size:35rpx;letter-spacing:8rpx;}
 .chapter-no{font-size:20rpx;letter-spacing:3rpx;color:#8c7964;}
 .chapter-hero{display:flex;align-items:center;min-height:310rpx;padding:32rpx 0 26rpx;gap:12rpx;}
 .chapter-copy{flex:1;min-width:0;}
-.chapter-label{color:#893e32;font-size:22rpx;letter-spacing:3rpx;margin-bottom:16rpx;}
+.chapter-label{color:#274d3b;font-size:22rpx;letter-spacing:3rpx;margin-bottom:16rpx;}
 .chapter-title{font-size:48rpx;line-height:1.42;letter-spacing:2rpx;font-weight:500;}
 .chapter-desc{font-size:25rpx;line-height:1.8;color:#766b5d;margin-top:16rpx;}
 .chapter-art{width:280rpx;height:290rpx;flex-shrink:0;}
@@ -301,11 +301,23 @@ textarea.input { height:190rpx; padding:20rpx; line-height:1.7; }
 /* Consistent action buttons across journal and tasting flows. */
 button.btn-primary,button.btn-secondary,button.btn-dark{
   display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;height:88rpx;
-  padding:0 20rpx;border-radius:12rpx;box-shadow:none;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;
+  padding:0 20rpx;border-radius:0;box-shadow:none;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;
   font-size:28rpx;font-weight:500;letter-spacing:0;line-height:1.4;white-space:normal;
 }
-button.btn-primary{background:#893e32;color:#fff;border:0;}
-button.btn-secondary{background:#f7f3eb;color:#514639;border:1rpx solid #d8cdbb;}
+button.btn-primary{background:#274d3b;color:#fff;border:0;}
+button.btn-secondary{background:#f7f6ef;color:#374c3d;border:1rpx solid #ccd4c4;}
 button.btn-dark{background:#28251f;color:#fff;border:0;}
 button.btn-primary[disabled],.organized-page button.btn-primary[disabled]{background:#c4aaa2;color:#fff;opacity:1;}
 button.btn-secondary[disabled],button.btn-dark[disabled],.organized-page button.btn-secondary[disabled]{opacity:.5;}
+
+/* 竹影手札：延续到记录与品鉴流程的通用控件。 */
+.journal .input{border-color:#b4c0ad;border-radius:0;background:#fbfaf5;color:#28382e;font-size:16px;min-height:44px;}
+.journal .field-label{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:#374c3d;font-size:14px;}
+.journal button.flavor-chip{min-height:44px;font-size:14px;border-radius:0;line-height:1.5;padding:12rpx 20rpx;}
+
+/* Shared wine-catalogue search feedback. */
+.catalog-feedback{display:flex;align-items:center;flex-wrap:wrap;gap:8rpx;color:#687365;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;font-size:12px;line-height:1.7;margin:12rpx 0;}
+.catalog-retry{min-height:44px;min-width:44px;padding:0 12rpx;margin:0;background:transparent;color:#274d3b;font-size:12px;line-height:44px;border-radius:0;}
+.wine-suggestions{border:1rpx solid #c8d3be;background:#f0f2e9;margin:12rpx 0 24rpx;}
+button.wine-suggestion{display:block;width:100%;min-height:44px;padding:20rpx 24rpx;margin:0;border-radius:0;border-bottom:1rpx solid #d6ddcf;background:transparent;text-align:left;white-space:normal;line-height:1.6;}
+.wine-suggestion:last-child{border-bottom:0;}.wine-suggestion-title{font-size:15px;color:#274d3b;overflow-wrap:anywhere;}.wine-suggestion-meta{font-size:12px;color:#687365;margin-top:6rpx;overflow-wrap:anywhere;}

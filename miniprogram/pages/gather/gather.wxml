@@ -1,33 +1,35 @@
 <brand-nav/>
 <view class="journal organized-page gather-page">
-  <view class="page-intro">
-    <view class="heading-copy"><view class="compact-title">和知己，品一局</view><view class="heading-desc">藏起酒标，让味道先开口。</view></view>
-    <image class="compact-art" src="/assets/brand/libai-gather.png" mode="aspectFit"/>
-  </view>
-  <view class="content-panel surface-panel gather-start">
+  <view class="page-kicker"><text>与 知 己 同 席</text><text class="chapter-number">第二章 · 聚</text></view>
+  <view class="page-intro"><view class="compact-title">和知己，品一局</view><view class="heading-desc">把酒名暂时藏起，让感受先开口。</view></view>
+  <view class="content-panel gather-start">
     <view class="mode-tabs">
       <button class="mode-tab {{currentTab === 'local' ? 'active' : ''}}" bindtap="switchTabMode" data-tab="local" aria-label="桌上品鉴" aria-pressed="{{currentTab === 'local'}}">桌上品鉴</button>
       <button class="mode-tab {{currentTab === 'online' ? 'active' : ''}}" bindtap="switchTabMode" data-tab="online" aria-label="在线品鉴" aria-pressed="{{currentTab === 'online'}}">在线品鉴</button>
     </view>
     <block wx:if="{{currentTab === 'local'}}">
-      <view class="mode-explanation">同一设备记录，一起品鉴、一起揭晓。</view>
-      <view class="gather-actions"><button class="btn-primary" bindtap="goToCreate">发起一场酒局</button><button class="btn-secondary" bindtap="goToJoin">输入房间号加入</button></view>
-      <button class="inline-action" bindtap="openDemoRoom"><text>第一次盲品？先看看示例酒局</text><text class="action-arrow">→</text></button>
+      <view class="ink-block">
+        <view class="ink-kicker"><text>桌上品鉴</text><text>本机记录</text></view>
+        <view class="ink-title"><view>一桌知己，</view><view>各记其味。</view></view>
+        <view class="ink-description"><view>一人组织，同席品鉴。</view><view>先为酒样编上号，再留下自己的感受。</view></view>
+        <button class="btn-primary ink-action" bindtap="goToCreate"><text>发起桌上酒局</text><text class="button-arrow" aria-hidden="true">↗</text></button>
+      </view>
+      <view class="tasting-steps"><text>一 酒样编号</text><text>二 各记感受</text><text>三 一起揭晓</text></view>
+      <button class="inline-action join-entry" bindtap="goToJoin"><text>已有一席，凭号入座</text><text class="action-arrow" aria-hidden="true">↗</text></button>
+      <button class="inline-action demo-entry" bindtap="openDemoRoom"><view><view class="demo-title">第一次盲品？</view><view class="meta">先看看示例酒局</view></view><text class="action-arrow" aria-hidden="true">↗</text></button>
     </block>
     <block wx:else>
-      <view class="mode-explanation">各自用微信参与，活动与评分保存在后台。</view>
-      <view wx:if="{{!isLoggedIn}}" class="login-guide">
-        <view class="guide-title">先登录，再与朋友在线品鉴</view>
-        <view class="muted">登录后可发起、加入并查看在线活动。</view>
-        <button class="btn-primary" bindtap="goToProfileLogin">去登录 · 完善资料</button>
+      <view class="ink-block">
+        <view class="ink-kicker"><text>在线品鉴</text><text>{{isLoggedIn ? '微信参与' : '需微信登录'}}</text></view>
+        <view class="ink-title"><view>相隔千里，</view><view>也可同品。</view></view>
+        <view class="ink-description"><view>各自用微信参与。</view><view>活动与评分保存在品鉴后台。</view></view>
+        <button wx:if="{{!isLoggedIn}}" class="btn-primary ink-action" bindtap="goToProfileLogin"><text>去登录 · 完善资料</text><text class="button-arrow" aria-hidden="true">↗</text></button>
+        <button wx:else class="btn-primary ink-action" bindtap="goToOnlineCreate"><text>发起在线品鉴</text><text class="button-arrow" aria-hidden="true">↗</text></button>
       </view>
-      <block wx:else>
-        <button class="btn-primary" bindtap="goToOnlineCreate">发起在线品鉴</button>
-        <view class="join-by-id">
-          <view class="join-id-label">已有活动编号？直接加入</view>
-          <view class="join-id-row"><input class="input join-id-input" type="number" placeholder="输入活动编号" value="{{inputOnlineId}}" bindinput="onInputOnlineId"/><button class="btn-secondary join-id-btn" bindtap="onJoinOnlineById">进入</button></view>
-        </view>
-      </block>
+      <view wx:if="{{isLoggedIn}}" class="join-by-id">
+        <view class="join-id-label">已有活动编号？凭号入席</view>
+        <view class="join-id-row"><input class="input join-id-input" type="number" placeholder="输入活动编号" value="{{inputOnlineId}}" bindinput="onInputOnlineId" aria-label="活动编号"/><button class="btn-secondary join-id-btn" bindtap="onJoinOnlineById">进入</button></view>
+      </view>
     </block>
   </view>
   <view class="content-panel room-panel" wx:if="{{currentTab === 'local'}}">

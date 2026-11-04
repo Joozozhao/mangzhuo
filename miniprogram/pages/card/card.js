@@ -41,7 +41,7 @@ Page({
         canvas.width = 750;
         canvas.height = 1200;
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#f7f3eb';
+        ctx.fillStyle = '#f7f6ef';
         ctx.fillRect(0, 0, 750, 1200);
         const n = this.data.note;
         const text = (value, x, y, size, color = '#28251f') => {
@@ -71,18 +71,18 @@ Page({
           return y;
         };
         text('盲酌', 155, 95, 46);
-        text('白酒品鉴手记', 450, 90, 24, '#893e32');
+        text('白酒品鉴手记', 450, 90, 24, '#274d3b');
         ctx.fillStyle = '#cfc3b0';
         ctx.fillRect(60, 125, 630, 1);
         text([n.date, n.aromaType].filter(Boolean).join(' · '), 60, 180, 24, '#897b68');
         let y = wrap(n.title, 255, 42, 2) + 22;
         [['闻香', n.aroma], ['入口', n.taste], ['回味', n.finish]].forEach(pair => {
-          text(pair[0], 60, y, 24, '#893e32');
+          text(pair[0], 60, y, 24, '#274d3b');
           y += 37;
           y = wrap(pair[1] || '未记录', y, 26, 2) + 15;
         });
         if (n.note) {
-          text('品鉴随记', 60, y + 8, 24, '#893e32');
+          text('品鉴随记', 60, y + 8, 24, '#274d3b');
           wrap(n.note, y + 45, 24, 3);
         }
         text('只凭味道 · 记录这一杯', 60, 1150, 23, '#897b68');

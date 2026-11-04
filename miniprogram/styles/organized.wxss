@@ -1,41 +1,39 @@
-/* Shared grouping and rhythm for the four main pages. */
-.journal.organized-page{padding:20rpx 32rpx calc(144rpx + env(safe-area-inset-bottom));font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#28251f;}
-.organized-page .content-panel{padding:0;margin-bottom:36rpx;}
-.organized-page .surface-panel{background:#fffdf8;border:1rpx solid #e3dacd;border-radius:16rpx;padding:28rpx;overflow:hidden;}
-.organized-page .compact-heading{display:flex;align-items:center;justify-content:space-between;gap:20rpx;padding:0 0 20rpx;}
-.organized-page .heading-copy{flex:1;min-width:0;}
-.organized-page .panel-kicker{font-size:22rpx;letter-spacing:2rpx;color:#893e32;margin-bottom:10rpx;}
-.organized-page .compact-title{font-family:"Songti SC","STSong","SimSun",serif;font-size:42rpx;line-height:1.35;font-weight:600;letter-spacing:1rpx;}
-.organized-page .heading-desc{font-size:24rpx;line-height:1.65;color:#706456;margin-top:10rpx;}
-.organized-page .compact-art{display:block;width:112rpx;height:112rpx;flex-shrink:0;}
-.organized-page .page-intro{display:flex;align-items:center;gap:20rpx;padding:4rpx 4rpx 28rpx;}
-.organized-page .page-intro .heading-copy{flex:1;min-width:0;}
-.organized-page .page-intro .compact-title{font-size:38rpx;}
-.organized-page .page-intro .heading-desc{margin-top:6rpx;}
-.organized-page .panel-heading{display:flex;align-items:center;justify-content:space-between;gap:16rpx;min-height:88rpx;padding:0 0 16rpx;border-bottom:1rpx solid #ded4c5;}
-.organized-page .panel-title{font-size:30rpx;font-weight:600;line-height:1.45;}
-.organized-page .panel-heading .text-link{flex-shrink:0;white-space:nowrap;}
-.organized-page button{font-family:inherit;font-weight:400;}
+/* 竹影手札：四个一级页面的纸页、题签与操作节奏。 */
+.journal.organized-page{padding:32rpx 46rpx calc(156rpx + env(safe-area-inset-bottom));max-width:900rpx;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#28382e;font-size:14px;line-height:1.7;}
+.organized-page view,.organized-page text,.organized-page button{box-sizing:border-box;}
+.organized-page button{font-family:inherit;font-weight:400;min-height:44px;min-width:44px;white-space:normal;line-height:1.6;overflow-wrap:anywhere;}
 .organized-page button::after{border:0;}
-.organized-page .btn-primary,.organized-page .btn-secondary{min-height:44px;height:88rpx;line-height:1.4;display:flex;align-items:center;justify-content:center;font-size:28rpx;font-weight:500;border-radius:12rpx;letter-spacing:0;}
-.organized-page .btn-primary{background:#893e32;color:#fff;box-shadow:none;}
-.organized-page .btn-secondary{background:#f7f3eb;border:1rpx solid #d8cdbb;color:#514639;box-shadow:none;}
-.organized-page .text-link{display:flex;align-items:center;min-height:44px;margin:0;padding:0;font-size:24rpx;line-height:1.4;letter-spacing:0;color:#893e32;background:transparent;}
-.organized-page button.inline-action{width:100%;min-height:44px;display:flex;justify-content:space-between;align-items:center;gap:16rpx;background:transparent;padding:16rpx 0;margin:0;line-height:1.5;white-space:normal;font-size:25rpx;text-align:left;color:#5d4e3e;}
-.organized-page .inline-action+.inline-action{border-top:1rpx solid #e7dfd3;}
-.organized-page .action-arrow{color:#893e32;flex-shrink:0;}
-.organized-page button.record-row{display:flex;align-items:center;gap:20rpx;width:100%;margin:0;padding:24rpx 0;background:transparent;text-align:left;white-space:normal;line-height:1.5;border-radius:0;border-bottom:1rpx solid #e7dfd3;}
-.organized-page button.record-row:last-of-type{border-bottom:0;padding-bottom:4rpx;}
-.organized-page .record-panel{border-top:1rpx solid #ddd2c1;padding-top:8rpx;}
+.organized-page .page-kicker{display:flex;align-items:center;justify-content:space-between;gap:20rpx;margin:4rpx 0 28rpx;color:#687365;font-size:12px;letter-spacing:5rpx;}
+.organized-page .chapter-number{font-size:12px;letter-spacing:2rpx;flex-shrink:0;}
+.organized-page .page-intro{padding:10rpx 0 34rpx;}
+.organized-page .compact-title,.organized-page .panel-title,.organized-page .row-title{font-family:"Songti SC","STSong","SimSun",serif;font-weight:400;}
+.organized-page .compact-title{font-size:58rpx;line-height:1.45;letter-spacing:2rpx;overflow-wrap:anywhere;}
+.organized-page .heading-desc{font-size:14px;color:#657160;line-height:1.8;margin-top:14rpx;}
+.organized-page .content-panel{padding:0;margin-bottom:38rpx;}
+.organized-page .panel-heading{display:flex;justify-content:space-between;align-items:center;gap:18rpx;min-height:44px;margin:0;padding-bottom:14rpx;border-bottom:1rpx solid #d6ddcf;}
+.organized-page .panel-title{font-size:38rpx;line-height:1.5;}
+.organized-page .panel-heading .text-link{flex-shrink:0;}
+.journal.organized-page .btn-primary,.journal.organized-page .btn-secondary{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:48px;height:auto;margin:0;padding:22rpx 32rpx;line-height:1.5;border-radius:0;box-shadow:none;font-size:16px;font-weight:400;letter-spacing:0;}
+.journal.organized-page .btn-primary{background:#274d3b;color:#f7f6ef;border:1rpx solid #274d3b;}
+.journal.organized-page .btn-secondary{background:transparent;color:#274d3b;border:1rpx solid #b4c0ad;justify-content:center;}
+.journal.organized-page .btn-primary[disabled]{background:#b7c2b3;border-color:#b7c2b3;color:#fff;}
+.organized-page .button-arrow{font-size:24px;font-weight:300;line-height:1;flex-shrink:0;margin-left:16rpx;}
+.organized-page .text-link{display:flex;align-items:center;min-height:44px;width:auto;padding:0;margin:0;background:transparent;color:#274d3b;font-size:12px;line-height:1.5;letter-spacing:0;}
+.organized-page button.inline-action{display:flex;align-items:center;justify-content:space-between;gap:20rpx;width:100%;min-height:44px;padding:22rpx 0;margin:0;background:transparent;border-radius:0;color:#374c3d;text-align:left;font-size:14px;}
+.organized-page .action-arrow{font-size:20px;color:#274d3b;flex-shrink:0;}
+.organized-page button.record-row{display:flex;align-items:center;gap:22rpx;width:100%;margin:0;padding:28rpx 0;background:transparent;border-bottom:1rpx solid #dfe3d9;text-align:left;border-radius:0;}
+.organized-page .record-number{align-self:flex-start;padding-top:4rpx;width:50rpx;flex-shrink:0;white-space:nowrap;font-family:Georgia,"Songti SC",serif;font-size:32rpx;font-weight:400;color:#7a8473;}
 .organized-page .record-body{flex:1;min-width:0;}
-.organized-page .record-arrow{font-family:serif;font-size:34rpx;color:#8b7256;flex-shrink:0;}
-.organized-page .row-title{font-size:30rpx;font-weight:500;line-height:1.5;margin:6rpx 0;overflow-wrap:anywhere;}
-.organized-page .meta{font-size:22rpx;color:#746653;line-height:1.6;}
-.organized-page .muted{font-size:24rpx;color:#706456;line-height:1.65;}
-.organized-page .record-excerpt{overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
-.organized-page .panel-empty{padding:28rpx 0 8rpx;}
-.organized-page .panel-empty .text-link{margin-top:12rpx;}
-.organized-page .panel-note{font-size:22rpx;line-height:1.65;color:#746653;padding-top:16rpx;margin-top:4rpx;}
-.organized-page .quiet-footer{font-size:21rpx;line-height:1.8;text-align:center;color:#7a6b58;padding:0 4rpx 20rpx;}
-.organized-page .content-panel .input{min-width:0;}
-@media(max-width:350px){.journal.organized-page{padding-left:24rpx;padding-right:24rpx;}.organized-page .surface-panel{padding:24rpx;}.organized-page .compact-title{font-size:38rpx;}.organized-page .compact-art{width:92rpx;height:92rpx;}.organized-page .heading-desc{font-size:23rpx;}}
+.organized-page .row-title{font-size:34rpx;line-height:1.55;margin:0 0 8rpx;overflow-wrap:anywhere;}
+.organized-page .record-arrow{font-size:22px;color:#274d3b;flex-shrink:0;}
+.organized-page .meta{font-size:12px;color:#687365;line-height:1.7;}
+.organized-page .muted{font-size:14px;color:#657160;line-height:1.8;}
+.organized-page .record-excerpt{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:8rpx;}
+.organized-page .panel-empty{padding:32rpx 0 12rpx;}
+.organized-page .panel-empty .text-link{margin-top:16rpx;}
+.organized-page .panel-note{font-size:12px;color:#687365;line-height:1.8;padding-top:20rpx;}
+.organized-page .quiet-footer{font-size:12px;color:#687365;line-height:1.8;text-align:center;padding:14rpx 0 16rpx;}
+.organized-page .bamboo-art{filter:brightness(0) saturate(100%) invert(26%) sepia(14%) saturate(1159%) hue-rotate(93deg) brightness(92%) contrast(90%);}
+.organized-page .input{min-width:0;min-height:44px;font-size:16px;border-radius:0;border:1rpx solid #b4c0ad;background:#fbfaf5;color:#28382e;}
+@media(max-width:350px){.journal.organized-page{padding-left:36rpx;padding-right:36rpx;}.organized-page .compact-title{font-size:54rpx;}.organized-page .page-kicker{letter-spacing:3rpx;}.organized-page .row-title{font-size:35rpx;}}
+@media(prefers-reduced-motion:reduce){.organized-page button{transition:none;}}

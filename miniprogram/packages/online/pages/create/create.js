@@ -1,5 +1,6 @@
 const welinkClient = require('../../../../services/welinkClient');
 const identity = require('../../../../services/identity');
+const { searchLiquors, refreshLiquors } = require('../../../../utils/liquorDb');
 
 Page({
   data: {
@@ -8,7 +9,8 @@ Page({
     names: ['', ''],
     sampleCount: 2,
     created: false,
-    submitting: false
+    submitting: false,
+    suggestions: [], activeSuggestionIndex: -1, catalogLoading: false, catalogSource: 'builtin', catalogError: ''
   },
 
   onLoad() {
@@ -18,7 +20,7 @@ Page({
         title: '需要微信登录',
         content: '发起在线品鉴需要先进行微信身份登录',
         confirmText: '去登录',
-        confirmColor: '#893e32',
+        confirmColor: '#274d3b',
         success: (res) => {
           if (res.confirm) {
             wx.navigateTo({ url: '/pages/profile/profile' });
@@ -27,11 +29,31 @@ Page({
           }
         }
       });
+      return;
     }
+    this.loadWineCatalog();
   },
   onHide() { this.setData({authentication: ''}); },
   onUnload() { this._disposed = true; },
 
+  async loadWineCatalog(force = false) {
+    this.setData({ catalogLoading: true });
+    const result = await refreshLiquors({ force: force === true });
+    if (this._disposed) return;
+    this.setData({ catalogLoading: false, catalogSource: result.source, catalogError: result.error, suggestions: searchLiquors(this._suggestionQuery || '') });
+  },
+  retryWineCatalog() { this.loadWineCatalog(true); },
+  applyWineSuggestion(e) {
+    const index = Number(e.currentTarget.dataset.index);
+    const wine = e.currentTarget.dataset.item;
+    if (!Number.isInteger(index) || index < 0 || index >= this.data.names.length) return;
+    const name = wine.brand + ' · ' + wine.product;
+    if (name.length > 100) { wx.showToast({ title: '酒名较长，请手动填写简称', icon: 'none' }); return; }
+    const names = [...this.data.names];
+    names[index] = name;
+    this._suggestionQuery = '';
+    this.setData({ names, suggestions: [], activeSuggestionIndex: -1 });
+  },
   onTitleInput(e) {
     this.setData({ title: e.detail.value });
   },
@@ -44,7 +66,8 @@ Page({
     const index = e.currentTarget.dataset.index;
     const names = [...this.data.names];
     names[index] = e.detail.value;
-    this.setData({ names });
+    this._suggestionQuery = e.detail.value;
+    this.setData({ names, activeSuggestionIndex: Number(index), suggestions: searchLiquors(e.detail.value) });
   },
 
   onAddSample() {
@@ -53,7 +76,7 @@ Page({
       return;
     }
     this.setData({
-      names: [...this.data.names, ''], sampleCount: this.data.names.length + 1
+      suggestions: [], activeSuggestionIndex: -1, names: [...this.data.names, ''], sampleCount: this.data.names.length + 1
     });
   },
 
@@ -64,7 +87,8 @@ Page({
     }
     const index = e.currentTarget.dataset.index;
     const names = this.data.names.filter((_, i) => i !== index);
-    this.setData({ names, sampleCount: names.length });
+    this._suggestionQuery = '';
+    this.setData({ names, sampleCount: names.length, suggestions: [], activeSuggestionIndex: -1 });
   },
 
   async onSubmit() {
@@ -122,7 +146,7 @@ Page({
         title: '发起失败',
         content: err.message || '网络或接口异常，请重试',
         showCancel: false,
-        confirmColor: '#893e32'
+        confirmColor: '#274d3b'
       });
     } finally {
       if (!this._disposed) this.setData({ submitting: false, authentication: '' });
