@@ -2,7 +2,7 @@
  * welinkClient.js - 51welink 品鉴后台 (/taste/applet) HTTP 请求与会话客户端
  *
  * 核心设计：
- * 1. 会话隔离与显式 Cookie 维护：保存 Set-Cookie (JSESSIONID)，按基地址隔离。
+ * 1. 会话隔离：优先保存 Bearer accessToken，兼容旧 JSESSIONID，按基地址隔离。
  * 2. 来源安全：默认 HTTPS，仅在显式开发开关开启且 envVersion 为 develop 或 devtools 时，才允许本地/局域网 HTTP。
  * 3. 登录单飞 (in-flight single-flight)：并发调用 login() 时复用同一个 Promise，避免并发换 code 导致无效。
  * 4. 401 自动清理会话并触发会话失效回调。
@@ -25,7 +25,11 @@ function createEmptySession(baseUrl = '') {
     cookie: '',
     baseUrl: baseUrl || resolveBaseUrl(),
     openid: '',
-    nickname: ''
+    nickname: '',
+    accessToken: '',
+    userId: null,
+    avatarUrl: '',
+    sex: 0
   };
 }
 
@@ -170,8 +174,9 @@ function restoreSession() {
   try {
     if (typeof wx !== 'undefined' && wx.getStorageSync) {
       const saved = wx.getStorageSync('mz_welink_session');
-      if (saved && saved.baseUrl === activeBase && saved.cookie && saved.openid) {
-        currentSession = saved;
+      if (saved && saved.baseUrl === activeBase && saved.openid && (saved.accessToken || saved.cookie)) {
+        currentSession = Object.assign(createEmptySession(activeBase), saved);
+        if (!currentSession.accessToken) currentSession.accessToken = getBearerToken(currentSession);
         return currentSession;
       }
     }
@@ -221,7 +226,7 @@ function getSession() {
     clearSession();
     return currentSession;
   }
-  if (!currentSession.cookie) {
+  if (!currentSession.cookie && !currentSession.accessToken) {
     restoreSession();
   }
   return currentSession;
@@ -229,8 +234,8 @@ function getSession() {
 
 function hasValidSession() {
   const s = getSession();
-  if (!s || !s.cookie || !s.openid) return false;
-  const token = getBearerToken(s);
+  if (!s || !s.openid) return false;
+  const token = s.accessToken || getBearerToken(s);
   if (!token) return true;
   const expiresAt = getJwtExpiresAt(token);
   if (expiresAt !== null && expiresAt <= Date.now()) {
@@ -242,7 +247,9 @@ function hasValidSession() {
 
 // wxLogin 返回 JWT accessToken，而不是服务端 Set-Cookie。
 function getBearerToken(session) {
-  if (!session || typeof session.cookie !== 'string') return '';
+  if (!session) return '';
+  if (typeof session.accessToken === 'string' && session.accessToken) return session.accessToken;
+  if (typeof session.cookie !== 'string') return '';
   const match = session.cookie.match(/^(?:token|accessToken)=(.+)$/i);
   return match ? match[1] : '';
 }
@@ -359,8 +366,9 @@ function validateAppletPath(path) {
   if (trimmed.indexOf('\\') !== -1) {
     throw new Error('禁止包含反斜杠路径');
   }
-  if (!trimmed.startsWith('/taste/applet/') && !trimmed.startsWith('/taste/userInfo/')) {
-    throw new Error('非法请求路径，必须以 /taste/applet/ 开头（或 /taste/userInfo/）');
+  if (!trimmed.startsWith('/taste/applet/') && !trimmed.startsWith('/taste/userInfo/') &&
+      !trimmed.startsWith('/taste/public/')) {
+    throw new Error('非法请求路径，不在已允许的品鉴接口范围内');
   }
   const questionIdx = trimmed.indexOf('?');
   const purePath = questionIdx !== -1 ? trimmed.slice(0, questionIdx) : trimmed;
@@ -394,7 +402,9 @@ function request(options) {
     data = null,
     timeout = 10000,
     headers = {},
-    raw = false // raw=true 时返回完整响应体（列表接口需要同级 count）
+    raw = false, // raw=true 时返回完整响应体（列表接口需要同级 count）
+    public: isPublic = false,
+    allowEmptyData = false
   } = options;
 
   const validatedPath = validateAppletPath(url);
@@ -418,7 +428,7 @@ function request(options) {
     }
   }
 
-  if (s.cookie && s.baseUrl === baseUrl) {
+  if (!isPublic && s.cookie && s.baseUrl === baseUrl) {
     reqHeaders['Cookie'] = s.cookie;
     const bearerToken = getBearerToken(s);
     if (bearerToken) reqHeaders['Authorization'] = 'Bearer ' + bearerToken;
@@ -445,7 +455,7 @@ function request(options) {
 
         // 1. 状态码判断
         const statusCode = res.statusCode;
-        if (statusCode === 401 || statusCode === 403) {
+        if (!isPublic && (statusCode === 401 || statusCode === 403)) {
           clearSession();
           const err = new Error('登录会话已失效，请重新登录');
           err.statusCode = statusCode;
@@ -476,10 +486,12 @@ function request(options) {
           err.code = respData.code;
           err.statusCode = statusCode;
           err.data = respData;
+          if (!isPublic && (respData.code === 401 || respData.code === '401')) clearSession();
           return reject(err);
         }
 
         if (respData.data === undefined || respData.data === null) {
+          if (allowEmptyData) return resolve(raw ? respData : { success: true });
           const err = new Error('响应缺少业务数据 data');
           err.code = respData.code;
           err.statusCode = statusCode;
@@ -522,6 +534,11 @@ function requestWithAuth(options) {
   return request(options);
 }
 
+// 公开内容不携带 Bearer/Cookie，其失败也不能清除用户的登录状态。
+function requestPublic(options) {
+  return request(Object.assign({}, options, { public: true }));
+}
+
 /**
  * 微信临时 code 登录（按规范使用 wx.getUserProfile 嵌套 wx.login，单飞并发保护）
  */
@@ -560,14 +577,18 @@ function login(userProfile) {
           }
 
           const userInfo = (resTemp && resTemp.userInfo) || {};
-          const userNick = userInfo.nickname !== undefined ? userInfo.nickname : (userInfo.nickName || '');
+          const chosenProfile = userProfile && typeof userProfile === 'object' ? userProfile : {};
+          const userNick = String(chosenProfile.nickName || chosenProfile.nickname || '').trim() ||
+            (userInfo.nickname !== undefined ? userInfo.nickname : (userInfo.nickName || ''));
+          const localAvatar = chosenProfile.avatarUrl || userInfo.avatarUrl || '';
+          const avatarUrl = /^https:\/\//i.test(localAvatar) ? localAvatar : '';
 
           wx.request({
             url: baseUrl + validatedPath,
             method: 'POST',
             data: {
               code: res.code,
-              avatarUrl: userInfo.avatarUrl || '',
+              avatarUrl,
               nickName: userNick,
               sex: userInfo.sex !== undefined ? userInfo.sex : 0
             },
@@ -621,7 +642,7 @@ function login(userProfile) {
 
               if (!receivedNewCookie) {
                 clearSession();
-                const err = new Error('登录未收到有效服务端会话凭证 (JSESSIONID)');
+                const err = new Error('登录未收到有效服务端会话凭证 (accessToken/JSESSIONID)');
                 return reject(err);
               }
 
@@ -645,7 +666,10 @@ function login(userProfile) {
                 baseUrl: baseUrl,
                 openid: openid,
                 nickname: finalNick,
-                avatarUrl: finalAvatar
+                avatarUrl: finalAvatar,
+                accessToken: getBearerToken({ cookie: receivedNewCookie }),
+                userId: payload.userId || payload.id || null,
+                sex: payload.sex
               };
               // 新登录替换身份时，使此前发出的请求全部过期。
               sessionGeneration++;
@@ -701,16 +725,8 @@ function login(userProfile) {
  * 主动登出
  */
 async function logout() {
-  try {
-    await request({
-      url: '/taste/applet/logout',
-      method: 'POST'
-    });
-  } catch (e) {
-    console.warn('Backend logout error:', e);
-  } finally {
-    clearSession();
-  }
+  // 新后台没有提供 logout 接口，仅清理本机凭证，避免调用已不存在的旧接口。
+  clearSession();
   return { ok: true };
 }
 
@@ -762,12 +778,104 @@ async function updateProfile(nickname) {
   if (!cleanNick) {
     throw new Error('昵称不能为空');
   }
-  if (cleanNick.length > 50) {
-    throw new Error('昵称长度不可超过 50 个字符');
+  if (cleanNick.length > 20) {
+    throw new Error('昵称长度不可超过 20 个字符');
   }
-  // 线上资料注册接口就是 wxLogin，提交当前昵称并返回新的 accessToken。
-  // 复用同一身份链路，避免依赖未部署的旧 /taste/applet/profile 接口。
-  return login({ nickName: cleanNick });
+  const session = getSession();
+  if (!hasValidSession()) throw new Error('请先微信登录后设置昵称');
+  const generation = sessionGeneration;
+  await requestWithAuth({
+    url: '/taste/userInfo/updateNick',
+    method: 'POST',
+    data: { openid: session.openid, nickname: cleanNick },
+    allowEmptyData: true
+  });
+  if (generation === sessionGeneration && getSession().openid === session.openid) {
+    const next = Object.assign({}, getSession(), { nickname: cleanNick });
+    persistSession(next);
+  }
+  return { nickname: cleanNick };
+}
+
+function normalizeUserInfo(data) {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('用户信息响应格式异常');
+  const openid = String(data.openId || data.openid || '').trim();
+  if (!openid) throw new Error('用户信息缺少 openId');
+  return {
+    id: data.id !== undefined ? data.id : null,
+    openId: openid,
+    unionId: typeof data.unionId === 'string' ? data.unionId : '',
+    nickName: typeof data.nickName === 'string' ? data.nickName.trim() : '',
+    sex: Number.isInteger(data.sex) ? data.sex : 0,
+    headerUrl: typeof data.headerUrl === 'string' && /^https:\/\//i.test(data.headerUrl) ? data.headerUrl : ''
+  };
+}
+
+async function getUserInfo() {
+  const session = getSession();
+  if (!session.openid || !hasValidSession()) throw new Error('请先微信登录');
+  const data = await requestWithAuth({
+    url: '/taste/userInfo/' + encodeURIComponent(session.openid) + '/get',
+    method: 'GET'
+  });
+  const profile = normalizeUserInfo(data);
+  if (profile.openId !== session.openid) throw new Error('返回的用户信息与当前登录身份不一致');
+  return profile;
+}
+
+function parseUploadBody(body) {
+  if (typeof body === 'string') {
+    try { return JSON.parse(body); } catch (_) { throw new Error('头像上传响应格式异常'); }
+  }
+  return body;
+}
+
+function uploadAvatar(filePath) {
+  const session = getSession();
+  const token = getBearerToken(session);
+  if (!hasValidSession() || !token) return Promise.reject(new Error('请先微信登录后上传头像'));
+  const isLocalFile = typeof filePath === 'string' &&
+    (/^(?:wxfile|file):\/\//i.test(filePath) || filePath.charAt(0) === '/' || /^https?:\/\/tmp\//i.test(filePath));
+  if (!isLocalFile) {
+    return Promise.reject(new Error('请选择本机头像图片'));
+  }
+  if (typeof wx === 'undefined' || !wx.uploadFile) return Promise.reject(new Error('当前环境不支持头像上传'));
+  const baseUrl = resolveBaseUrl();
+  const generation = sessionGeneration;
+  return new Promise((resolve, reject) => {
+    wx.uploadFile({
+      url: baseUrl + '/taste/userInfo/uploadWxUrl',
+      filePath,
+      name: 'file',
+      formData: { openid: session.openid },
+      header: { Authorization: 'Bearer ' + token, Accept: 'application/json' },
+      timeout: 20000,
+      success(res) {
+        if (generation !== sessionGeneration || baseUrl !== resolveBaseUrl()) {
+          return reject(new Error('登录状态已变更，请核对头像后再保存'));
+        }
+        try {
+          const body = parseUploadBody(res.data);
+          if (res.statusCode === 401 || res.statusCode === 403) {
+            clearSession();
+            throw new Error('登录已失效，请重新登录后上传头像');
+          }
+          if (res.statusCode < 200 || res.statusCode >= 300) throw new Error((body && body.msg) || '头像上传失败');
+          if (!isSuccessResponse(body)) {
+            if (body && (body.code === 401 || body.code === '401')) clearSession();
+            throw new Error((body && body.msg) || '头像上传失败');
+          }
+          const rawUrl = body && body.data && typeof body.data === 'object' ? body.data.file_url : body && body.data;
+          const fileUrl = typeof rawUrl === 'string' && /^https:\/\//i.test(rawUrl) ? rawUrl : '';
+          if (!fileUrl) throw new Error('头像上传未返回有效图片地址');
+          const current = getSession();
+          persistSession(Object.assign({}, current, { avatarUrl: fileUrl }));
+          resolve(fileUrl);
+        } catch (error) { reject(error); }
+      },
+      fail(error) { reject(new Error((error && error.errMsg) || '头像上传网络异常')); }
+    });
+  });
 }
 
 /**
@@ -936,9 +1044,13 @@ module.exports = {
   clearSession,
   addSessionListener,
   request,
+  requestPublic,
   login,
   logout,
   updateProfile,
+  getUserInfo,
+  uploadAvatar,
+  normalizeUserInfo,
   getTasteList,
   createTaste,
   getTasteDetail,

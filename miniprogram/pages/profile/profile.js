@@ -2,7 +2,7 @@
  * profile.js - 品鉴资料页（微信身份登录 + 头像昵称编辑）
  *
  * - 头像：用户主动从相册选择，返回临时路径，
- *   保存时由 identity.persistAvatar 持久化（云存储或本地 saveFile）。
+ *   登录后上传至用户资料接口；游客保存时使用本地持久化。
  * - 昵称：普通文本输入，用户完全自定义，不触发微信资料接口。
  * - 登录：主动点击后按配置交由品鉴后台或云函数校验身份，失败保持游客可用。
  * - 保存成功返回上一页继续原操作；取消不覆盖旧资料。
@@ -25,6 +25,7 @@ Page({
 
   onLoad() {
     const user = identity.getUser();
+    const hadIdentity = user.loginState === 'wechat' && user.welinkOpenid;
     const isWechat = identity.isLoggedIn();
     this.setData({
       avatar: user.avatar || '🍶',
@@ -33,10 +34,19 @@ Page({
       nickname: user.profileCompleted ? (user.nickname || '') : '',
       loginState: isWechat ? 'wechat' : 'guest',
       provider: identity.getIdentityProvider(),
-      cloudReady: identity.isCloudReady()
+      cloudReady: identity.isCloudReady(),
+      sessionHint: hadIdentity && !isWechat ? '登录凭证已过期，请重新确认身份后继续保存。' : ''
     });
   },
-  onShow() { this.setData({loginState: identity.isLoggedIn() ? 'wechat' : 'guest'}); },
+  onShow() {
+    const previous = identity.getUser();
+    const hadIdentity = previous.loginState === 'wechat' && previous.welinkOpenid;
+    const loggedIn = identity.isLoggedIn();
+    this.setData({
+      loginState: loggedIn ? 'wechat' : 'guest',
+      sessionHint: hadIdentity && !loggedIn ? '登录凭证已过期，请重新确认身份后继续保存。' : (loggedIn ? '' : (this.data.sessionHint || ''))
+    });
+  },
 
   onChooseAvatar(e) {
     if (!wx.chooseImage) {
@@ -75,7 +85,7 @@ Page({
       if (res.ok) {
         // 载入服务端找回或授权同步的资料，但保留用户尚未保存的昵称输入与已选头像
         const u = identity.getUser();
-        const patch = { loginState: 'wechat' };
+        const patch = { loginState: identity.isLoggedIn() ? 'wechat' : 'guest', sessionHint: '' };
         if (!this.data.pendingAvatar) {
           patch.avatar = u.avatar || '🍶';
           patch.avatarImg = identity.isAvatarImage(patch.avatar);
@@ -120,6 +130,11 @@ Page({
     }
     this.setData({ saving: true });
     try {
+      if (this.data.provider === 'welink' && this.data.loginState === 'wechat' && !identity.isLoggedIn()) {
+        this.setData({ loginState: 'guest', sessionHint: '登录凭证已过期，请重新确认身份后继续保存。' });
+        wx.showModal({ title: '请重新确认身份', content: '登录凭证已过期，重新登录后再保存昵称与头像。', showCancel: false, confirmText: '知道了' });
+        return;
+      }
       const res = await identity.saveProfile({
         nickname,
         avatarTempPath: this.data.pendingAvatar
@@ -157,7 +172,7 @@ Page({
         return;
       }
       if (res.avatarLocalOnly) {
-        const content = identity.isLoggedIn() && res.cloudSynced ? '昵称已同步，头像仅保存在本机。' : '昵称与头像已保存在本机。';
+        const content = identity.isLoggedIn() && res.cloudSynced ? '昵称已同步，当前头像仅保存在本机。' : '昵称与头像已保存在本机。';
         wx.showModal({title:'资料已保存',content,showCancel:false,confirmText:'知道了',success:()=>this.goBack()});
         return;
       }
@@ -166,7 +181,7 @@ Page({
     } catch (e) {
       wx.showModal({
         title: '资料保存失败',
-        content: '保存未完成，请返回资料页核对本机资料后重试。',
+        content: ((e && e.message) || '保存未完成，请检查网络后重试。'),
         showCancel: false,
         confirmText: '知道了',
         confirmColor: '#a97832'

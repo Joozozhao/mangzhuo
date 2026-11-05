@@ -103,7 +103,7 @@ test('welinkClient test suite', async (t) => {
     // Non /taste/applet/ path rejection
     await assert.rejects(async () => {
       await welinkClient.request({ url: '/api/v1/user' });
-    }, /必须以 \/taste\/applet\/ 开头/);
+    }, /不在已允许的品鉴接口范围内/);
 
     // Header Cookie override prevention: caller passed fake Cookie in headers, must be wiped
     let sentHeader = null;

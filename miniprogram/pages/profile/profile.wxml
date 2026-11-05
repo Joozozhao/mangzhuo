@@ -15,7 +15,7 @@
       <text class="identity-status">{{loginState === 'wechat' ? '已确认' : '待登录'}}</text>
     </view>
     <view class="identity-title">{{loginState === 'wechat' ? '身份已确认，继续完善名片' : '先用微信确认你的身份'}}</view>
-    <view class="identity-desc">{{loginState === 'wechat' ? '昵称将同步至品鉴后台，头像仅保存在当前设备。' : '登录后可参与在线品鉴，并在不同设备间同步你的昵称。'}}</view>
+    <view class="identity-desc">{{sessionHint || (loginState === 'wechat' ? '昵称与头像将同步至品鉴后台，本地酒局与手记继续保留。' : '登录后可参与在线品鉴，并在不同设备间同步你的昵称与头像。')}}</view>
     <button wx:if="{{loginState !== 'wechat'}}" class="identity-action" loading="{{loggingIn}}" disabled="{{loggingIn || saving}}" bindtap="onLogin">
       <text>{{loggingIn ? '正在确认身份…' : '微信注册 / 登录'}}</text><text class="identity-arrow">→</text>
     </button>

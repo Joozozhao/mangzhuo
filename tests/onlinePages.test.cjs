@@ -622,26 +622,23 @@ test('onlinePages test suite - Page/wx lifecycle and edge-case contracts', async
     await setupLoggedUser('profile_tester_user');
     clearHistory();
 
+    const existingUser = storage.getCurrentUser();
+    storage.setCurrentUser(Object.assign({}, existingUser, { avatar: 'wxfile://existing_avatar.png' }));
     const page = createPageInstance('pages/profile/profile.js');
     page.onLoad();
 
     // User edits nickname only, does NOT touch avatar (no pendingAvatar)
     page.onNicknameInput({ detail: { value: '大师品酒人' } });
 
-    // Mock the actual wxLogin profile-registration contract.
+    // Mock the new nickname endpoint; saving a nickname must not log in again.
     mockNetworkHandler = (opts) => {
-      assert.match(opts.url, /\/taste\/userInfo\/wxLogin/);
-      assert.equal(opts.data.nickName, '大师品酒人');
+      assert.match(opts.url, /\/taste\/userInfo\/updateNick/);
+      assert.equal(opts.data.nickname, '大师品酒人');
+      assert.equal(opts.data.openid, 'profile_tester_user');
       opts.success({
         statusCode: 200,
-        header: { 'Set-Cookie': 'JSESSIONID=PROFILE_UPDATED_COOKIE' },
         data: {
-          code: 0,
-          msg: 'ok',
-          data: {
-            openid: 'profile_tester_user',
-            nickname: '大师品酒人'
-          }
+          code: '00000', msg: '成功', data: '成功'
         }
       });
     };
@@ -649,10 +646,10 @@ test('onlinePages test suite - Page/wx lifecycle and edge-case contracts', async
     await page.onSave();
 
     // Modal check: when avatar is local and nickname synced, content must accurately state:
-    // '昵称已同步，头像仅保存在本机。' and NOT mislead user with '头像未能保存，请重新选择头像' or asking to re-upload
+    // '昵称已同步，当前头像仅保存在本机。' and NOT mislead user with '头像未能保存，请重新选择头像' or asking to re-upload
     assert.equal(modals.length, 1);
     assert.equal(modals[0].title, '资料已保存');
-    assert.equal(modals[0].content, '昵称已同步，头像仅保存在本机。');
+    assert.equal(modals[0].content, '昵称已同步，当前头像仅保存在本机。');
     assert.equal(modals[0].content.includes('未能保存，请重新选择头像'), false, 'Must not prompt to re-upload avatar');
   });
 

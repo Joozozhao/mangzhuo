@@ -1,6 +1,7 @@
 const kb = require('../../utils/liquorKnowledge');
 const knowledgeNav = require('../../utils/knowledgeNavigation');
 const { refreshLiquors } = require('../../utils/liquorDb');
+const knowledgeCatalog = require('../../services/knowledgeCatalog');
 const LAST_READ_KEY = 'mz_knowledge_last_read_v1';
 
 const sections = kb.sections;
@@ -25,6 +26,7 @@ Page({
     articleCategory: '全部',
     selected: null,
     selectedWine: null, catalogWines: [], catalogCount: 0, catalogLoading: false, catalogSource: 'builtin', catalogError: '',
+    remoteLoading: false, remoteError: '', remoteTotal: 0, remoteHasMore: false,
     lastRead: null
   },
   onLoad() {
@@ -36,6 +38,7 @@ Page({
     }
     this.refresh();
     this.loadWineCatalog();
+    this.loadRemoteKnowledge();
   },
   onShow() {
     const tabBar = this.getTabBar && this.getTabBar();
@@ -53,6 +56,39 @@ Page({
     this.refresh();
   },
   retryWineCatalog() { this.loadWineCatalog(true); },
+  async loadRemoteKnowledge(force = false) {
+    if (this.data.remoteLoading) return;
+    const page = force === true ? 1 : ((this._remotePage || 0) + 1);
+    const seq = (this._remoteRequest || 0) + 1;
+    this._remoteRequest = seq;
+    this.setData({ remoteLoading: true, remoteError: '' });
+    try {
+      const result = await knowledgeCatalog.loadKnowledge({ page, size: 20, force: force === true });
+      if (this._disposed || seq !== this._remoteRequest) return;
+      this._remotePage = page;
+      this._remoteItems = page === 1 ? result.items : (this._remoteItems || []).concat(result.items);
+      this._remoteHasMore = this._remoteItems.length < result.total || result.items.length === result.size;
+      this.setData({
+        remoteLoading: false, remoteTotal: result.total,
+        remoteHasMore: this._remoteHasMore,
+        categories: ['全部', ...new Set(articles.map(a => a.category).concat(this._remoteItems.map(a => a.category)))]
+      });
+      this.refresh();
+    } catch (err) {
+      if (this._disposed || seq !== this._remoteRequest) return;
+      const cached = knowledgeCatalog.getCachedKnowledge({ page: 1, size: 20 });
+      if (cached && page === 1) this._remoteItems = cached.result.items;
+      this.setData({
+        remoteLoading: false, remoteError: '在线酒文化暂不可用，可继续阅读本地内容。',
+        categories: ['全部', ...new Set(articles.map(a => a.category).concat((this._remoteItems || []).map(a => a.category)))]
+      });
+      this.refresh();
+    }
+  },
+  retryRemoteKnowledge() { this.loadRemoteKnowledge(true); },
+  onReachBottom() {
+    if (this.data.section === 'articles' && this.data.remoteHasMore) this.loadRemoteKnowledge();
+  },
   openWine(e) {
     const wine = (this._catalogRows || []).find(item => item.brand === e.currentTarget.dataset.brand && item.product === e.currentTarget.dataset.product);
     if (!wine) return;
@@ -65,6 +101,15 @@ Page({
       results = results.filter(item => item.category === this.data.articleCategory);
     }
     const query = this.data.query.toLowerCase();
+    if (this.data.section === 'articles') {
+      const remote = (this._remoteItems || []).filter(item => {
+        const matchesCategory = this.data.articleCategory === '全部' || item.category === this.data.articleCategory;
+        const matchesQuery = !query || JSON.stringify(item).toLowerCase().includes(query);
+        return matchesCategory && matchesQuery;
+      });
+      const remoteTitles = new Set(remote.map(item => item.title));
+      results = remote.concat(results.filter(item => !remoteTitles.has(item.title)));
+    }
     const catalogWines = (this._catalogRows || []).filter(wine => [wine.brand, wine.product, wine.aromaType, wine.degree].join(' ').toLowerCase().includes(query));
     this.setData({ results, catalogWines, catalogCount: (this._catalogRows || []).length });
   },
@@ -95,7 +140,9 @@ Page({
     this.refresh();
   },
   openDetail(type, id) {
-    const detail = kb.getDetail(type, id);
+    const detail = type === 'remote-article'
+      ? (this._remoteItems || []).find(item => item.type === type && String(item.id) === String(id))
+      : kb.getDetail(type, id);
     if (!detail) {
       wx.showToast({ title: '这篇内容还在整理中', icon: 'none' });
       return;

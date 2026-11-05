@@ -36,6 +36,9 @@
 .related-block{margin-top:40rpx;}.practice{border-top:1rpx solid #d6ddcf;margin-top:40rpx;padding-top:12rpx;}.practice button{margin-top:24rpx;}
 .source-block{margin-top:38rpx;}.source-link{display:block;width:100%;min-height:44px;padding:14rpx 0;margin:0;background:transparent;text-align:left;color:#274d3b;font-size:12px;line-height:1.8;overflow-wrap:anywhere;}
 .source-checked{margin-bottom:10rpx;}
+.remote-feedback{display:flex;align-items:center;justify-content:space-between;gap:16rpx;padding:0 0 18rpx;color:#706456;font-size:23rpx;line-height:1.6;}
+.remote-feedback .text-link{flex-shrink:0;}
+.knowledge-page .remote-more{display:flex;justify-content:center;margin:12rpx auto 0;}
 
 .knowledge-page button.catalog-wine-row{display:flex;align-items:center;gap:18rpx;width:100%;padding:24rpx 0;margin:0;background:transparent;border-bottom:1rpx solid #d6ddcf;border-radius:0;text-align:left;}
 .catalog-wine-row .record-body{flex:1;min-width:0;}.catalog-wine-row .row-title{font-size:32rpx;}.catalog-panel .catalog-feedback{margin:10rpx 0;}

@@ -3,11 +3,11 @@
  *
  * 职责边界：
  * 1. 身份模式：支持 WeLink 后台与微信云开发双 Provider（由 config.IDENTITY_PROVIDER 控制）。
- *    WeLink 模式默认只同步后台昵称，头像保存在本地，不初始化云开发；云开发模式保留原有云函数/云存储流程。
+ *    WeLink 模式通过 Bearer accessToken 同步后台昵称与头像；云开发模式保留原有云函数/云存储流程。
  * 2. 展示资料：头像与昵称由用户主动选择填写，不静默读取微信头像昵称。
  * 3. 关系稳定：本地 userId 稳定不变，openid / welinkOpenid 仅附加在用户资料上，不破坏房主与评分归属。
- * 4. 身份与凭证分离：微信身份绑定保存在本机，短期访问凭证过期不改变登录展示；
- *    主动退出或服务端明确拒绝身份时才回到游客模式。
+ * 4. 身份与凭证分离：远端 userId 单独保存，不覆盖本机酒局 userId；
+ *    accessToken 过期后回到重新登录状态，本机手记与酒局记录保持可用。
  */
 
 const storage = require('./storage');
@@ -30,7 +30,9 @@ function initWelinkSessionListener() {
           const next = Object.assign({}, user, {
             loginState: 'guest',
             welinkOpenid: '',
-            welinkNickname: ''
+            welinkNickname: '',
+            welinkUserId: null,
+            welinkUnionId: ''
           });
           storage.setCurrentUser(next);
           syncGlobal(next);
@@ -85,9 +87,8 @@ function isLoggedIn() {
   initWelinkSessionListener();
   const user = storage.getCurrentUser();
   if (config.IDENTITY_PROVIDER === 'welink') {
-    // accessToken 是短期请求凭证，不是用户登录状态本身。
-    // 页面重开时保留已绑定的微信身份；需要联网的操作仍由 welinkClient 校验会话。
-    return !!(user && user.welinkOpenid && user.loginState === 'wechat');
+    // 身份展示必须与会话一致，避免令牌过期后仍显示可同步资料。
+    return !!(user && user.welinkOpenid && user.loginState === 'wechat' && welinkClient.hasValidSession());
   }
   return !!(user && user.openid && user.loginState === 'wechat');
 }
@@ -131,7 +132,10 @@ async function loginWithWeChat(userProfile) {
   initWelinkSessionListener();
   if (config.IDENTITY_PROVIDER === 'welink') {
     try {
-      const session = await welinkClient.login(userProfile);
+      const existing = storage.getCurrentUser();
+      const savedProfile = existing.profileCompleted ? { nickName: existing.nickname, avatarUrl: existing.avatar } : {};
+      const profileInput = Object.assign(savedProfile, userProfile || {});
+      const session = await welinkClient.login(profileInput);
       if (!session || !session.openid) {
         return {
           ok: false,
@@ -140,10 +144,11 @@ async function loginWithWeChat(userProfile) {
         };
       }
       const user = storage.getCurrentUser();
-      const nick = session.nickname || (userProfile && (userProfile.nickName || userProfile.nickname)) || '';
-      const avatar = session.avatarUrl || (userProfile && userProfile.avatarUrl) || '';
+      const nick = session.nickname || profileInput.nickName || profileInput.nickname || '';
+      const avatar = session.avatarUrl || profileInput.avatarUrl || '';
       const next = Object.assign({}, user, {
         welinkOpenid: session.openid,
+        welinkUserId: session.userId,
         welinkNickname: nick,
         loginState: 'wechat',
         loginAt: Date.now()
@@ -156,7 +161,41 @@ async function loginWithWeChat(userProfile) {
       }
       storage.setCurrentUser(next);
       syncGlobal(next);
-      return { ok: true, openid: session.openid, user: next };
+      if (!session.accessToken) {
+        return { ok: true, openid: session.openid, user: next, profileSynced: false };
+      }
+      // wxLogin 只返回身份与令牌，再从服务端读取权威资料；资料读取失败不回滚已成功的登录。
+      try {
+        const profile = await welinkClient.getUserInfo();
+        if (storage.getCurrentUser().welinkOpenid !== session.openid) {
+          return { ok: true, openid: session.openid, user: storage.getCurrentUser(), stale: true };
+        }
+        const latest = storage.getCurrentUser();
+        const synced = Object.assign({}, latest, {
+          welinkUserId: profile.id,
+          welinkUnionId: profile.unionId,
+          sex: profile.sex,
+          profileSyncedAt: Date.now()
+        });
+        if (profile.nickName) {
+          synced.nickname = profile.nickName;
+          synced.welinkNickname = profile.nickName;
+        }
+        if (profile.headerUrl) synced.avatar = profile.headerUrl;
+        if (profile.nickName || profile.headerUrl) {
+          synced.profileCompleted = true;
+          storage.updateMemberProfile(synced.userId, { nickname: synced.nickname, avatar: synced.avatar });
+        }
+        storage.setCurrentUser(synced);
+        syncGlobal(synced);
+        return { ok: true, openid: session.openid, user: synced, profileSynced: true };
+      } catch (profileError) {
+        console.warn('【盲酌】服务端资料读取失败', profileError);
+        if (!isLoggedIn()) {
+          return { ok: false, reason: 'SESSION_EXPIRED', message: '登录凭证已失效，请重新确认微信身份。' };
+        }
+        return { ok: true, openid: session.openid, user: next, profileSynced: false };
+      }
     } catch (e) {
       console.warn('【盲酌】WeLink 微信登录失败', e);
       return {
@@ -217,10 +256,13 @@ async function loginWithWeChat(userProfile) {
 
 /**
  * 持久化 chooseAvatar 的临时头像路径。
- * 优先上传云存储（返回 cloud:// fileID），云不可用时退回 wx.saveFile 本地持久保存。
- * 两者都失败返回 null，调用方保留原头像。
+ * 已登录 Welink 时上传用户头像；游客或云开发模式沿用本地/云存储持久化。
+ * 本地持久化失败返回 null，调用方保留原头像。
  */
 async function persistAvatar(tempPath, openid) {
+  if (config.IDENTITY_PROVIDER === 'welink' && isLoggedIn() && welinkClient.hasValidSession()) {
+    return welinkClient.uploadAvatar(tempPath);
+  }
   if (cloudReady && wx.cloud && wx.cloud.uploadFile) {
     try {
       const match = /\.(\w+)$/.exec(tempPath);
@@ -277,7 +319,7 @@ async function saveProfile(options) {
       ok: true,
       user: next,
       cloudSynced: sync.cloudSynced,
-      avatarCloudSynced: false,
+      avatarCloudSynced: sync.avatarCloudSynced,
       avatarLocalOnly: sync.avatarLocalOnly,
       syncError: sync.error
     };
@@ -295,21 +337,25 @@ async function saveProfile(options) {
 
 async function syncProfileToWelink(user) {
   const result = { cloudSynced: false, avatarCloudSynced: false, avatarLocalOnly: true, error: '' };
-  if (user.loginState !== 'wechat' && !user.welinkOpenid) {
+  if (!user.welinkOpenid || !welinkClient.hasValidSession()) {
     result.error = 'NOT_LOGGED_IN';
     return result;
   }
   try {
     const updated = await welinkClient.updateProfile(user.nickname);
-    if (updated && updated.nickname && updated.nickname !== user.nickname) {
+    if (updated && updated.nickname) {
+      const changed = updated.nickname !== user.nickname;
       user.nickname = updated.nickname;
       user.welinkNickname = updated.nickname;
-      storage.setCurrentUser(user);
-      storage.updateMemberProfile(user.userId, { nickname: user.nickname, avatar: user.avatar });
-      syncGlobal(user);
+      if (changed) {
+        storage.setCurrentUser(user);
+        storage.updateMemberProfile(user.userId, { nickname: user.nickname, avatar: user.avatar });
+        syncGlobal(user);
+      }
     }
     result.cloudSynced = true;
-    result.avatarLocalOnly = true;
+    result.avatarCloudSynced = /^https:\/\//i.test(user.avatar || '') && welinkClient.getSession().avatarUrl === user.avatar;
+    result.avatarLocalOnly = !result.avatarCloudSynced && isAvatarImage(user.avatar);
   } catch (e) {
     console.warn('【盲酌】WeLink 资料同步失败', e);
     result.error = e.message || 'PROFILE_SYNC_FAILED';

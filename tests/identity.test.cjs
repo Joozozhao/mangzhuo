@@ -117,7 +117,7 @@ test('identity and session bridge test suite', async (t) => {
     assert.equal(currentUser.welinkOpenid, '');
   });
 
-  await t.test('3. Nickname saving reflects remote result truthfully; local avatar is NOT sent to backend', async () => {
+  await t.test('3. Nickname saving uses updateNick; local avatar is NOT sent to backend', async () => {
     config.IDENTITY_PROVIDER = 'welink';
     welinkClient.clearSession();
 
@@ -166,9 +166,10 @@ test('identity and session bridge test suite', async (t) => {
     assert.equal(saveRes.avatarLocalOnly, true);
     assert.equal(saveRes.avatarCloudSynced, false);
 
-    // wxLogin 提交昵称；本机 wxfile 头像路径不能发送给后台。
-    assert.equal(backendReceivedData.nickName, '前端输入昵称');
-    assert.equal(backendReceivedData.avatarUrl, '');
+    // updateNick 提交昵称；本机 wxfile 头像路径不能发送给后台。
+    assert.equal(backendReceivedData.nickname, '前端输入昵称');
+    assert.equal(backendReceivedData.openid, 'welink_openid_xyz');
+    assert.equal(backendReceivedData.avatarUrl, undefined);
 
     // Verify currentUser is updated with remote authoritative nickname
     const updatedUser = storage.getCurrentUser();

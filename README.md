@@ -1,6 +1,6 @@
 # 盲酌 (MangZhuo) - 白酒盲品微信小程序 MVP
 
-当前 Welink 后台接入说明与验收边界见 [docs/welink-integration.md](docs/welink-integration.md)。「酒局」提供本机桌上品鉴和在线品鉴；在线接口已在本地补齐，仍需后端部署与真实微信联调。下文保留早期 MVP 说明，原盲品页面现位于 `miniprogram/packages/blind/`。
+当前用户、头像和公开内容接口接入见 [发布前检查](docs/api-release-check-2026-11-05.md)。「酒局」提供本机桌上品鉴和在线品鉴；在线品鉴旧接口仍需独立联调。下文保留早期 MVP 说明，原盲品页面现位于 `miniprogram/packages/blind/`。
 
 > **盲酌**  
 > **去掉酒标，只凭味道。**  
