@@ -1,10 +1,9 @@
 /**
  * profile.js - 品鉴资料页（微信身份登录 + 头像昵称编辑）
  *
- * - 头像：button open-type="chooseAvatar"，用户主动从微信选择，返回临时路径，
+ * - 头像：用户主动从相册选择，返回临时路径，
  *   保存时由 identity.persistAvatar 持久化（云存储或本地 saveFile）。
- * - 昵称：input type="nickname"，用户可点击微信昵称建议，也可完全自定义；
- *   不静默读取微信昵称。
+ * - 昵称：普通文本输入，用户完全自定义，不触发微信资料接口。
  * - 登录：主动点击后按配置交由品鉴后台或云函数校验身份，失败保持游客可用。
  * - 保存成功返回上一页继续原操作；取消不覆盖旧资料。
  */
@@ -40,10 +39,24 @@ Page({
   onShow() { this.setData({loginState: identity.isLoggedIn() ? 'wechat' : 'guest'}); },
 
   onChooseAvatar(e) {
-    const temp = e.detail.avatarUrl;
-    if (temp) {
-      this.setData({ pendingAvatar: temp, pendingImg: true });
+    if (!wx.chooseImage) {
+      wx.showToast({ title: '当前环境暂不支持选择头像', icon: 'none' });
+      return;
     }
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['compressed'],
+      sourceType: ['album'],
+      success: (res) => {
+        const temp = res && res.tempFilePaths && res.tempFilePaths[0];
+        if (temp) this.setData({ pendingAvatar: temp, pendingImg: true });
+      },
+      fail: (err) => {
+        const message = (err && err.errMsg) || '';
+        if (message.indexOf('cancel') !== -1) return;
+        wx.showToast({ title: '未能选择头像，请重试', icon: 'none' });
+      }
+    });
   },
 
   onNicknameInput(e) {
@@ -54,21 +67,29 @@ Page({
     if (identity.isLoggedIn() || this.data.loggingIn || this.data.saving) return;
     this.setData({ loggingIn: true });
     try {
-      const res = await identity.loginWithWeChat();
+      const fallbackProfile = {
+        avatarUrl: this.data.pendingAvatar || (this.data.avatarImg ? this.data.avatar : ''),
+        nickName: this.data.nickname.trim()
+      };
+      const res = await identity.loginWithWeChat(fallbackProfile);
       if (res.ok) {
-        // 载入服务端找回的资料，但保留用户尚未保存的昵称输入与已选头像
+        // 载入服务端找回或授权同步的资料，但保留用户尚未保存的昵称输入与已选头像
         const u = identity.getUser();
         const patch = { loginState: 'wechat' };
         if (!this.data.pendingAvatar) {
           patch.avatar = u.avatar || '🍶';
-          patch.avatarImg = identity.isAvatarImage(u.avatar);
+          patch.avatarImg = identity.isAvatarImage(patch.avatar);
         }
-        if (!this.data.nickname.trim() && u.profileCompleted) {
+        if (!this.data.nickname.trim() && (u.profileCompleted || u.nickname)) {
           patch.nickname = u.nickname || '';
         }
         this.setData(patch);
         wx.showToast({ title: '注册登录成功', icon: 'success' });
       } else {
+        if (res.message && (res.message.includes('已取消授权') || res.message.includes('auth deny') || res.message.includes('cancel'))) {
+          wx.showToast({ title: '已取消授权', icon: 'none' });
+          return;
+        }
         wx.showModal({
           title: '微信登录未完成',
           content: res.message + ' 本地资料可正常保存，游客功能不受影响。',
@@ -80,7 +101,7 @@ Page({
     } catch (e) {
       wx.showModal({
         title: '微信登录未完成',
-        content: '登录服务暂不可用，请稍后再试。本地资料可正常保存，游客功能不受影响。',
+        content: ((e && e.message) || '登录服务暂不可用，请稍后再试') + '。本地资料可正常保存，游客功能不受影响。',
         showCancel: false,
         confirmText: '知道了',
         confirmColor: '#a97832'

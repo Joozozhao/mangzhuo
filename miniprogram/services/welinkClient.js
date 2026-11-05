@@ -229,12 +229,69 @@ function getSession() {
 
 function hasValidSession() {
   const s = getSession();
-  return !!(s && s.cookie && s.openid);
+  if (!s || !s.cookie || !s.openid) return false;
+  const token = getBearerToken(s);
+  if (!token) return true;
+  const expiresAt = getJwtExpiresAt(token);
+  if (expiresAt !== null && expiresAt <= Date.now()) {
+    clearSession();
+    return false;
+  }
+  return true;
+}
+
+// wxLogin 返回 JWT accessToken，而不是服务端 Set-Cookie。
+function getBearerToken(session) {
+  if (!session || typeof session.cookie !== 'string') return '';
+  const match = session.cookie.match(/^(?:token|accessToken)=(.+)$/i);
+  return match ? match[1] : '';
+}
+
+function getJwtExpiresAt(token) {
+  const parts = String(token || '').split('.');
+  if (parts.length !== 3) return null;
+  try {
+    const normalized = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    const padded = normalized + '='.repeat((4 - normalized.length % 4) % 4);
+    let decoded;
+    if (typeof Buffer !== 'undefined') {
+      decoded = Buffer.from(padded, 'base64').toString('utf8');
+    } else if (typeof wx !== 'undefined' && wx.base64ToArrayBuffer && typeof TextDecoder !== 'undefined') {
+      decoded = new TextDecoder().decode(wx.base64ToArrayBuffer(padded));
+    } else {
+      return null;
+    }
+    const payload = JSON.parse(decoded);
+    return typeof payload.exp === 'number' ? payload.exp * 1000 : null;
+  } catch (_) {
+    return null;
+  }
 }
 
 /**
  * 解析并提取 Set-Cookie 中的 JSESSIONID（支持 res.cookies 与 header）
  */
+function isSuccessResponse(respData) {
+  if (!respData || typeof respData !== 'object' || Array.isArray(respData)) return false;
+  const code = respData.code;
+  const msg = typeof respData.msg === 'string' ? respData.msg.trim() : '';
+
+  // 涵盖常见成功业务状态码（0, 200, "0", "200", "00000"）
+  if (code === 0 || code === 200 || code === '0' || code === '200' || code === '00000') {
+    return true;
+  }
+  if (respData.success === true) {
+    return true;
+  }
+  // 服务端返回 "成功" / "操作成功" / "ok" 且无明确 4xx/5xx 错误码时视为成功
+  if (msg === '成功' || msg === '操作成功' || msg.toLowerCase() === 'ok') {
+    if (code !== 400 && code !== 401 && code !== 403 && code !== 500) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function extractJSessionId(res) {
   if (!res) return '';
 
@@ -253,6 +310,15 @@ function extractJSessionId(res) {
     }
   }
 
+  const body = res.data;
+  if (body && typeof body === 'object') {
+    const payload = body.data && typeof body.data === 'object' ? body.data : body;
+    const token = payload.token || payload.accessToken || payload.access_token;
+    if (token) return 'token=' + token;
+    const sid = payload.sessionId || payload.session_id || payload.jsessionid || payload.JSESSIONID;
+    if (sid) return 'JSESSIONID=' + sid;
+  }
+
   const header = res.header || res.headers;
   if (!header) return '';
 
@@ -268,8 +334,15 @@ function extractJSessionId(res) {
   const cookieItems = Array.isArray(rawCookies) ? rawCookies : [rawCookies];
   for (const item of cookieItems) {
     const str = String(item || '');
-    const m = str.match(/(?:^|;\s*)(JSESSIONID=[^;\s]+)/i);
+    const m = str.match(/(?:^|;\s*)((?:JSESSIONID|SESSION|sid|token)=[^;\s]+)/i);
     if (m) return m[1];
+  }
+  for (const item of cookieItems) {
+    const str = String(item || '').trim();
+    if (str) {
+      const firstPair = str.split(';')[0].trim();
+      if (firstPair && firstPair.includes('=')) return firstPair;
+    }
   }
 
   return '';
@@ -286,8 +359,8 @@ function validateAppletPath(path) {
   if (trimmed.indexOf('\\') !== -1) {
     throw new Error('禁止包含反斜杠路径');
   }
-  if (!trimmed.startsWith('/taste/applet/')) {
-    throw new Error('非法请求路径，必须以 /taste/applet/ 开头');
+  if (!trimmed.startsWith('/taste/applet/') && !trimmed.startsWith('/taste/userInfo/')) {
+    throw new Error('非法请求路径，必须以 /taste/applet/ 开头（或 /taste/userInfo/）');
   }
   const questionIdx = trimmed.indexOf('?');
   const purePath = questionIdx !== -1 ? trimmed.slice(0, questionIdx) : trimmed;
@@ -347,6 +420,8 @@ function request(options) {
 
   if (s.cookie && s.baseUrl === baseUrl) {
     reqHeaders['Cookie'] = s.cookie;
+    const bearerToken = getBearerToken(s);
+    if (bearerToken) reqHeaders['Authorization'] = 'Bearer ' + bearerToken;
   }
 
   return new Promise((resolve, reject) => {
@@ -370,11 +445,11 @@ function request(options) {
 
         // 1. 状态码判断
         const statusCode = res.statusCode;
-        if (statusCode === 401) {
+        if (statusCode === 401 || statusCode === 403) {
           clearSession();
           const err = new Error('登录会话已失效，请重新登录');
-          err.statusCode = 401;
-          err.code = 401;
+          err.statusCode = statusCode;
+          err.code = statusCode;
           return reject(err);
         }
 
@@ -396,7 +471,7 @@ function request(options) {
           return reject(err);
         }
 
-        if (respData.code !== 0) {
+        if (!isSuccessResponse(respData)) {
           const err = new Error(respData.msg || '业务操作失败');
           err.code = respData.code;
           err.statusCode = statusCode;
@@ -448,9 +523,9 @@ function requestWithAuth(options) {
 }
 
 /**
- * 微信临时 code 登录（单飞并发保护）
+ * 微信临时 code 登录（按规范使用 wx.getUserProfile 嵌套 wx.login，单飞并发保护）
  */
-function login() {
+function login(userProfile) {
   if (inFlightLoginPromise) {
     return inFlightLoginPromise;
   }
@@ -460,110 +535,161 @@ function login() {
   const loginBaseUrl = baseUrl;
 
   inFlightLoginPromise = new Promise((resolve, reject) => {
-    if (typeof wx === 'undefined' || !wx.login) {
-      return reject(new Error('wx.login 不可用'));
+    if (typeof wx === 'undefined') {
+      return reject(new Error('wx 不可用'));
     }
 
-    wx.login({
-      success(res) {
-        if (!res.code) {
-          return reject(new Error('未获取到微信登录凭证 code'));
-        }
-        
-        let validatedPath;
-        try {
-          validatedPath = validateAppletPath('/taste/applet/login');
-        } catch (e) {
-          return reject(e);
-        }
-
-        if (typeof wx === 'undefined' || !wx.request) {
-          return reject(new Error('wx.request 不可用'));
-        }
-
-        wx.request({
-          url: baseUrl + validatedPath,
-          method: 'POST',
-          data: { code: res.code },
-          header: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          timeout: 10000,
-          success(httpRes) {
-            const receivedNewCookie = extractJSessionId(httpRes);
-            const statusCode = httpRes.statusCode;
-
-            if (statusCode < 200 || statusCode >= 300) {
-              clearSession();
-              const errMsg = (httpRes.data && httpRes.data.msg) || ('登录服务异常 (' + statusCode + ')');
-              const err = new Error(errMsg);
-              err.statusCode = statusCode;
-              err.code = (httpRes.data && httpRes.data.code) || statusCode;
-              err.data = httpRes.data;
-              return reject(err);
-            }
-
-            const respData = httpRes.data;
-            if (!respData || typeof respData !== 'object' || Array.isArray(respData)) {
-              clearSession();
-              const err = new Error('登录响应格式错误：非标准响应格式');
-              err.statusCode = statusCode;
-              return reject(err);
-            }
-
-            if (respData.code !== 0) {
-              clearSession();
-              const err = new Error(respData.msg || '登录失败');
-              err.code = respData.code;
-              err.statusCode = statusCode;
-              err.data = respData;
-              return reject(err);
-            }
-
-            const payload = respData.data;
-            if (!payload || typeof payload !== 'object' || !payload.openid) {
-              clearSession();
-              const err = new Error('后台未返回有效身份标识 openid');
-              err.code = respData.code;
-              return reject(err);
-            }
-
-            if (!receivedNewCookie) {
-              clearSession();
-              const err = new Error('登录未收到有效服务端会话凭证 (JSESSIONID)');
-              return reject(err);
-            }
-
-            const currentBase = resolveBaseUrl();
-            if (loginGen !== sessionGeneration || loginBaseUrl !== currentBase) {
-              const err = new Error('登录过程中会话状态或基地址已变更，已丢弃本次登录响应');
-              return reject(err);
-            }
-
-            const newSession = {
-              cookie: receivedNewCookie,
-              baseUrl: baseUrl,
-              openid: payload.openid,
-              nickname: payload.nickname || ''
-            };
-            // 新登录替换身份时，使此前发出的请求全部过期。
-            sessionGeneration++;
-            persistSession(newSession);
-            notifySessionListeners('logged_in', newSession);
-            resolve(newSession);
-          },
-          fail(err) {
-            clearSession();
-            const message = err.errMsg || '微信登录网络不可用，请稍后重试';
-            reject(new Error(message));
-          }
-        });
-      },
-      fail(err) {
-        reject(new Error(err.errMsg || '微信登录失败'));
+    const doLoginWithProfile = (resTemp) => {
+      if (!wx.login) {
+        return reject(new Error('wx.login 不可用'));
       }
-    });
+      wx.login({
+        success(res) {
+          if (!res.code) {
+            return reject(new Error('未获取到微信登录凭证 code'));
+          }
+          let validatedPath;
+          try {
+            validatedPath = validateAppletPath('/taste/userInfo/wxLogin');
+          } catch (e) {
+            return reject(e);
+          }
+
+          if (typeof wx === 'undefined' || !wx.request) {
+            return reject(new Error('wx.request 不可用'));
+          }
+
+          const userInfo = (resTemp && resTemp.userInfo) || {};
+          const userNick = userInfo.nickname !== undefined ? userInfo.nickname : (userInfo.nickName || '');
+
+          wx.request({
+            url: baseUrl + validatedPath,
+            method: 'POST',
+            data: {
+              code: res.code,
+              avatarUrl: userInfo.avatarUrl || '',
+              nickName: userNick,
+              sex: userInfo.sex !== undefined ? userInfo.sex : 0
+            },
+            header: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            timeout: 10000,
+            success(httpRes) {
+              const receivedNewCookie = extractJSessionId(httpRes);
+              const statusCode = httpRes.statusCode;
+
+              if (statusCode < 200 || statusCode >= 300) {
+                clearSession();
+                const errMsg = (httpRes.data && httpRes.data.msg) || ('登录服务异常 (' + statusCode + ')');
+                const err = new Error(errMsg);
+                err.statusCode = statusCode;
+                err.code = (httpRes.data && httpRes.data.code) || statusCode;
+                err.data = httpRes.data;
+                return reject(err);
+              }
+
+              const respData = httpRes.data;
+              if (!respData || typeof respData !== 'object' || Array.isArray(respData)) {
+                clearSession();
+                const err = new Error('登录响应格式错误：非标准响应格式');
+                err.statusCode = statusCode;
+                return reject(err);
+              }
+
+              if (!isSuccessResponse(respData)) {
+                clearSession();
+                const err = new Error(respData.msg || '登录失败');
+                err.code = respData.code;
+                err.statusCode = statusCode;
+                err.data = respData;
+                return reject(err);
+              }
+
+              const payload = (respData.data && typeof respData.data === 'object') ? respData.data : respData;
+              const openid = payload.openid || respData.openid || payload.openId || respData.openId ||
+                (payload.userInfo && (payload.userInfo.openid || payload.userInfo.openId)) ||
+                (payload.user && (payload.user.openid || payload.user.openId)) || '';
+
+              if (!openid) {
+                clearSession();
+                const err = new Error('后台未返回有效身份标识 openid');
+                err.code = respData.code;
+                return reject(err);
+              }
+
+              if (!receivedNewCookie) {
+                clearSession();
+                const err = new Error('登录未收到有效服务端会话凭证 (JSESSIONID)');
+                return reject(err);
+              }
+
+              const currentBase = resolveBaseUrl();
+              if (loginGen !== sessionGeneration || loginBaseUrl !== currentBase) {
+                const err = new Error('登录过程中会话状态或基地址已变更，已丢弃本次登录响应');
+                return reject(err);
+              }
+
+              const remoteNick = payload.nickname || payload.nickName || respData.nickname || respData.nickName ||
+                (payload.userInfo && (payload.userInfo.nickname || payload.userInfo.nickName)) ||
+                (payload.user && (payload.user.nickname || payload.user.nickName)) || '';
+              const finalNick = remoteNick || userNick || '';
+
+              const remoteAvatar = payload.avatarUrl || payload.avatar || respData.avatarUrl || respData.avatar ||
+                (payload.userInfo && (payload.userInfo.avatarUrl || payload.userInfo.avatar)) || '';
+              const finalAvatar = remoteAvatar || userInfo.avatarUrl || '';
+
+              const newSession = {
+                cookie: receivedNewCookie,
+                baseUrl: baseUrl,
+                openid: openid,
+                nickname: finalNick,
+                avatarUrl: finalAvatar
+              };
+              // 新登录替换身份时，使此前发出的请求全部过期。
+              sessionGeneration++;
+              persistSession(newSession);
+              notifySessionListeners('logged_in', newSession);
+              resolve(newSession);
+            },
+            fail(err) {
+              clearSession();
+              const message = err.errMsg || '微信登录网络不可用，请稍后重试';
+              reject(new Error(message));
+            }
+          });
+        },
+        fail(err) {
+          reject(new Error(err.errMsg || '微信登录失败'));
+        }
+      });
+    };
+
+    if (typeof wx.getUserProfile === 'function') {
+      const useFallbackProfile = (err) => {
+        const errMsg = (err && err.errMsg) || (err && err.message) || String(err || '');
+        if (errMsg.indexOf('auth deny') !== -1 || errMsg.indexOf('cancel') !== -1) {
+          return reject(new Error('已取消授权'));
+        }
+        // 隐私指引未生效或接口同步抛错时，仍继续用 wx.login 建立身份；资料取页面已有值。
+        console.warn('【盲酌】wx.getUserProfile 暂不可用，使用页面已有资料继续登录:', errMsg);
+        doLoginWithProfile({ userInfo: (userProfile && typeof userProfile === 'object') ? userProfile : {} });
+      };
+      try {
+        wx.getUserProfile({
+          desc: '用于完善个人信息',
+          success: (resTemp) => {
+            doLoginWithProfile(resTemp);
+          },
+          fail: useFallbackProfile
+        });
+      } catch (err) {
+        useFallbackProfile(err);
+      }
+    } else {
+      doLoginWithProfile({ userInfo: (userProfile && typeof userProfile === 'object') ? userProfile : {} });
+    }
   }).finally(() => {
     inFlightLoginPromise = null;
   });
@@ -639,15 +765,9 @@ async function updateProfile(nickname) {
   if (cleanNick.length > 50) {
     throw new Error('昵称长度不可超过 50 个字符');
   }
-  const data = await requestWithAuth({
-    url: '/taste/applet/profile',
-    method: 'POST',
-    data: { nickname: cleanNick }
-  });
-  const s = getSession();
-  s.nickname = (data && typeof data.nickname === 'string' && data.nickname.trim()) ? data.nickname.trim() : cleanNick;
-  persistSession(s);
-  return s;
+  // 线上资料注册接口就是 wxLogin，提交当前昵称并返回新的 accessToken。
+  // 复用同一身份链路，避免依赖未部署的旧 /taste/applet/profile 接口。
+  return login({ nickName: cleanNick });
 }
 
 /**

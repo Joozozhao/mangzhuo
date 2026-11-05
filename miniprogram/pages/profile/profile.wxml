@@ -1,40 +1,45 @@
 <view class="container profile-page">
-  <view class="page-header">
-    <view class="page-title">{{loginState === "wechat" ? "品鉴资料" : "注册 / 登录"}}</view>
-    <view class="page-desc">{{loginState === "wechat" ? "头像与昵称将展示在酒局名片、排行榜与分享酒卡上" : "使用微信一键注册登录，同步品鉴资料与酒局记录"}}</view>
+  <view class="page-header profile-header">
+    <view class="profile-kicker">盲酌 · 品鉴身份</view>
+    <view class="page-title">你的品鉴名片</view>
+    <view class="page-desc">先确认身份，再留下你的名字。</view>
   </view>
-
-  <!-- 头像与昵称 -->
+  <view class="profile-steps" aria-label="设置步骤">
+    <view class="profile-step {{loginState === 'wechat' ? 'step-done' : 'step-current'}}"><text class="step-index">01</text><text>微信身份</text></view>
+    <view class="step-line {{loginState === 'wechat' ? 'line-done' : ''}}"></view>
+    <view class="profile-step {{loginState === 'wechat' ? 'step-current' : ''}}"><text class="step-index">02</text><text>品鉴名片</text></view>
+  </view>
+  <view class="card identity-card {{loginState === 'wechat' ? 'identity-connected' : 'identity-needed'}}">
+    <view class="identity-heading">
+      <text class="identity-label">01 / 微信身份</text>
+      <text class="identity-status">{{loginState === 'wechat' ? '已确认' : '待登录'}}</text>
+    </view>
+    <view class="identity-title">{{loginState === 'wechat' ? '身份已确认，继续完善名片' : '先用微信确认你的身份'}}</view>
+    <view class="identity-desc">{{loginState === 'wechat' ? '昵称将同步至品鉴后台，头像仅保存在当前设备。' : '登录后可参与在线品鉴，并在不同设备间同步你的昵称。'}}</view>
+    <button wx:if="{{loginState !== 'wechat'}}" class="identity-action" loading="{{loggingIn}}" disabled="{{loggingIn || saving}}" bindtap="onLogin">
+      <text>{{loggingIn ? '正在确认身份…' : '微信注册 / 登录'}}</text><text class="identity-arrow">→</text>
+    </button>
+  </view>
   <view class="card profile-card">
+    <view class="editor-heading"><text class="editor-label">02 / 品鉴名片</text><text class="editor-note">酒局与手记中展示</text></view>
     <view class="avatar-row">
-      <button class="avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+      <button class="avatar-btn" bindtap="onChooseAvatar" aria-label="从相册选择头像">
         <image wx:if="{{pendingImg || avatarImg}}" class="avatar-img" src="{{pendingImg ? pendingAvatar : avatar}}" mode="aspectFill" />
-        <text wx:else class="avatar-emoji">{{avatar || '🍶'}}</text>
+        <text wx:else class="avatar-emoji">{{avatar || '知味'}}</text>
       </button>
-      <view class="avatar-tip">点击头像可从微信相册/头像中选择，未选择时沿用当前头像</view>
-    </view>
-    <view class="form-item">
-      <text class="form-label">品鉴昵称</text>
-      <input class="input nickname-input" type="nickname" maxlength="20" placeholder="点击可填入微信昵称，也可自定义" value="{{nickname}}" bindinput="onNicknameInput" bindblur="onNicknameInput" bindchange="onNicknameInput" />
-    </view>
-    <view class="nickname-tip">微信昵称仅在你点击建议后填入，盲酌不会自动读取你的微信昵称。</view>
-  </view>
-
-  <!-- 微信身份 -->
-  <view class="card identity-card">
-    <view class="identity-row">
-      <view class="identity-info">
-        <view class="identity-title">微信身份</view>
-        <view class="identity-state {{loginState === 'wechat' ? 'state-ok' : ''}}">
-          {{loginState === 'wechat' ? '✓ 已完成微信注册登录' : '未注册 · 游客模式'}}
-        </view>
+      <view class="avatar-copy">
+        <view class="avatar-title">选择一张头像</view>
+        <view class="avatar-tip">从相册选择图片，未选择时沿用当前头像。</view>
+        <view class="avatar-action">点击左侧头像更换</view>
       </view>
-      <button wx:if="{{loginState !== 'wechat'}}" class="login-btn" loading="{{loggingIn}}" disabled="{{loggingIn}}" bindtap="onLogin">微信注册 / 登录</button>
     </view>
-    <view class="identity-tip" wx:if="{{provider === 'welink'}}">注册登录后可通过微信身份参与在线品鉴并同步昵称，头像保存在本机。</view>
-    <view class="identity-tip" wx:elif="{{!cloudReady}}">登录服务暂不可用，可先保存品鉴资料；浏览酒识与本地打卡不受影响。</view>
+    <view class="form-item nickname-field">
+      <text class="form-label">品鉴昵称</text>
+      <input class="input nickname-input" type="text" maxlength="20" placeholder="请输入你的品鉴昵称" value="{{nickname}}" bindinput="onNicknameInput" bindblur="onNicknameInput" bindchange="onNicknameInput" />
+      <view class="nickname-tip">可完全自定义，最多 20 字，仅在你主动保存后使用。</view>
+    </view>
   </view>
-
-  <button class="btn-primary" loading="{{saving}}" disabled="{{saving}}" bindtap="onSave">保存资料</button>
-  <button class="cancel-link" bindtap="onCancel">取消，保留原资料</button>
+  <button class="btn-primary save-btn" loading="{{saving}}" disabled="{{saving || loggingIn}}" bindtap="onSave">{{saving ? '正在保存…' : '保存品鉴名片'}}</button>
+  <button class="cancel-link" bindtap="onCancel">暂不修改</button>
+  <view class="profile-footer">一杯一记，留下风味，也留下记忆。</view>
 </view>

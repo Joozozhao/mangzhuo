@@ -6,7 +6,8 @@
  *    WeLink 模式默认只同步后台昵称，头像保存在本地，不初始化云开发；云开发模式保留原有云函数/云存储流程。
  * 2. 展示资料：头像与昵称由用户主动选择填写，不静默读取微信头像昵称。
  * 3. 关系稳定：本地 userId 稳定不变，openid / welinkOpenid 仅附加在用户资料上，不破坏房主与评分归属。
- * 4. 健壮降级：服务不可用或会话失效时降级为游客模式，不影响本地手记与离线酒局体验。
+ * 4. 身份与凭证分离：微信身份绑定保存在本机，短期访问凭证过期不改变登录展示；
+ *    主动退出或服务端明确拒绝身份时才回到游客模式。
  */
 
 const storage = require('./storage');
@@ -84,9 +85,9 @@ function isLoggedIn() {
   initWelinkSessionListener();
   const user = storage.getCurrentUser();
   if (config.IDENTITY_PROVIDER === 'welink') {
-    if (!user || !user.welinkOpenid || !welinkClient.hasValidSession()) return false;
-    const session = welinkClient.getSession();
-    return !!(session && session.openid && user.welinkOpenid === session.openid);
+    // accessToken 是短期请求凭证，不是用户登录状态本身。
+    // 页面重开时保留已绑定的微信身份；需要联网的操作仍由 welinkClient 校验会话。
+    return !!(user && user.welinkOpenid && user.loginState === 'wechat');
   }
   return !!(user && user.openid && user.loginState === 'wechat');
 }
@@ -126,11 +127,11 @@ function syncGlobal(user) {
  * 成功：把 openid 附加到当前用户（userId 不变），loginState 置为 wechat。
  * 失败：返回 { ok:false, reason, message }，调用方需明确提示，游客不受影响。
  */
-async function loginWithWeChat() {
+async function loginWithWeChat(userProfile) {
   initWelinkSessionListener();
   if (config.IDENTITY_PROVIDER === 'welink') {
     try {
-      const session = await welinkClient.login();
+      const session = await welinkClient.login(userProfile);
       if (!session || !session.openid) {
         return {
           ok: false,
@@ -139,15 +140,23 @@ async function loginWithWeChat() {
         };
       }
       const user = storage.getCurrentUser();
+      const nick = session.nickname || (userProfile && (userProfile.nickName || userProfile.nickname)) || '';
+      const avatar = session.avatarUrl || (userProfile && userProfile.avatarUrl) || '';
       const next = Object.assign({}, user, {
         welinkOpenid: session.openid,
-        welinkNickname: session.nickname || '',
+        welinkNickname: nick,
         loginState: 'wechat',
         loginAt: Date.now()
       });
+      if (avatar && !isAvatarImage(user.avatar)) {
+        next.avatar = avatar;
+      }
+      if (nick && (!user.nickname || !user.profileCompleted)) {
+        next.nickname = nick;
+      }
       storage.setCurrentUser(next);
       syncGlobal(next);
-      return { ok: true, openid: session.openid };
+      return { ok: true, openid: session.openid, user: next };
     } catch (e) {
       console.warn('【盲酌】WeLink 微信登录失败', e);
       return {
@@ -286,7 +295,7 @@ async function saveProfile(options) {
 
 async function syncProfileToWelink(user) {
   const result = { cloudSynced: false, avatarCloudSynced: false, avatarLocalOnly: true, error: '' };
-  if (!welinkClient.hasValidSession()) {
+  if (user.loginState !== 'wechat' && !user.welinkOpenid) {
     result.error = 'NOT_LOGGED_IN';
     return result;
   }

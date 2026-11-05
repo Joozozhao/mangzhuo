@@ -39,7 +39,7 @@ test('welinkClient test suite', async (t) => {
   await t.test('1. Session isolation and Set-Cookie JSESSIONID persistence', async () => {
     mockNetworkHandler = (opts) => {
       assert.equal(opts.method, 'POST');
-      assert.match(opts.url, /\/taste\/applet\/login/);
+      assert.match(opts.url, /\/taste\/userInfo\/wxLogin/);
       opts.success({
         statusCode: 200,
         header: {
@@ -689,5 +689,52 @@ test('welinkClient test suite', async (t) => {
       config.WELINK_BASE_URL = previousBase;
       welinkClient.clearSession();
     }
+  });
+
+  await t.test('22. Login with wx.getUserProfile routes to /taste/userInfo/wxLogin with avatarUrl, nickName, sex', async () => {
+    welinkClient.clearSession();
+    let capturedRequest = null;
+    mockNetworkHandler = (opts) => {
+      capturedRequest = opts;
+      opts.success({
+        statusCode: 200,
+        header: { 'Set-Cookie': 'JSESSIONID=WX_LOGIN_USER_INFO_COOKIE; Path=/; HttpOnly' },
+        data: {
+          code: 0,
+          msg: 'ok',
+          data: {
+            openid: 'wx_user_openid_999',
+            nickname: '微信品酒师'
+          }
+        }
+      });
+    };
+
+    const originalGetUserProfile = global.wx.getUserProfile;
+    global.wx.getUserProfile = ({ desc, success }) => {
+      assert.equal(desc, '用于完善个人信息');
+      success({
+        userInfo: {
+          avatarUrl: 'https://wx.qlogo.cn/mock/avatar.jpg',
+          nickname: '微信品酒师',
+          sex: 1
+        }
+      });
+    };
+
+    const session = await welinkClient.login();
+    assert.equal(capturedRequest.url, 'https://applet.51welink.com/taste/userInfo/wxLogin');
+    assert.equal(capturedRequest.method, 'POST');
+    assert.deepEqual(capturedRequest.data, {
+      code: capturedRequest.data.code,
+      avatarUrl: 'https://wx.qlogo.cn/mock/avatar.jpg',
+      nickName: '微信品酒师',
+      sex: 1
+    });
+    assert.equal(session.openid, 'wx_user_openid_999');
+    assert.equal(session.nickname, '微信品酒师');
+    assert.equal(session.cookie, 'JSESSIONID=WX_LOGIN_USER_INFO_COOKIE');
+    global.wx.getUserProfile = originalGetUserProfile;
+    welinkClient.clearSession();
   });
 });

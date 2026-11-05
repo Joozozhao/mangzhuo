@@ -628,14 +628,18 @@ test('onlinePages test suite - Page/wx lifecycle and edge-case contracts', async
     // User edits nickname only, does NOT touch avatar (no pendingAvatar)
     page.onNicknameInput({ detail: { value: '大师品酒人' } });
 
-    // Mock backend profile save: nickname synced successfully
+    // Mock the actual wxLogin profile-registration contract.
     mockNetworkHandler = (opts) => {
+      assert.match(opts.url, /\/taste\/userInfo\/wxLogin/);
+      assert.equal(opts.data.nickName, '大师品酒人');
       opts.success({
         statusCode: 200,
+        header: { 'Set-Cookie': 'JSESSIONID=PROFILE_UPDATED_COOKIE' },
         data: {
           code: 0,
           msg: 'ok',
           data: {
+            openid: 'profile_tester_user',
             nickname: '大师品酒人'
           }
         }
@@ -650,6 +654,129 @@ test('onlinePages test suite - Page/wx lifecycle and edge-case contracts', async
     assert.equal(modals[0].title, '资料已保存');
     assert.equal(modals[0].content, '昵称已同步，头像仅保存在本机。');
     assert.equal(modals[0].content.includes('未能保存，请重新选择头像'), false, 'Must not prompt to re-upload avatar');
+  });
+
+  // Case 9: profile 页面通过 wx.getUserProfile 授权并成功登录
+  await t.test('Case 9: pages/profile - onLogin with wx.getUserProfile successfully authorizes and updates UI', async () => {
+    setupGuestUser();
+    clearHistory();
+
+    const originalGetUserProfile = global.wx.getUserProfile;
+    global.wx.getUserProfile = (opts) => {
+      assert.equal(opts.desc, '用于完善个人信息');
+      opts.success({
+        userInfo: {
+          avatarUrl: 'https://wx.qlogo.cn/user_avatar_101.jpg',
+          nickName: '品鉴大咖',
+          sex: 1
+        }
+      });
+    };
+
+    let loginApiCalled = false;
+    let loginDataSent = null;
+    mockNetworkHandler = (opts) => {
+      loginApiCalled = true;
+      loginDataSent = opts.data;
+      opts.success({
+        statusCode: 200,
+        header: { 'Set-Cookie': 'JSESSIONID=PROFILE_LOGIN_COOKIE' },
+        data: {
+          code: 0,
+          msg: 'ok',
+          data: {
+            openid: 'openid_userprofile_101',
+            nickname: '品鉴大咖'
+          }
+        }
+      });
+    };
+
+    const page = createPageInstance('pages/profile/profile.js');
+    page.onLoad();
+    assert.equal(page.data.loginState, 'guest');
+
+    page.onLogin();
+    await new Promise(r => setTimeout(r, 20));
+
+    assert.equal(loginApiCalled, true);
+    assert.equal(loginDataSent.avatarUrl, 'https://wx.qlogo.cn/user_avatar_101.jpg');
+    assert.equal(loginDataSent.nickName, '品鉴大咖');
+    assert.equal(page.data.loginState, 'wechat');
+    assert.equal(page.data.nickname, '品鉴大咖');
+    assert.equal(page.data.avatar, 'https://wx.qlogo.cn/user_avatar_101.jpg');
+
+    global.wx.getUserProfile = originalGetUserProfile;
+  });
+
+  // Case 10: profile 页面 wx.getUserProfile 用户拒绝授权
+  await t.test('Case 10: pages/profile - onLogin when user denies wx.getUserProfile shows toast and remains guest', async () => {
+    setupGuestUser();
+    clearHistory();
+
+    const originalGetUserProfile = global.wx.getUserProfile;
+    global.wx.getUserProfile = (opts) => {
+      opts.fail({ errMsg: 'getUserProfile:fail auth deny' });
+    };
+
+    let loginApiCalled = false;
+    mockNetworkHandler = () => { loginApiCalled = true; };
+
+    const page = createPageInstance('pages/profile/profile.js');
+    page.onLoad();
+
+    page.onLogin();
+    await new Promise(r => setTimeout(r, 20));
+
+    assert.equal(loginApiCalled, false, 'Should not proceed to login network request on auth deny');
+    assert.equal(page.data.loginState, 'guest');
+    assert.equal(toasts.some(t => t.title && t.title.includes('已取消授权')), true);
+
+    global.wx.getUserProfile = originalGetUserProfile;
+  });
+
+  // Case 11: profile 页面遇到 privacy agreement 未声明时自动兜底降级登录
+  await t.test('Case 11: pages/profile - onLogin when wx.getUserProfile reports privacy agreement error falls back and succeeds', async () => {
+    setupGuestUser();
+    clearHistory();
+
+    const originalGetUserProfile = global.wx.getUserProfile;
+    global.wx.getUserProfile = (opts) => {
+      opts.fail({ errMsg: 'getUserProfile:fail api scope is not declared in the privacy agreement' });
+    };
+
+    let loginApiCalled = false;
+    let loginDataSent = null;
+    mockNetworkHandler = (opts) => {
+      loginApiCalled = true;
+      loginDataSent = opts.data;
+      opts.success({
+        statusCode: 200,
+        header: { 'Set-Cookie': 'JSESSIONID=PRIVACY_FALLBACK_COOKIE' },
+        data: {
+          code: 0,
+          msg: 'ok',
+          data: {
+            openid: 'openid_privacy_fallback_user',
+            nickname: '自填品鉴师'
+          }
+        }
+      });
+    };
+
+    const page = createPageInstance('pages/profile/profile.js');
+    page.onLoad();
+    page.onNicknameInput({ detail: { value: '自填品鉴师' } });
+
+    page.onLogin();
+    await new Promise(r => setTimeout(r, 20));
+
+    assert.equal(loginApiCalled, true, 'Login API must still be called via fallback');
+    assert.equal(loginDataSent.nickName, '自填品鉴师');
+    assert.equal(page.data.loginState, 'wechat');
+    assert.equal(toasts.some(t => t.title && t.title.includes('注册登录成功')), true);
+
+    global.wx.getUserProfile = originalGetUserProfile;
   });
 });
 

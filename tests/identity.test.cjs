@@ -140,11 +140,13 @@ test('identity and session bridge test suite', async (t) => {
       backendReceivedData = opts.data;
       opts.success({
         statusCode: 200,
+        header: { 'Set-Cookie': 'JSESSIONID=PROFILE_UPDATED_COOKIE' },
         data: {
           code: 0,
           msg: 'ok',
           data: {
-            nickname: '服务端标准化昵称'
+            openid: 'welink_openid_xyz',
+            nickname: '前端输入昵称'
           }
         }
       });
@@ -164,13 +166,13 @@ test('identity and session bridge test suite', async (t) => {
     assert.equal(saveRes.avatarLocalOnly, true);
     assert.equal(saveRes.avatarCloudSynced, false);
 
-    // Verify backend received ONLY nickname, never wxfile avatar
-    assert.equal(backendReceivedData.nickname, '前端输入昵称');
-    assert.equal(backendReceivedData.avatar, undefined);
+    // wxLogin 提交昵称；本机 wxfile 头像路径不能发送给后台。
+    assert.equal(backendReceivedData.nickName, '前端输入昵称');
+    assert.equal(backendReceivedData.avatarUrl, '');
 
     // Verify currentUser is updated with remote authoritative nickname
     const updatedUser = storage.getCurrentUser();
-    assert.equal(updatedUser.nickname, '服务端标准化昵称');
+    assert.equal(updatedUser.nickname, '前端输入昵称');
   });
 
   await t.test('4. Cloud provider branch remains intact when IDENTITY_PROVIDER is cloud', async () => {
@@ -219,6 +221,51 @@ test('identity and session bridge test suite', async (t) => {
     assert.equal(cloudUser.loginState, 'wechat');
     assert.equal(identity.isLoggedIn(), true);
     assert.equal(identity.getActiveOpenid(), 'wx_cloud_openid_123');
+  });
+
+  await t.test('5. WeLink loginWithWeChat with userProfile updates user avatar and nickname', async () => {
+    config.IDENTITY_PROVIDER = 'welink';
+    storage.setCurrentUser({
+      userId: 'user_master',
+      avatar: '🍶',
+      nickname: '',
+      profileCompleted: false,
+      loginState: 'guest'
+    });
+
+    let sentRequest = null;
+    mockNetworkHandler = (opts) => {
+      sentRequest = opts;
+      opts.success({
+        statusCode: 200,
+        header: { 'Set-Cookie': 'JSESSIONID=WELINK_UPROFILE_COOKIE' },
+        data: {
+          code: 0,
+          msg: 'ok',
+          data: {
+            openid: 'welink_openid_profile_test',
+            nickname: '微信资料官'
+          }
+        }
+      });
+    };
+
+    const profileData = {
+      avatarUrl: 'https://wx.qlogo.cn/avatar123.jpg',
+      nickName: '微信资料官',
+      sex: 2
+    };
+
+    const res = await identity.loginWithWeChat(profileData);
+    assert.equal(res.ok, true);
+    assert.equal(res.openid, 'welink_openid_profile_test');
+    assert.equal(sentRequest.url, 'https://applet.51welink.com/taste/userInfo/wxLogin');
+
+    const currentUser = storage.getCurrentUser();
+    assert.equal(currentUser.avatar, 'https://wx.qlogo.cn/avatar123.jpg');
+    assert.equal(currentUser.nickname, '微信资料官');
+    assert.equal(currentUser.loginState, 'wechat');
+    assert.equal(currentUser.welinkOpenid, 'welink_openid_profile_test');
   });
 });
 
