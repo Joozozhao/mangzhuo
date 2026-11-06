@@ -1,6 +1,6 @@
 /**
  * 公开酒文化知识适配层
- * 适配 GET /taste/public/knowledge
+ * 适配 POST /taste/public/knowledge
  * 返回业务结构：{ items, page, size, total }
  */
 const welinkClient = require('./welinkClient');
@@ -70,7 +70,7 @@ function normalizeKnowledgeItem(row, index) {
   const rawCategory = typeof row.category === 'string' ? row.category : (typeof row.type === 'string' ? row.type : '');
   const category = stripHtml(rawCategory).slice(0, 40) || '酒文化';
 
-  const rawContent = row.content != null ? row.content : (row.text != null ? row.text : (row.body != null ? row.body : ''));
+  const rawContent = row.content != null ? row.content : (row.paragraphs != null ? row.paragraphs : (row.text != null ? row.text : (row.body != null ? row.body : '')));
   const paragraphs = normalizeParagraphs(rawContent);
 
   const rawDesc = typeof row.desc === 'string' ? row.desc : (typeof row.summary === 'string' ? row.summary : (typeof row.description === 'string' ? row.description : ''));
@@ -79,10 +79,20 @@ function normalizeKnowledgeItem(row, index) {
     desc = paragraphs[0].slice(0, 100);
   }
 
-  const rawDate = typeof row.updated === 'string' ? row.updated : (typeof row.updatedAt === 'string' ? row.updatedAt : (typeof row.createTime === 'string' ? row.createTime : ''));
+  const rawDate = typeof row.updated === 'string' ? row.updated : (typeof row.updateDate === 'string' ? row.updateDate : (typeof row.updatedAt === 'string' ? row.updatedAt : (typeof row.createTime === 'string' ? row.createTime : '')));
   const updated = stripHtml(rawDate).slice(0, 30);
 
-  const meta = category + (updated ? ' · ' + updated : ' · 慢读酒识');
+  const minutes = Number.isSafeInteger(row.minutes) && row.minutes > 0 && row.minutes < 1000 ? row.minutes : null;
+  const meta = category + (minutes ? ' · ' + minutes + ' 分钟阅读' : (updated ? ' · ' + updated : ' · 慢读酒识'));
+
+  let rawSources = row.sources;
+  if (typeof rawSources === 'string') {
+    try { rawSources = JSON.parse(rawSources); } catch (_) { rawSources = []; }
+  }
+  const sources = (Array.isArray(rawSources) ? rawSources : []).filter(source =>
+    source && typeof source.title === 'string' && source.title.trim() &&
+    typeof source.url === 'string' && /^https:\/\//i.test(source.url.trim())
+  ).map(source => ({ title: stripHtml(source.title).slice(0, 150), url: source.url.trim() }));
 
   const coverUrl = typeof row.coverUrl === 'string' && /^https?:\/\//i.test(row.coverUrl.trim()) ? row.coverUrl.trim() : (
     typeof row.imageUrl === 'string' && /^https?:\/\//i.test(row.imageUrl.trim()) ? row.imageUrl.trim() : null
@@ -97,9 +107,9 @@ function normalizeKnowledgeItem(row, index) {
     meta,
     paragraphs,
     facts: [],
-    sources: [],
+    sources,
     related: [],
-    tip: '',
+    tip: typeof row.tip === 'string' ? stripHtml(row.tip).slice(0, 500) : '',
     updated
   };
 
@@ -204,7 +214,7 @@ function loadKnowledge({ page = 1, size = 20, force = false } = {}) {
 
     welinkClient.requestPublic({
       url: PATH,
-      method: 'GET',
+      method: 'POST',
       data: { page: p, size: s },
       raw: true
     }).then(body => {

@@ -151,7 +151,7 @@ test('knowledgeCatalog public service unit tests', async t => {
     const result = await service.loadKnowledge({ page: 1, size: 20 });
     assert.equal(publicCalls.length, 1);
     assert.equal(publicCalls[0].url, '/taste/public/knowledge');
-    assert.equal(publicCalls[0].method, 'GET');
+    assert.equal(publicCalls[0].method, 'POST');
     assert.deepEqual(publicCalls[0].data, { page: 1, size: 20 });
     assert.equal(publicCalls[0].raw, true);
 
@@ -207,5 +207,23 @@ test('knowledgeCatalog public service unit tests', async t => {
     await assert.rejects(task, /数据来源已变更/);
 
     assert.equal(service.getCachedKnowledge({ page: 1, size: 20 }), null);
+  });
+
+  await t.test('8. actual knowledge fields retain paragraphs, sources, tip and updateDate', () => {
+    const { service } = reset();
+    const result = service.normalizeKnowledgeResponse({ code: '00000', data: {
+      current: 1, pages: 6, size: 2, total: 11,
+      records: [{
+        id: 1, title: '香型入门', category: '香型入门', description: '摘要', minutes: 1,
+        paragraphs: '第一段正文。\n第二段正文。', tip: '记录自己的观察。', updateDate: '2026-10-02',
+        sources: JSON.stringify([{ title: '标准来源', url: 'https://example.com/standard' }])
+      }]
+    } }, 1, 2);
+    assert.equal(result.total, 11);
+    assert.deepEqual(Array.from(result.items[0].paragraphs), ['第一段正文。', '第二段正文。']);
+    assert.equal(result.items[0].sources[0].title, '标准来源');
+    assert.equal(result.items[0].tip, '记录自己的观察。');
+    assert.equal(result.items[0].updated, '2026-10-02');
+    assert.match(result.items[0].meta, /1 分钟阅读/);
   });
 });
