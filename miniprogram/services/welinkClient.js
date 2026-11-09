@@ -516,7 +516,11 @@ function request(options) {
         return resolve(respData.data);
       },
       fail(err) {
-        const message = err.errMsg || '网络连接不可用，请稍后重试';
+        const rawMsg = (err && err.errMsg) || '';
+        let message = rawMsg || '网络连接不可用，请稍后重试';
+        if (rawMsg.includes('url not in domain list')) {
+          message = '请求域名未配置在小程序后台的合法域名列表中，请在微信公众平台配置【' + baseUrl + '】为 request 合法域名，并在真机右上角菜单点击重新进入或开启调试模式。';
+        }
         const error = new Error(message);
         error.raw = err;
         reject(error);
@@ -679,7 +683,11 @@ function login(userProfile) {
             },
             fail(err) {
               clearSession();
-              const message = err.errMsg || '微信登录网络不可用，请稍后重试';
+              const rawMsg = (err && err.errMsg) || '';
+              let message = rawMsg || '微信登录网络不可用，请稍后重试';
+              if (rawMsg.includes('url not in domain list')) {
+                message = '登录域名未配置在小程序后台的合法域名列表中，请在微信公众平台将【' + baseUrl + '】配置到 request 合法域名；真机开发测试可点右上角【···】开启调试。';
+              }
               reject(new Error(message));
             }
           });

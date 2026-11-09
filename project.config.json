@@ -2,7 +2,7 @@
   "miniprogramRoot": "miniprogram/",
   "projectname": "mangzhuo",
   "description": "盲酌 - 白酒盲品小程序 MVP",
-  "appid": "wxb011d82a1326e1da",
+  "appid": "wx82677de7d5edffff",
   "setting": {
     "urlCheck": false,
     "es6": true,
@@ -48,5 +48,6 @@
     "ignore": [],
     "include": []
   },
-  "editorSetting": {}
+  "editorSetting": {},
+  "isGameTourist": false
 }
