@@ -5,7 +5,7 @@
 .nav-shortcuts { display: flex; gap: 20rpx; justify-content: center; }
 .shortcut-btn { flex: 1; height: 86rpx; font-size: 28rpx; }
 .sample-reveal-card { padding: 32rpx; margin-bottom: 26rpx; }
-.src-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16rpx; }
+.src-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12rpx; margin-bottom: 16rpx; }
 .src-bottle-tag { font-size: 24rpx; font-weight: 800; color: #8c5d1e; background: #f4ebd9; padding: 6rpx 18rpx; border-radius: 12rpx; }
 .src-score-badge { display: flex; align-items: baseline; }
 .sb-label { font-size: 22rpx; color: #827a6f; margin-right: 8rpx; }
@@ -18,14 +18,15 @@
 .info-pill { font-size: 22rpx; background: #f4efe4; color: #5a5448; padding: 6rpx 16rpx; border-radius: 10rpx; }
 .price-pill { background: #171714; color: #fff; font-weight: 600; }
 .comparison-bar { display: flex; align-items: center; justify-content: space-around; background: #fbf7ee; border-radius: 16rpx; padding: 18rpx 12rpx; margin-bottom: 20rpx; border: 1rpx solid #ede3d1; }
-.comp-col { text-align: center; }
+.comp-col { flex: 1; min-width: 0; text-align: center; overflow-wrap: anywhere; word-break: break-all; }
 .comp-k { font-size: 20rpx; color: #877f72; display: block; }
 .comp-v { font-size: 26rpx; font-weight: 800; color: #181713; margin-top: 4rpx; }
-.comp-divider { color: #d8cebd; font-size: 22rpx; }
+.comp-divider { flex-shrink: 0; color: #d8cebd; font-size: 22rpx; }
 .diff-high { color: #c94b40; }
 .diff-low { color: #2e8b57; }
 .notes-quote { font-size: 24rpx; color: #6e675b; font-style: italic; background: #faf6ed; padding: 16rpx 20rpx; border-left: 6rpx solid #a97832; margin-bottom: 20rpx; border-radius: 4rpx; }
 .mini-btn { height: 76rpx; font-size: 26rpx; width: 100%; }
 .reveal-knowledge { border-top: 1rpx solid #e6dfd3; padding-top: 20rpx; margin-bottom: 24rpx; }
 .knowledge-caption { color: #897b68; font-size: 23rpx; }
-.reveal-knowledge .knowledge-link { width: 100% !important; text-align: left; background: transparent; color: #893e32; font-size: 27rpx; line-height: 1.6; padding: 14rpx 0 0; margin: 0; white-space: normal; }
+.reveal-knowledge .knowledge-link { display: flex; align-items: center; width: 100% !important; min-width: 0; min-height: 44px; height: auto; text-align: left; background: transparent; color: #893e32; font-size: 27rpx; line-height: 1.6; padding: 14rpx 0; margin: 0; white-space: normal; overflow-wrap: anywhere; word-break: break-all; }
+.real-brand, .real-product, .info-pill, .notes-quote { max-width: 100%; overflow-wrap: anywhere; word-break: break-all; }

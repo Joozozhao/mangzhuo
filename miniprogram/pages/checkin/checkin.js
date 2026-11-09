@@ -12,10 +12,10 @@ function mergeField(text, words) {
 }
 
 Page({
-  data: { aromas, index: 0, saving: false, groups: [], placeholders, title: '', suggestions: [], catalogLoading: false, catalogSource: 'builtin', catalogError: '' },
+  data: { aromas, index: 0, saving: false, groups: [], placeholders, title: '', titleError: '', titleFocused: false, note: '', suggestions: [], catalogLoading: false, catalogSource: 'builtin', catalogError: '' },
   onLoad() {
     this._disposed = false;
-    this.setData({ groups: kb.getFlavorGroups() });
+    this.setData({ groups: kb.getFlavorGroups().map(group => ({ ...group, selectedCount: 0 })) });
     this.loadWineCatalog();
   },
   async loadWineCatalog(force = false) {
@@ -28,15 +28,17 @@ Page({
   onUnload() { this._disposed = true; },
   onTitleInput(e) {
     this._suggestionQuery = e.detail.value;
-    this.setData({ title: e.detail.value, suggestions: searchLiquors(e.detail.value) });
+    this.setData({ title: e.detail.value, titleError: '', suggestions: searchLiquors(e.detail.value) });
   },
+  onTitleBlur() { this.setData({ titleFocused: false }); },
+  onNoteInput(e) { this.setData({ note: e.detail.value }); },
   applyWineSuggestion(e) {
     const wine = e.currentTarget.dataset.item;
     const title = wine.product;
     if (title.length > 40) { wx.showToast({ title: '酒名较长，请手动填写简称', icon: 'none' }); return; }
     this._suggestionQuery = '';
     const index = this.data.aromas.indexOf(wine.aromaType);
-    this.setData({ title, suggestions: [], index: index >= 0 ? index : this.data.index });
+    this.setData({ title, titleError: '', suggestions: [], index: index >= 0 ? index : this.data.index });
   },
   choose(e) {
     this.setData({ index: Number(e.detail.value) });
@@ -45,12 +47,18 @@ Page({
     const { group, id } = e.currentTarget.dataset;
     const groups = this.data.groups.map(g => {
       if (g.id !== group) return g;
-      return { ...g, terms: g.terms.map(t => (t.id === id ? { ...t, selected: !t.selected } : t)) };
+      const terms = g.terms.map(t => (t.id === id ? { ...t, selected: !t.selected } : t));
+      return { ...g, terms, selectedCount: terms.filter(t => t.selected).length };
     });
     this.setData({ groups });
   },
   submit(e) {
     if (this.data.saving) return;
+    if (!String(e.detail.value.title || '').trim()) {
+      this.setData({ titleError: '先为这一杯写下酒名或盲样编号', titleFocused: true });
+      wx.pageScrollTo({ selector: '#wine-section', duration: 250 });
+      return;
+    }
     this.setData({ saving: true });
     try {
       const value = e.detail.value;

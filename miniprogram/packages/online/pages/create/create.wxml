@@ -1,4 +1,4 @@
-<view class="journal create-page">
+<view class="journal create-page form-page">
   <view class="chapter-mast">
     <view class="chapter-brand">盲酌 · 发起在线品鉴</view>
     <view class="chapter-no">品鉴局设定</view>
@@ -7,31 +7,38 @@
   <view class="card form-card">
     <view class="form-title">基本信息</view>
     <view class="form-item">
-      <view class="form-label">酒局名称</view>
-      <input class="input" placeholder="例如：酱香经典盲品会" maxlength="32" value="{{title}}" bindinput="onTitleInput" />
+      <label class="form-label" for="online-title">酒局名称</label>
+      <input id="online-title" class="input" placeholder="例如：酱香经典盲品会" maxlength="32" cursor-spacing="96" value="{{title}}" bindinput="onTitleInput" />
     </view>
 
     <view class="form-item">
-      <view class="form-label">主持人口令</view>
-      <input class="input" placeholder="请输入今日口令（不会保存在本机）" password maxlength="64" value="{{authentication}}" bindinput="onAuthInput" />
+      <label class="form-label" for="online-auth">主持人口令</label>
+      <input id="online-auth" class="input" placeholder="请输入今日主持人口令" password maxlength="64" cursor-spacing="96" value="{{authentication}}" bindinput="onAuthInput" />
       <view class="hint-text">口令仅用于本次创建，发起后不会下发或持久化存储。</view>
     </view>
   </view>
 
   <view class="card form-card">
     <view class="form-header-row">
-      <view class="form-title">酒样清单（2 至 20 款）</view>
+      <view class="form-title">酒样清单</view>
       <view class="sample-count-badge">当前 {{sampleCount}} 款</view>
     </view>
-    <view class="hint-text">按编号顺序填写真实酒款名称，参与者在品评时将猜测每号对应酒款。</view>
+    <view class="hint-text">填写 2 至 20 款酒样。按编号顺序填写真实酒款名称，参与者在品评时将猜测每号对应酒款。</view>
 
     <view class="catalog-feedback"><text wx:if="{{catalogLoading}}">正在更新酒款目录…</text><block wx:elif="{{catalogError}}"><text>{{catalogSource === 'cache' ? '暂用最近目录' : '暂用离线目录'}}，可继续手动填写。</text><button class="catalog-retry" bindtap="retryWineCatalog">重试</button></block><text wx:else>输入品牌或酒名，从酒款目录选填。</text></view>
-    <block wx:for="{{names}}" wx:key="index"><view class="sample-row">
-      <view class="sample-badge">{{index + 1}} 号</view>
-      <input class="input sample-input" placeholder="填写第 {{index + 1}} 号真实酒款名称" maxlength="100" value="{{item}}" data-index="{{index}}" bindinput="onNameInput" />
-      <view class="btn-del" wx:if="{{sampleCount > 2}}" data-index="{{index}}" bindtap="onRemoveSample">删除</view>
+    <view class="sample-entry" wx:for="{{names}}" wx:key="index">
+      <view class="sample-header">
+        <label class="sample-label" for="online-sample-{{index}}"><text class="sample-badge">{{index + 1}} 号</text><text class="sample-caption">真实酒款名称</text></label>
+        <button class="btn-del" wx:if="{{sampleCount > 2}}" data-index="{{index}}" bindtap="onRemoveSample" aria-label="删除第 {{index + 1}} 号酒样">删除</button>
+      </view>
+      <input id="online-sample-{{index}}" class="input sample-input" placeholder="请输入真实酒款名称" maxlength="100" cursor-spacing="96" confirm-type="done" value="{{item}}" data-index="{{index}}" bindinput="onNameInput" />
+      <view class="wine-suggestions" wx:if="{{activeSuggestionIndex === index ? suggestions.length : false}}">
+        <button wx:for="{{suggestions}}" wx:for-item="wine" wx:for-index="wineIndex" wx:key="wineIndex" class="wine-suggestion" data-index="{{index}}" data-item="{{wine}}" bindtap="applyWineSuggestion">
+          <view class="wine-suggestion-title">{{wine.product}}</view>
+          <view class="wine-suggestion-meta">{{wine.brand}} · {{wine.aromaType}} · {{wine.degree}}</view>
+        </button>
+      </view>
     </view>
-    <view class="wine-suggestions" wx:if="{{activeSuggestionIndex === index ? suggestions.length : false}}"><button wx:for="{{suggestions}}" wx:for-item="wine" wx:for-index="wineIndex" wx:key="wineIndex" class="wine-suggestion" data-index="{{index}}" data-item="{{wine}}" bindtap="applyWineSuggestion"><view class="wine-suggestion-title">{{wine.product}}</view><view class="wine-suggestion-meta">{{wine.brand}} · {{wine.aromaType}} · {{wine.degree}}</view></button></view></block>
 
     <view class="add-action" wx:if="{{sampleCount < 20}}">
       <button class="btn-secondary add-btn" bindtap="onAddSample">+ 增加一款酒样</button>

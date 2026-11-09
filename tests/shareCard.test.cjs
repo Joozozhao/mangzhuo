@@ -74,3 +74,41 @@ test('saving uses the generated image and opens settings only after confirmation
   modal.success({ confirm: true });
   assert.equal(opened, 1);
 });
+
+test('room posters keep long wine names and nicknames within their cards and preserve the score', async () => {
+  let page;
+  const draws = [];
+  const ctx = {
+    scale() {}, fillRect() {}, strokeRect() {},
+    measureText(value) { return { width: Array.from(String(value)).length * 8 }; },
+    fillText(value, x, y) { draws.push({ value, x, y, width: this.measureText(value).width }); }
+  };
+  const canvas = { getContext: () => ctx };
+  const selector = { select() { return this; }, fields() { return this; }, exec(cb) { cb([{ node: canvas }]); } };
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../miniprogram/packages/blind/pages/report/report.js'), 'utf8'), {
+    Page(definition) { page = definition; },
+    wx: {
+      showLoading() {}, hideLoading() {}, getSystemInfoSync: () => ({ pixelRatio: 2 }),
+      createSelectorQuery: () => selector,
+      canvasToTempFilePath(options) { options.success({ tempFilePath: '/tmp/report.png' }); }
+    },
+    require(name) { return name.includes('identity') ? { drawCanvasAvatar: async () => {} } : {}; }
+  });
+  page.setData = function (values) { Object.assign(this.data, values); };
+  const long = '长酒款名称🍶'.repeat(20);
+  page.data.room = { name: long };
+  page.data.insights = {
+    mostPopular: { brand: long, product: long, avgOverall: 9.3 },
+    biggestDarkHorse: { brand: long, product: long, marketPrice: 1499, avgEstimatedPrice: 1600 },
+    topGuesser: { nickname: long, totalScore: 256 }
+  };
+  page.generatePoster();
+  await new Promise(resolve => setImmediate(resolve));
+  for (const y of [74, 194, 309, 424]) {
+    const draw = draws.find(row => row.y === y);
+    assert(draw.x + draw.width <= 304, 'poster text exceeds its card at y=' + y);
+    assert(draw.value.includes('…'));
+  }
+  assert(draws.find(row => row.y === 424).value.endsWith('(得分: 256分)'));
+  assert.equal(page.data.posterUrl, '/tmp/report.png');
+});

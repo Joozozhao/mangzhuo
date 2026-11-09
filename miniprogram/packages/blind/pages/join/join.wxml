@@ -1,23 +1,25 @@
-<view class="container">
+<view class="container form-page">
   <view class="page-header">
     <view class="page-title">加入朋友的酒局</view>
-    <view class="page-desc">输入桌前发起人告知的4位数字房间号，或点击下方正在进行的酒局</view>
+    <view class="page-desc">输入发起人提供的 4 位数字房间码，也可从下方选择酒局。</view>
   </view>
-  <view wx:if="{{!profileCompleted}}" class="profile-hint" bindtap="goProfile">完善头像昵称，入局后好友能看到你的专属名片 →</view>
+  <button wx:if="{{!profileCompleted}}" class="profile-hint" bindtap="goProfile">完善头像昵称，入局后好友能看到你的专属名片 →</button>
   <view class="card code-box">
     <text class="code-title">输入 4 位房间码</text>
     <view class="code-input-wrap">
-      <input class="code-input" type="number" maxlength="4" placeholder="••••" value="{{roomCode}}" bindinput="onInputCode" />
+      <input class="code-input" aria-label="4 位数字房间码" type="number" maxlength="4" placeholder="0000" value="{{roomCode}}" bindinput="onInputCode" />
     </view>
+    <view class="code-hint">输入完整房间码后将自动加入。</view>
     <button class="btn-primary" bindtap="submitJoin">立即加入品鉴</button>
   </view>
   <view class="section-title">快捷体验可进房间</view>
-  <view class="room-card card" wx:for="{{availableRooms}}" wx:key="roomId" bindtap="joinQuick" data-code="{{item.roomCode}}">
+  <view wx:if="{{!availableRooms.length}}" class="room-empty">暂无可快捷加入的酒局，请向发起人获取房间码。</view>
+  <button class="room-card card" wx:for="{{availableRooms}}" wx:key="roomId" bindtap="joinQuick" data-code="{{item.roomCode}}">
     <view class="r-top">
       <text class="gold-badge">房间码 {{item.roomCode}}</text>
       <text class="status-pill status-{{item.status}}">{{item.status === 'revealed' ? '已开奖' : '品评中'}}</text>
     </view>
     <view class="r-name">{{item.name}}</view>
     <view class="r-desc">{{item.sampleCount}} 款酒 · {{item.description}}</view>
-  </view>
+  </button>
 </view>

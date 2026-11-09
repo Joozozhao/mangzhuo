@@ -5,7 +5,8 @@ Page({
   data: {
     roomId: "", sampleIndex: 0, samples: [], currentSample: null,
     aromaOptions: storageService.AROMA_TYPES, degreeOptions: storageService.DEGREE_OPTIONS,
-    guess: { brand: "", product: "", aromaType: "酱香型", alcoholDegree: "53°", year: "2022", estimatedPrice: 500 },
+    guess: { brand: "", product: "", aromaType: "酱香型", alcoholDegree: "53°", year: "2022", estimatedPrice: 500, likeLevel: 0 },
+    likeLevels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     catalogLoading: false, catalogSource: 'builtin', catalogError: '', suggestions: []
   },
   onLoad(options) {
@@ -15,7 +16,7 @@ Page({
     const samples = storageService.getSamples(roomId);
     const currentSample = samples[sampleIndex] || null;
     const user = storageService.getCurrentUser();
-    let guess = { brand: "", product: "", aromaType: "酱香型", alcoholDegree: "53°", year: "2022", estimatedPrice: 500 };
+    let guess = { brand: "", product: "", aromaType: "酱香型", alcoholDegree: "53°", year: "2022", estimatedPrice: 500, likeLevel: 0 };
     if (currentSample) {
       const existing = storageService.getGuesses(roomId, user.userId).find(g => g.sampleId === currentSample.sampleId);
       if (existing) { guess = { ...guess, ...existing }; }
@@ -65,6 +66,16 @@ Page({
   selectDegree(e) {
     const guess = { ...this.data.guess, alcoholDegree: e.currentTarget.dataset.val };
     this.setData({ guess });
+  },
+  selectLikeLevel(e) {
+    const raw = Number(e.currentTarget.dataset.value);
+    if (!Number.isFinite(raw) || raw < 0.5 || raw > 10 || Math.round(raw * 2) !== raw * 2) return;
+    const current = Number(this.data.guess.likeLevel) || 0;
+    let likeLevel = raw;
+    if (Number.isInteger(raw) && !e.currentTarget.dataset.exact) {
+      likeLevel = current === raw ? raw - 0.5 : raw;
+    }
+    this.setData({ guess: { ...this.data.guess, likeLevel } });
   },
   nextToScoring() {
     const user = storageService.getCurrentUser();

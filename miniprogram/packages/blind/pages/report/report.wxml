@@ -91,7 +91,9 @@
   <view class="poster-modal" wx:if="{{posterUrl}}">
     <view class="modal-mask" bindtap="closePoster"></view>
     <view class="modal-content">
-      <image class="poster-img" src="{{posterUrl}}" mode="widthFix" show-menu-by-longpress="true"></image>
+      <scroll-view class="poster-scroll" scroll-y="true">
+        <image class="poster-img" src="{{posterUrl}}" mode="widthFix" show-menu-by-longpress="true"></image>
+      </scroll-view>
       <view class="modal-btns">
         <button class="btn-primary" bindtap="savePosterToAlbum">保存到手机相册</button>
         <button class="btn-secondary" bindtap="closePoster">关闭</button>

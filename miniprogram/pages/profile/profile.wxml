@@ -1,4 +1,4 @@
-<view class="container profile-page">
+<view class="container profile-page form-page">
   <view class="page-header profile-header">
     <view class="profile-kicker">盲酌 · 品鉴身份</view>
     <view class="page-title">你的品鉴名片</view>
@@ -22,20 +22,20 @@
   </view>
   <view class="card profile-card">
     <view class="editor-heading"><text class="editor-label">02 / 品鉴名片</text><text class="editor-note">酒局与手记中展示</text></view>
-    <view class="avatar-row">
-      <button class="avatar-btn" bindtap="onChooseAvatar" aria-label="从相册选择头像">
-        <image wx:if="{{pendingImg || avatarImg}}" class="avatar-img" src="{{pendingImg ? pendingAvatar : avatar}}" mode="aspectFill" />
-        <text wx:else class="avatar-emoji">{{avatar || '知味'}}</text>
-      </button>
+    <button class="avatar-picker" bindtap="onChooseAvatar" aria-label="从相册选择或更换头像">
+      <view class="avatar-frame">
+        <image wx:if="{{(pendingImg || avatarImg) && !avatarLoadError}}" class="avatar-img" src="{{pendingImg ? pendingAvatar : avatar}}" mode="aspectFill" binderror="onAvatarError" />
+        <text wx:else class="avatar-emoji">{{pendingImg || avatarImg ? '知味' : (avatar || '知味')}}</text>
+      </view>
       <view class="avatar-copy">
         <view class="avatar-title">选择一张头像</view>
         <view class="avatar-tip">从相册选择图片，未选择时沿用当前头像。</view>
-        <view class="avatar-action">点击左侧头像更换</view>
+        <view class="avatar-action">更换头像 →</view>
       </view>
-    </view>
+    </button>
     <view class="form-item nickname-field">
-      <text class="form-label">品鉴昵称</text>
-      <input class="input nickname-input" type="text" maxlength="20" placeholder="请输入你的品鉴昵称" value="{{nickname}}" bindinput="onNicknameInput" bindblur="onNicknameInput" bindchange="onNicknameInput" />
+      <label class="form-label" for="profile-nickname">品鉴昵称</label>
+      <input id="profile-nickname" class="input nickname-input" type="text" maxlength="20" placeholder="请输入你的品鉴昵称" cursor-spacing="96" confirm-type="done" value="{{nickname}}" bindinput="onNicknameInput" bindblur="onNicknameInput" bindchange="onNicknameInput" />
       <view class="nickname-tip">可完全自定义，最多 20 字，仅在你主动保存后使用。</view>
     </view>
   </view>

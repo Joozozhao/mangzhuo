@@ -3,8 +3,8 @@
   <view class="page-kicker"><text>一 册 风 味 记 忆</text><text class="chapter-number">第四章 · 藏</text></view>
   <view class="content-panel profile-panel">
     <button class="profile-entry" bindtap="editProfile">
-      <image wx:if="{{avatarImg}}" class="pe-avatar" src="{{user.avatar}}" mode="aspectFill"/>
-      <view wx:else class="pe-avatar pe-emoji">{{user.avatar || '知味'}}</view>
+      <image wx:if="{{avatarImg && !avatarLoadError}}" class="pe-avatar" src="{{user.avatar}}" mode="aspectFill" binderror="onAvatarError"/>
+      <view wx:else class="pe-avatar pe-emoji">{{avatarImg ? '知味' : (user.avatar || '知味')}}</view>
       <view class="pe-info"><view class="pe-name">{{user.nickname}}</view><view class="pe-state">{{isWechat ? '已确认微信身份' : '游客模式 · 资料保存在本机'}}</view></view>
       <text class="pe-link">{{isWechat ? (profileCompleted ? '编辑资料' : '完善资料') : '注册 / 登录'}} →</text>
     </button>

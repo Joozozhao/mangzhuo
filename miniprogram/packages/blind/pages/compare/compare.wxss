@@ -4,15 +4,15 @@
 .st-meta { font-size: 24rpx; opacity: 0.8; }
 .section-title { font-size: 30rpx; font-weight: 700; color: #181713; margin-bottom: 20rpx; }
 .guess-card { padding: 30rpx; margin-bottom: 24rpx; }
-.gc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20rpx; padding-bottom: 14rpx; border-bottom: 1rpx solid #ede4d3; }
-.gc-user { display: flex; align-items: center; }
-.u-avatar { font-size: 36rpx; margin-right: 12rpx; }
+.gc-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12rpx 16rpx; margin-bottom: 20rpx; padding-bottom: 14rpx; border-bottom: 1rpx solid #ede4d3; }
+.gc-user { display: flex; flex: 1; min-width: 0; align-items: center; }
+.u-avatar { flex-shrink: 0; font-size: 36rpx; margin-right: 12rpx; }
 .u-avatar-img { width: 44rpx; height: 44rpx; border-radius: 50%; }
-.u-name { font-size: 28rpx; font-weight: 700; color: #181713; }
-.gc-score { font-size: 24rpx; color: #787063; }
+.u-name { min-width: 0; font-size: 28rpx; font-weight: 700; color: #181713; }
+.gc-score { flex-shrink: 0; font-size: 24rpx; color: #787063; white-space: nowrap; }
 .score-bold { font-size: 36rpx; font-weight: 800; color: #a97832; margin-left: 6rpx; }
-.score-breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 12rpx; margin-bottom: 20rpx; }
-.sb-item { padding: 12rpx 16rpx; border-radius: 12rpx; background: #fbf7ee; border: 1rpx solid #ece2cf; }
+.score-breakdown { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12rpx; margin-bottom: 20rpx; }
+.sb-item { min-width: 0; padding: 12rpx 16rpx; border-radius: 12rpx; background: #fbf7ee; border: 1rpx solid #ece2cf; }
 .sb-item.hit { background: #eaf4ed; border-color: #cde6d4; }
 .sb-k { font-size: 20rpx; color: #877f72; display: block; margin-bottom: 4rpx; }
 .sb-val { font-size: 24rpx; font-weight: 700; color: #181713; }
@@ -21,3 +21,4 @@
 .font-bold { font-weight: 800; }
 .ut-comment { margin-top: 8rpx; color: #665f53; font-style: italic; }
 .st-sample-photo { display: block; width: 100%; height: 360rpx; border-radius: 12rpx; margin: 18rpx 0; background: #eee7dc; }
+.st-brand, .st-meta, .u-name, .sb-val, .ut-comment { overflow-wrap: anywhere; word-break: break-all; }

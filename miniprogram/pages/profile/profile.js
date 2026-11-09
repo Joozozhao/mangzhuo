@@ -16,6 +16,7 @@ Page({
     nickname: '',
     avatarImg: false,
     pendingImg: false,
+    avatarLoadError: false,
     loginState: 'guest',
     cloudReady: false,
     provider: '',
@@ -59,7 +60,7 @@ Page({
       sourceType: ['album'],
       success: (res) => {
         const temp = res && res.tempFilePaths && res.tempFilePaths[0];
-        if (temp) this.setData({ pendingAvatar: temp, pendingImg: true });
+        if (temp) this.setData({ pendingAvatar: temp, pendingImg: true, avatarLoadError: false });
       },
       fail: (err) => {
         const message = (err && err.errMsg) || '';
@@ -71,6 +72,9 @@ Page({
 
   onNicknameInput(e) {
     this.setData({ nickname: e.detail.value });
+  },
+  onAvatarError() {
+    this.setData({ avatarLoadError: true });
   },
 
   async onLogin() {
@@ -89,6 +93,7 @@ Page({
         if (!this.data.pendingAvatar) {
           patch.avatar = u.avatar || '🍶';
           patch.avatarImg = identity.isAvatarImage(patch.avatar);
+          patch.avatarLoadError = false;
         }
         if (!this.data.nickname.trim() && (u.profileCompleted || u.nickname)) {
           patch.nickname = u.nickname || '';
@@ -152,7 +157,7 @@ Page({
         return;
       }
       // saveFile 会移动临时文件，重试应使用已保存资料，不能再读取旧临时路径。
-      this.setData({pendingAvatar:'',pendingImg:false,avatar:res.user.avatar,avatarImg:identity.isAvatarImage(res.user.avatar)});
+      this.setData({pendingAvatar:'',pendingImg:false,avatar:res.user.avatar,avatarImg:identity.isAvatarImage(res.user.avatar),avatarLoadError:false});
       // 已确认微信身份但云端同步未成功：如实告知并允许重试，不谎称完成
       if (identity.isLoggedIn() && !res.cloudSynced) {
         wx.showModal({

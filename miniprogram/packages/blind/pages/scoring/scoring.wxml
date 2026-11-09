@@ -1,4 +1,4 @@
-<view class="container" wx:if="{{currentSample}}">
+<view class="container form-page" wx:if="{{currentSample}}">
   <view class="stage-banner">
     <view class="stage-tag tag-gold">第二阶段 · 品鉴</view>
     <view class="stage-title">抛开品牌，你真正喜欢它吗？</view>
@@ -14,16 +14,19 @@
   <view class="card dim-card">
     <view class="dim-item" wx:for="{{dimensions}}" wx:key="key">
       <view class="dim-top">
-        <text class="dim-label">{{item.name}} ({{item.sub}})</text>
+        <view class="dim-copy">
+          <text class="dim-label">{{item.name}}</text>
+          <text class="dim-sub">{{item.sub}}</text>
+        </view>
         <text class="dim-val">{{rating[item.key]}} 分</text>
       </view>
-      <slider 
+      <slider class="rating-slider" aria-label="{{item.name}}评分"
         min="5" max="10" step="0.1" 
         value="{{rating[item.key]}}" 
-        activeColor="#a97832" 
-        backgroundColor="#ede4d3" 
-        block-size="20"
-        block-color="#171714"
+        activeColor="#274d3b"
+        backgroundColor="#dfe3d9"
+        block-size="28"
+        block-color="#274d3b"
         bindchange="onSliderChange" 
         bindchanging="onSliderChange"
         data-dim="{{item.key}}"
@@ -32,11 +35,13 @@
   </view>
 
   <view class="card comment-card">
-    <text class="form-label">本杯酒的口感评价 / 盲品吐槽</text>
-    <input class="input" placeholder="例：入口丝滑、中段稍辣、回甘绵长..." value="{{rating.comment}}" bindinput="onInputComment" />
+    <text class="form-label">口感评价 / 盲品感受</text>
+    <textarea class="input form-textarea" placeholder-class="form-placeholder" aria-label="口感评价或盲品感受" placeholder="例：入口顺滑，回甘绵长" value="{{rating.comment}}" bindinput="onInputComment" auto-height="{{true}}" maxlength="140" cursor-spacing="24" />
   </view>
 
-  <button class="btn-primary" bindtap="submitRating">
-    {{isLastSample ? "提交并完成本局盲测" : "保存，继续评下一款酒 ›"}}
-  </button>
+  <view class="page-actions">
+    <button class="btn-primary" bindtap="submitRating">
+      {{isLastSample ? "提交并完成本局盲测" : "保存，继续评下一款酒"}}
+    </button>
+  </view>
 </view>

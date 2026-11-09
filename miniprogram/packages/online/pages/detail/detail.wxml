@@ -1,4 +1,4 @@
-<view class="journal detail-page">
+<view class="journal detail-page form-page">
   <view class="chapter-mast">
     <view class="chapter-brand">盲酌 · 在线品鉴</view>
     <view class="chapter-no">活动 #{{id}}</view>
@@ -36,7 +36,7 @@
       <view class="detail-meta">
         <text>共 {{sampleCount}} 款酒样</text>
         <text wx:if="{{detail.isOwner}}" class="owner-tag">主持人身份</text>
-        <text wx:if="{{results && results.participantCount !== undefined}}"> · {{results.participantCount}} 位参与者</text>
+        <text wx:if="{{results && results.participantCount !== undefined}}">{{results.participantCount}} 位参与者</text>
       </view>
     </view>
 
@@ -56,7 +56,6 @@
           </view>
           <view class="result-stats">
             <text>有效评分 {{item.count}} 次</text>
-            <text class="dot">·</text>
             <text>猜中人数 {{item.correct}} 人</text>
           </view>
 
@@ -94,16 +93,17 @@
           <view class="sample-head">
             <view class="sample-tag">{{item.number}} 号杯</view>
             <view wx:if="{{detail.isOwner && item.actualName}}" class="host-hint">
-              (主持人暗记: {{item.actualName}})
+              主持人暗记 · {{item.actualName}}
             </view>
           </view>
 
           <!-- 竞猜选择 -->
           <view class="field-item">
             <view class="field-label">竞猜对应酒款</view>
-            <picker range="{{detail.choices}}" value="{{formMap[item.sampleId].choiceIndex}}" data-sample-id="{{item.sampleId}}" bindchange="onChoiceChange">
+            <picker range="{{detail.choices}}" value="{{formMap[item.sampleId].choiceIndex}}" data-sample-id="{{item.sampleId}}" bindchange="onChoiceChange" aria-label="为第 {{item.number}} 号杯选择推测酒款">
               <view class="picker-value {{formMap[item.sampleId].guessedName ? 'has-value' : 'placeholder'}}">
-                {{formMap[item.sampleId].guessedName || '点击选择推测酒款'}} →
+                <text class="picker-text">{{formMap[item.sampleId].guessedName || '点击选择推测酒款'}}</text>
+                <text class="picker-arrow" aria-hidden="true">⌄</text>
               </view>
             </picker>
           </view>
@@ -111,13 +111,14 @@
           <!-- 分数输入 (0..100) -->
           <view class="field-item">
             <view class="field-label-row">
-              <text class="field-label">风味综合评分 (0 ~ 100)</text>
+              <text class="field-label">风味综合评分</text>
               <text class="score-display">{{formMap[item.sampleId].score !== '' ? formMap[item.sampleId].score + ' 分' : '未打分'}}</text>
             </view>
-            <slider min="0" max="100" step="1" value="{{formMap[item.sampleId].scoreNumber}}" data-sample-id="{{item.sampleId}}" bindchange="onSliderChange" bindchanging="onSliderChanging" activeColor="#893e32" backgroundColor="#e6dfd3" block-size="20" />
+            <view class="score-range">0–100 分，可拖动滑块或输入整数</view>
+            <slider class="score-slider" min="0" max="100" step="1" value="{{formMap[item.sampleId].scoreNumber}}" data-sample-id="{{item.sampleId}}" bindchange="onSliderChange" bindchanging="onSliderChanging" activeColor="#274d3b" backgroundColor="#d6ddcf" block-color="#274d3b" block-size="24" />
             <view class="score-input-row">
-              <text class="score-tip">精细输入：</text>
-              <input class="score-input" type="number" maxlength="3" value="{{formMap[item.sampleId].score}}" data-sample-id="{{item.sampleId}}" bindinput="onScoreInput" placeholder="0-100" />
+              <label class="score-tip" for="sample-score-{{item.sampleId}}">直接输入分数</label>
+              <input id="sample-score-{{item.sampleId}}" class="input score-input" type="number" maxlength="3" cursor-spacing="96" confirm-type="done" value="{{formMap[item.sampleId].score}}" data-sample-id="{{item.sampleId}}" bindinput="onScoreInput" placeholder="0–100" aria-label="第 {{item.number}} 号杯的评分，0 至 100 分" />
             </view>
           </view>
         </view>

@@ -313,7 +313,6 @@ button.btn-secondary[disabled],button.btn-dark[disabled],.organized-page button.
 /* 竹影手札：延续到记录与品鉴流程的通用控件。 */
 .journal .input{border-color:#b4c0ad;border-radius:0;background:#fbfaf5;color:#28382e;font-size:16px;min-height:44px;}
 .journal .field-label{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:#374c3d;font-size:14px;}
-.journal button.flavor-chip{min-height:44px;font-size:14px;border-radius:0;line-height:1.5;padding:12rpx 20rpx;}
 
 /* Shared wine-catalogue search feedback. */
 .catalog-feedback{display:flex;align-items:center;flex-wrap:wrap;gap:8rpx;color:#687365;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;font-size:12px;line-height:1.7;margin:12rpx 0;}
@@ -321,3 +320,5 @@ button.btn-secondary[disabled],button.btn-dark[disabled],.organized-page button.
 .wine-suggestions{border:1rpx solid #c8d3be;background:#f0f2e9;margin:12rpx 0 24rpx;}
 button.wine-suggestion{display:block;width:100%;min-height:44px;padding:20rpx 24rpx;margin:0;border-radius:0;border-bottom:1rpx solid #d6ddcf;background:transparent;text-align:left;white-space:normal;line-height:1.6;}
 .wine-suggestion:last-child{border-bottom:0;}.wine-suggestion-title{font-size:15px;color:#274d3b;overflow-wrap:anywhere;}.wine-suggestion-meta{font-size:12px;color:#687365;margin-top:6rpx;overflow-wrap:anywhere;}
+
+@import "styles/forms.wxss";

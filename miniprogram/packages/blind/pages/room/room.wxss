@@ -1,6 +1,6 @@
 .room-banner { padding: 36rpx; margin-bottom: 30rpx; background: linear-gradient(145deg, #fffdf8, #fbf4e6); }
-.banner-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20rpx; }
-.banner-code { display: inline-flex; align-items: center; background: #171714; color: #fff; padding: 8rpx 20rpx; border-radius: 14rpx; }
+.banner-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12rpx; margin-bottom: 20rpx; }
+.banner-code { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; max-width: 100%; background: #171714; color: #fff; padding: 8rpx 20rpx; border-radius: 14rpx; }
 .c-label { font-size: 22rpx; opacity: 0.7; margin-right: 10rpx; }
 .c-val { font-size: 28rpx; font-weight: 800; color: #d6b06a; letter-spacing: 2rpx; }
 .c-copy { font-size: 20rpx; background: rgba(214, 176, 106, 0.25); color: #e4be79; padding: 2rpx 10rpx; border-radius: 8rpx; margin-left: 12rpx; }
@@ -8,24 +8,27 @@
 .banner-desc { font-size: 26rpx; color: #7d7568; line-height: 1.5; margin-bottom: 20rpx; }
 .share-hint { font-size: 24rpx; color: #a97832; font-weight: 600; border-top: 1rpx dashed #ebdcc6; padding-top: 16rpx; }
 .highlight { color: #181713; font-weight: 800; }
-.section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18rpx; margin-top: 10rpx; }
+.section-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12rpx; margin-bottom: 18rpx; margin-top: 10rpx; }
 .section-title { font-size: 32rpx; font-weight: 700; color: #181713; }
 .section-sub { font-size: 24rpx; color: #877f72; }
 .sample-list { margin-bottom: 30rpx; }
 .sample-item { display: flex; align-items: center; justify-content: space-between; padding: 28rpx 32rpx; margin-bottom: 18rpx; }
-.sample-left { display: flex; align-items: center; }
-.bottle-badge { width: 90rpx; height: 90rpx; border-radius: 20rpx; background: #f4ebd9; color: #8c5d1e; font-weight: 800; font-size: 28rpx; display: flex; align-items: center; justify-content: center; margin-right: 24rpx; }
+.sample-left { display: flex; flex: 1; min-width: 0; align-items: center; }
+.sample-meta { min-width: 0; }
+.bottle-badge { flex-shrink: 0; width: 90rpx; height: 90rpx; border-radius: 20rpx; background: #f4ebd9; color: #8c5d1e; font-weight: 800; font-size: 28rpx; display: flex; align-items: center; justify-content: center; margin-right: 24rpx; }
 .meta-title { font-size: 30rpx; font-weight: 700; color: #181713; margin-bottom: 6rpx; }
 .meta-status { font-size: 24rpx; color: #8c8375; }
 .meta-status.status-done { color: #2e8b57; font-weight: 600; }
-.sample-arrow { font-size: 32rpx; color: #a97832; font-weight: 700; }
+.sample-arrow { flex-shrink: 0; font-size: 32rpx; color: #a97832; font-weight: 700; }
 .members-card { padding: 24rpx; margin-bottom: 40rpx; }
-.member-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; }
-.member-chip { display: flex; align-items: center; background: #fbf8f2; padding: 16rpx 20rpx; border-radius: 16rpx; border: 1rpx solid #ede4d3; }
-.member-avatar { font-size: 40rpx; margin-right: 14rpx; }
+.member-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16rpx; }
+.member-chip { display: flex; min-width: 0; align-items: center; background: #fbf8f2; padding: 16rpx 20rpx; border-radius: 16rpx; border: 1rpx solid #ede4d3; }
+.member-info { flex: 1; min-width: 0; }
+.member-avatar { flex-shrink: 0; font-size: 40rpx; margin-right: 14rpx; }
 .member-avatar-img { width: 56rpx; height: 56rpx; border-radius: 50%; }
 .m-name { font-size: 26rpx; font-weight: 700; color: #181713; }
 .m-tag { font-size: 18rpx; background: #171714; color: #fff; padding: 2rpx 8rpx; border-radius: 6rpx; margin-left: 6rpx; font-weight: normal; }
 .m-state { font-size: 20rpx; color: #9c9486; margin-top: 4rpx; }
 .m-state.state-done { color: #2e8b57; font-weight: 600; }
 .bottom-actions { margin-top: 20rpx; padding-bottom: 60rpx; }
+.banner-name, .banner-desc, .share-hint, .m-name, .m-state, .meta-title, .meta-status { overflow-wrap: anywhere; word-break: break-all; }

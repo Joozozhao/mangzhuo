@@ -1,26 +1,39 @@
-<view class="journal">
-  <view class="eyebrow">品酒打卡</view>
-  <view class="journal-title">记下这一杯</view>
-  <view class="muted">不必猜对，真实的感受就是好记录。</view>
+<view class="journal form-page checkin-page">
+  <view class="checkin-intro">
+    <view class="eyebrow">品酒手记</view>
+    <view class="journal-title">记下这一杯</view>
+    <view class="muted">不必猜对，记下真实的感受就好。</view>
+  </view>
   <form bindsubmit="submit">
-    <text class="field-label">酒款 / 盲样名称 *</text>
-    <input class="input" name="title" value="{{title}}" bindinput="onTitleInput" maxlength="40" placeholder="例如：青花汾酒，或 01 号盲样" />
-    <view class="catalog-feedback"><text wx:if="{{catalogLoading}}">正在更新酒款目录…</text><block wx:elif="{{catalogError}}"><text>{{catalogSource === 'cache' ? '暂用最近目录' : '暂用离线目录'}}，也可手动填写。</text><button class="catalog-retry" bindtap="retryWineCatalog">重试</button></block><text wx:else>输入品牌或酒名，可从酒款目录选填。</text></view>
-    <view class="wine-suggestions" wx:if="{{suggestions.length}}"><button wx:for="{{suggestions}}" wx:key="index" class="wine-suggestion" data-item="{{item}}" bindtap="applyWineSuggestion"><view class="wine-suggestion-title">{{item.product}}</view><view class="wine-suggestion-meta">{{item.brand}} · {{item.aromaType}} · {{item.degree}}</view></button></view>
-    <text class="field-label">香型</text>
-    <picker range="{{aromas}}" value="{{index}}" bindchange="choose">
-      <view class="input picker-value">{{aromas[index]}}　⌄</view>
-    </picker>
-    <block wx:for="{{groups}}" wx:key="id" wx:for-item="group">
-      <text class="field-label">{{group.title}}</text>
-      <view class="muted flavor-desc" wx:if="{{group.desc}}">{{group.desc}}</view>
-      <view class="flavor-terms">
-        <button wx:for="{{group.terms}}" wx:for-item="term" wx:key="id" class="flavor-chip {{term.selected ? 'active' : ''}}" data-group="{{group.id}}" data-id="{{term.id}}" bindtap="toggleTerm">{{term.label}}</button>
+    <view class="form-section wine-section" id="wine-section">
+      <view class="section-heading"><view class="section-title"><text class="section-number">01</text>这一杯</view><text class="section-hint">只填酒名也能保存</text></view>
+      <label class="field-label" for="wine-title">酒款 / 盲样名称<text class="required-mark">必填</text></label>
+      <input id="wine-title" class="input {{titleError ? 'is-invalid' : ''}}" name="title" value="{{title}}" bindinput="onTitleInput" maxlength="40" placeholder="输入酒名或盲样编号" placeholder-class="form-placeholder" focus="{{titleFocused}}" bindblur="onTitleBlur" confirm-type="done" cursor-spacing="24" />
+      <view wx:if="{{titleError}}" class="field-error" role="alert">{{titleError}}</view>
+      <view class="catalog-feedback"><text wx:if="{{catalogLoading}}">正在更新酒款目录…</text><block wx:elif="{{catalogError}}"><text>{{catalogSource === 'cache' ? '暂用最近目录' : '暂用离线目录'}}，可继续手动填写。</text><button class="catalog-retry" bindtap="retryWineCatalog" aria-label="重新加载酒款目录">重试</button></block><text wx:else>输入品牌或酒名，可从目录快速选填。</text></view>
+      <view class="wine-suggestions" wx:if="{{suggestions.length}}"><button wx:for="{{suggestions}}" wx:key="index" class="wine-suggestion" data-item="{{item}}" bindtap="applyWineSuggestion"><view class="wine-suggestion-title">{{item.product}}</view><view class="wine-suggestion-meta">{{item.brand}} · {{item.aromaType}} · {{item.degree}}</view></button></view>
+      <view class="aroma-field">
+        <view class="field-label">香型<text class="optional-mark">选填</text></view>
+        <picker range="{{aromas}}" value="{{index}}" bindchange="choose" aria-label="选择香型"><view class="input picker-value"><text class="{{index === 0 ? 'picker-placeholder' : ''}}">{{aromas[index]}}</text><view class="picker-chevron"></view></view></picker>
       </view>
-      <input class="input" name="{{group.id}}" maxlength="60" placeholder="{{placeholders[group.id]}}" />
-    </block>
-    <text class="field-label">此刻的手记</text>
-    <textarea class="input" name="note" maxlength="180" placeholder="一句品评，或一段相聚的记忆" />
-    <button class="btn-primary save" form-type="submit" loading="{{saving}}" disabled="{{saving}}">保存打卡 · 制作酒卡</button>
+    </view>
+    <view class="section-heading flavor-heading"><view class="section-title"><text class="section-number">02</text>风味印象</view><text class="section-hint">选填 · 标签可多选</text></view>
+    <view class="form-section flavor-section" wx:for="{{groups}}" wx:key="id" wx:for-item="group">
+      <view class="flavor-header"><text class="flavor-title">{{group.title}}</text><text class="flavor-count {{group.selectedCount ? 'has-selection' : ''}}">{{group.selectedCount ? '已选 ' + group.selectedCount + ' 项' : '选择你的感受'}}</text></view>
+      <view class="flavor-desc" wx:if="{{group.desc}}">{{group.desc}}</view>
+      <view class="flavor-terms">
+        <button wx:for="{{group.terms}}" wx:for-item="term" wx:key="id" class="flavor-chip {{term.selected ? 'active' : ''}}" data-group="{{group.id}}" data-id="{{term.id}}" bindtap="toggleTerm" aria-label="{{term.label}}，{{term.selected ? '已选中' : '未选中'}}"><text class="chip-label">{{term.label}}</text><text wx:if="{{term.selected}}" class="chip-check">✓</text></button>
+      </view>
+      <input class="input flavor-input" name="{{group.id}}" maxlength="60" placeholder="{{placeholders[group.id]}}" placeholder-class="form-placeholder" cursor-spacing="24" />
+    </view>
+    <view class="form-section note-section">
+      <view class="section-heading"><view class="section-title"><text class="section-number">03</text>此刻的手记</view><text class="section-hint">选填</text></view>
+      <textarea class="input" name="note" maxlength="180" value="{{note}}" bindinput="onNoteInput" placeholder="一句品评，或一段相聚的记忆…" placeholder-class="form-placeholder" cursor-spacing="32" disable-default-padding />
+      <view class="note-count">{{note.length}} / 180</view>
+    </view>
+    <view class="save-area">
+      <button class="btn-primary save" form-type="submit" loading="{{saving}}" disabled="{{saving}}">{{saving ? '正在保存…' : '保存手记，制作酒卡'}}</button>
+      <view class="save-hint">保存到「我的手记」，随时回看这一杯。</view>
+    </view>
   </form>
 </view>

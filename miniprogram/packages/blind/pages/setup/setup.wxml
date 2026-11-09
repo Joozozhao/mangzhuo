@@ -1,82 +1,81 @@
-<view class="container">
+<view class="container form-page">
   <view class="page-header">
     <view class="page-title">录入真实酒款答案</view>
     <view class="page-desc">请房主依次录入各编号酒样的真实信息，支持名酒库快速联想，开奖时统一向全员揭开</view>
   </view>
-  <scroll-view class="tab-scroll" scroll-x="true">
-    <view class="tab-wrap">
-      <view class="sample-tab {{currentIndex === index ? 'active' : ''}} {{item.brand ? 'done' : ''}}" wx:for="{{samples}}" wx:key="number" bindtap="switchTab" data-index="{{index}}">
-        <text class="t-num">{{item.number}}号酒</text>
-        <text class="t-state">{{item.brand ? "✓ 已录" : "待录入"}}</text>
-      </view>
-    </view>
-  </scroll-view>
+  <view class="sample-tabs">
+    <button class="sample-tab {{currentIndex === index ? 'active' : ''}} {{item.brand ? 'done' : ''}}" wx:for="{{samples}}" wx:key="number" bindtap="switchTab" data-index="{{index}}">
+      <text class="t-num">{{item.number}}号酒</text>
+      <text class="t-state">{{item.brand ? "✓ 已录" : "待录入"}}</text>
+    </button>
+  </view>
   <view class="card form-card" wx:if="{{currentSample}}">
     <view class="card-head">正在设置 <text class="gold-text">{{currentSample.number}}号酒</text> 标准信息</view>
     <view class="form-item">
-      <text class="form-label">酒款照片（可选，揭晓后展示）</text>
+      <text class="form-label">酒款照片<text class="label-optional">（可选）</text></text>
       <view class="sample-photo-editor">
         <view wx:if="{{currentSample.photo}}" class="sample-photo-preview">
-          <image class="sample-photo-image" src="{{currentSample.photo}}" mode="aspectFill" bindtap="previewPhoto" />
+          <image class="sample-photo-image" src="{{currentSample.photo}}" mode="aspectFill" bindtap="previewPhoto" aria-label="预览酒款照片" />
           <button class="photo-remove" bindtap="removePhoto" disabled="{{photoSaving}}">移除照片</button>
         </view>
         <view wx:else class="photo-empty">拍照或从相册选择这款酒的照片</view>
         <view class="photo-actions">
-          <button class="btn-secondary photo-btn" data-source="camera" bindtap="choosePhoto" disabled="{{photoSaving}}">拍照</button>
+          <button class="btn-secondary photo-btn" data-source="camera" bindtap="choosePhoto" disabled="{{photoSaving}}" loading="{{photoSaving}}">拍照</button>
           <button class="btn-secondary photo-btn" data-source="album" bindtap="choosePhoto" disabled="{{photoSaving}}">从相册选择</button>
         </view>
       </view>
       <view class="photo-hint">为避免提前泄底，照片仅在答案揭晓后展示。</view>
     </view>
     <view class="form-item">
-      <text class="form-label">品牌 (输入关键词支持名酒库自动联想)</text>
-      <input class="input" placeholder="输入品牌 (如：茅台 / 习酒 / 五粮液 / 汾酒)" value="{{currentSample.brand}}" bindinput="onInputBrand" />
+      <text class="form-label">品牌</text>
+      <input class="input" placeholder-class="form-placeholder" aria-label="真实酒款品牌" placeholder="例：茅台、习酒" value="{{currentSample.brand}}" bindinput="onInputBrand" />
+      <view class="field-hint">输入关键词可联想酒款，点选后自动填入参数。</view>
       <view class="catalog-feedback"><text wx:if="{{catalogLoading}}">正在更新酒款目录…</text><block wx:elif="{{catalogError}}"><text>{{catalogSource === 'cache' ? '暂用最近目录' : '暂用离线目录'}}，可手动填写。</text><button class="catalog-retry" bindtap="retryWineCatalog">重试</button></block><text wx:else>从酒款目录选填，参考价可自行修改。</text></view>
       <!-- 智能名酒联想匹配 -->
       <view class="suggestion-box" wx:if="{{suggestions.length > 0}}">
-        <view class="sug-header">名酒库匹配 (点击一键带出全套参数)：</view>
-        <view class="sug-item" wx:for="{{suggestions}}" wx:key="product" bindtap="applySuggestion" data-item="{{item}}">
+        <view class="sug-header">匹配酒款 · 点选填入</view>
+        <button class="sug-item" wx:for="{{suggestions}}" wx:key="product" bindtap="applySuggestion" data-item="{{item}}">
           <view class="sug-left">
             <text class="sug-brand">{{item.brand}}</text>
             <text class="sug-product">{{item.product}}</text>
           </view>
           <text class="sug-pill">{{item.aromaType}} · {{item.degree}}</text>
-        </view>
+        </button>
       </view>
     </view>
     <view class="form-item">
-      <text class="form-label">具体产品全称 (如：飞天53度 / 君品 / 普五 / 青花20)</text>
-      <input class="input" placeholder="输入具体产品全称" value="{{currentSample.product}}" bindinput="onInput" data-f="product" />
+      <text class="form-label">具体产品全称</text>
+      <input class="input" placeholder-class="form-placeholder" aria-label="真实酒款产品全称" placeholder="例：飞天53度、青花20" value="{{currentSample.product}}" bindinput="onInput" data-f="product" />
     </view>
     <view class="form-item">
-      <text class="form-label">香型 (点击快速选择)</text>
+      <text class="form-label">香型</text>
       <view class="tag-grid">
-        <view class="tag {{currentSample.aromaType === item ? 'active' : ''}}" wx:for="{{aromaOptions}}" wx:key="*this" bindtap="selectAroma" data-val="{{item}}">{{item}}</view>
+        <button class="tag {{currentSample.aromaType === item ? 'active' : ''}}" wx:for="{{aromaOptions}}" wx:key="*this" bindtap="selectAroma" data-val="{{item}}">{{item}}</button>
       </view>
     </view>
     <view class="form-item">
       <text class="form-label">酒精度数</text>
       <view class="tag-grid">
-        <view class="tag {{currentSample.alcoholDegree === item ? 'active' : ''}}" wx:for="{{degreeOptions}}" wx:key="*this" bindtap="selectDegree" data-val="{{item}}">{{item}}</view>
+        <button class="tag {{currentSample.alcoholDegree === item ? 'active' : ''}}" wx:for="{{degreeOptions}}" wx:key="*this" bindtap="selectDegree" data-val="{{item}}">{{item}}</button>
       </view>
     </view>
     <view class="form-row">
       <view class="col">
-        <text class="form-label">酿造/出厂年份</text>
-        <input class="input" type="number" placeholder="如 2021" value="{{currentSample.year}}" bindinput="onInput" data-f="year" />
+        <text class="form-label">酿造 / 出厂年份</text>
+        <input class="input" placeholder-class="form-placeholder" aria-label="酿造或出厂年份" type="number" placeholder="例：2021" value="{{currentSample.year}}" bindinput="onInput" data-f="year" />
       </view>
       <view class="col">
-        <text class="form-label">目录参考价 (元，可修改)</text>
-        <input class="input" type="digit" placeholder="如 1499" value="{{currentSample.marketPrice}}" bindinput="onInput" data-f="marketPrice" />
+        <text class="form-label">目录参考价（元）</text>
+        <input class="input" placeholder-class="form-placeholder" aria-label="目录参考价，单位元" type="digit" placeholder="例：1499" value="{{currentSample.marketPrice}}" bindinput="onInput" data-f="marketPrice" />
       </view>
     </view>
     <view class="form-item">
-      <text class="form-label">官方品鉴特点/风味备忘</text>
-      <input class="input" placeholder="如：酱香浓郁，回味甘甜，空杯留香" value="{{currentSample.notes}}" bindinput="onInput" data-f="notes" />
+      <text class="form-label">品鉴特点 / 风味备忘</text>
+      <textarea class="input form-textarea" placeholder-class="form-placeholder" aria-label="品鉴特点或风味备忘" placeholder="例：酱香浓郁，回味甘甜" value="{{currentSample.notes}}" bindinput="onInput" data-f="notes" auto-height="{{true}}" maxlength="140" cursor-spacing="24" />
     </view>
   </view>
   <view class="btn-stack">
-    <button class="btn-secondary" bindtap="quickFillDemo">✨ 一键预填名酒组合 (自测用)</button>
-    <button class="btn-primary" bindtap="saveAndGoRoom" disabled="{{photoSaving}}">保存并进入酒局大厅</button>
+    <button class="btn-secondary" bindtap="quickFillDemo">预填名酒组合（自测用）</button>
+    <button class="btn-primary" bindtap="saveAndGoRoom" disabled="{{photoSaving}}" loading="{{photoSaving}}">保存并进入酒局大厅</button>
   </view>
 </view>
