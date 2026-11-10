@@ -6,6 +6,9 @@
 .organized-page .page-kicker{display:flex;align-items:center;justify-content:space-between;gap:20rpx;margin:4rpx 0 28rpx;color:#687365;font-size:12px;letter-spacing:5rpx;}
 .organized-page .chapter-number{font-size:12px;letter-spacing:2rpx;flex-shrink:0;}
 .organized-page .page-intro{padding:10rpx 0 34rpx;}
+.organized-page .chapter-hero-banner{position:relative;min-height:348rpx;margin:4rpx 0 28rpx;padding-bottom:12rpx;display:flex;align-items:center;justify-content:space-between;border-bottom:1rpx solid #d6ddcf;overflow:hidden;}
+.organized-page .chapter-title-svg{position:relative;z-index:2;display:block;width:364rpx;height:292rpx;flex-shrink:0;}
+.organized-page .chapter-pose-svg{position: absolute;right:-46rpx;bottom:6rpx;z-index:1;display:block;width:368rpx;height:368rpx;flex-shrink:0;}
 .organized-page .compact-title,.organized-page .panel-title,.organized-page .row-title{font-family:"Songti SC","STSong","SimSun",serif;font-weight:400;}
 .organized-page .compact-title{font-size:58rpx;line-height:1.45;letter-spacing:2rpx;overflow-wrap:anywhere;}
 .organized-page .heading-desc{font-size:14px;color:#657160;line-height:1.8;margin-top:14rpx;}
@@ -35,5 +38,5 @@
 .organized-page .quiet-footer{font-size:12px;color:#687365;line-height:1.8;text-align:center;padding:14rpx 0 16rpx;}
 .organized-page .bamboo-art{filter:brightness(0) saturate(100%) invert(26%) sepia(14%) saturate(1159%) hue-rotate(93deg) brightness(92%) contrast(90%);}
 .organized-page .input{min-width:0;min-height:44px;font-size:16px;border-radius:0;border:1rpx solid #b4c0ad;background:#fbfaf5;color:#28382e;}
-@media(max-width:350px){.journal.organized-page{padding-left:36rpx;padding-right:36rpx;}.organized-page .compact-title{font-size:54rpx;}.organized-page .page-kicker{letter-spacing:3rpx;}.organized-page .row-title{font-size:35rpx;}}
+@media(max-width:350px){.journal.organized-page{padding-left:36rpx;padding-right:36rpx;}.organized-page .compact-title{font-size:54rpx;}.organized-page .page-kicker{letter-spacing:3rpx;}.organized-page .row-title{font-size:35rpx;}.organized-page .chapter-hero-banner{min-height:316rpx;}.organized-page .chapter-title-svg{width:316rpx;height:252rpx;}.organized-page .chapter-pose-svg{right:-56rpx;width:324rpx;height:324rpx;}}
 @media(prefers-reduced-motion:reduce){.organized-page button{transition:none;}}

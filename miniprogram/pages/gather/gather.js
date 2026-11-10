@@ -2,6 +2,22 @@ const storageService = require("../../services/storage");
 const welinkClient = require("../../services/welinkClient");
 const identity = require("../../services/identity");
 
+const ROOM_FILTERS = ['all', 'playing', 'finished', 'revealed'];
+const ROOM_PRESENTATION = {
+  playing: { statusLabel: '进行中', statusClass: 'is-playing', actionLabel: '进入酒局' },
+  finished: { statusLabel: '品评结束', statusClass: 'is-finished', actionLabel: '查看酒局' },
+  revealed: { statusLabel: '已揭晓', statusClass: 'is-revealed', actionLabel: '查看结果' }
+};
+
+function formatRoomDisplayName(room) {
+  const name = typeof room.name === 'string' ? room.name : '';
+  const withoutStatus = name.replace(/\s*(?:\((?:进行中|已揭晓|品评结束)\)|（(?:进行中|已揭晓|品评结束)）)$/, '');
+  const displayName = withoutStatus.trim() ? withoutStatus : name;
+  const genericName = /^盲酌酒局\s+(\S+)$/.exec(displayName);
+  if (room.roomCode != null && genericName && genericName[1] === String(room.roomCode)) return '盲酌酒局';
+  return displayName;
+}
+
 // 后端 createTime 可能是时间戳或 ISO 字符串，统一格式化为本地可读时间
 function pad(n) { return n < 10 ? '0' + n : String(n); }
 function formatTime(value) {
@@ -21,6 +37,9 @@ Page({
   data: {
     currentTab: 'local', // 'local' | 'online'
     rooms: [],
+    roomFilter: 'all',
+    filteredRooms: [],
+    roomCounts: { all: 0, playing: 0, finished: 0, revealed: 0 },
     // 在线品鉴状态
     isLoggedIn: false,
     onlineList: [],
@@ -85,7 +104,36 @@ Page({
       }
     }
   },
-  loadRooms() { this.setData({ rooms: storageService.getRooms().map(r => ({ ...r, memberCount: storageService.getMembers(r.roomId).length })) }); },
+  loadRooms() {
+    const roomCounts = { all: 0, playing: 0, finished: 0, revealed: 0 };
+    const rooms = storageService.getRooms().map(room => {
+      const knownStatus = ROOM_FILTERS.indexOf(room.status) > 0;
+      if (knownStatus) roomCounts[room.status] += 1;
+      const presentation = knownStatus
+        ? ROOM_PRESENTATION[room.status]
+        : { statusLabel: '待确认', statusClass: 'is-unknown', actionLabel: '查看酒局' };
+      return {
+        ...room,
+        memberCount: storageService.getMembers(room.roomId).length,
+        displayName: formatRoomDisplayName(room),
+        ...presentation
+      };
+    });
+    roomCounts.all = rooms.length;
+    this.setData({
+      rooms,
+      roomCounts,
+      filteredRooms: this.data.roomFilter === 'all' ? rooms : rooms.filter(room => room.status === this.data.roomFilter)
+    });
+  },
+  selectRoomFilter(e) {
+    const roomFilter = e.currentTarget.dataset.filter;
+    if (ROOM_FILTERS.indexOf(roomFilter) < 0) return;
+    this.setData({
+      roomFilter,
+      filteredRooms: roomFilter === 'all' ? this.data.rooms : this.data.rooms.filter(room => room.status === roomFilter)
+    });
+  },
   goToCreate() { wx.navigateTo({ url: "/packages/blind/pages/create/create" }); },
   goToJoin() { wx.navigateTo({ url: "/packages/blind/pages/join/join" }); },
   goToMine() { wx.switchTab({ url: "/pages/mine/mine" }); },

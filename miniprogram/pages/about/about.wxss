@@ -1,6 +1,271 @@
-/* about 页专属样式 */
-.drink-warning{margin:24rpx 32rpx;padding:28rpx 32rpx;background:#fdf2ee;border:1rpx solid #e8c8bc;border-radius:16rpx;}
-.dw-title{font-size:30rpx;font-weight:700;color:#274d3b;letter-spacing:2rpx;margin-bottom:10rpx;}
-.about-block{margin-bottom:20rpx;}
-.about-p{margin-bottom:12rpx;line-height:1.75;}
-.about-block .text-link{display:inline-block;margin-top:8rpx;}
+/* pages/about/about.wxss - 延续竹影手札与票签账册系统设计 */
+.about-page {
+  padding-bottom: calc(80rpx + env(safe-area-inset-bottom));
+}
+
+/* 顶部品牌票签卡 */
+.about-hero-ticket {
+  display: flex;
+  align-items: stretch;
+  min-height: 200rpx;
+  background: #fbfaf5;
+  border: 1rpx solid #b9c5b1;
+  border-radius: 12rpx;
+  margin: 12rpx 0 32rpx;
+  overflow: visible;
+  position: relative;
+}
+.hero-left-stub {
+  position: relative;
+  display: flex;
+  flex: 0 0 156rpx;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  background: #e5eadb;
+  border-right: 1rpx dashed #bac5b0;
+  border-radius: 11rpx 0 0 11rpx;
+  padding: 16rpx 10rpx;
+}
+.hero-left-stub::before, .hero-left-stub::after {
+  content: "";
+  position: absolute;
+  right: -14rpx;
+  width: 26rpx;
+  height: 26rpx;
+  border: 1rpx solid #b9c5b1;
+  border-radius: 50%;
+  background: #f7f6ef;
+  z-index: 1;
+}
+.hero-left-stub::before {
+  top: -14rpx;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  transform: rotate(45deg);
+}
+.hero-left-stub::after {
+  bottom: -14rpx;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+  transform: rotate(45deg);
+}
+.hero-logo {
+  width: 104rpx;
+  height: 48rpx;
+  filter: brightness(0) saturate(100%) invert(26%) sepia(14%) saturate(1159%) hue-rotate(93deg) brightness(92%) contrast(90%);
+}
+.hero-badge {
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 22rpx;
+  color: #274d3b;
+  font-weight: 600;
+  border: 1rpx solid #b9c5b1;
+  background: #fbfaf5;
+  padding: 2rpx 12rpx;
+  border-radius: 20rpx;
+}
+.hero-main {
+  flex: 1;
+  min-width: 0;
+  padding: 24rpx 28rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.hero-kicker {
+  font-size: 22rpx;
+  color: #687365;
+  letter-spacing: 2rpx;
+}
+.hero-motto {
+  margin: 10rpx 0 12rpx;
+}
+.motto-main {
+  display: block;
+  font-family: "Songti SC", "STSong", "SimSun", serif;
+  font-size: 38rpx;
+  font-weight: 600;
+  color: #28382e;
+  line-height: 1.4;
+}
+.motto-sub {
+  display: block;
+  font-size: 22rpx;
+  color: #687365;
+  margin-top: 6rpx;
+  line-height: 1.5;
+}
+.hero-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1rpx dashed #bac5b0;
+  padding-top: 10rpx;
+}
+.app-version {
+  font-family: Georgia, serif;
+  font-size: 22rpx;
+  color: #687365;
+}
+.hero-seal {
+  width: 44rpx;
+  height: 44rpx;
+  background: #a8382b;
+  color: #f7f6ef;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 18rpx;
+  line-height: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 6rpx;
+  letter-spacing: 1rpx;
+  font-weight: 600;
+  box-shadow: 0 1rpx 4rpx rgba(168, 56, 43, 0.2);
+}
+
+/* 警示与联系票签卡 */
+.warning-ticket, .contact-ticket {
+  background: #fbfaf5;
+  border: 1rpx solid #b9c5b1;
+  border-radius: 12rpx;
+  padding: 24rpx 28rpx;
+  margin-bottom: 34rpx;
+}
+.ticket-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+  padding-bottom: 12rpx;
+  border-bottom: 1rpx dashed #bac5b0;
+}
+.ticket-status-pill {
+  padding: 4rpx 16rpx;
+  border-radius: 30rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.warning-pill {
+  background: #f7edea;
+  color: #a8382b;
+  border: 1rpx solid #dcb2a8;
+}
+.contact-pill {
+  background: #e5eadb;
+  color: #274d3b;
+  border: 1rpx solid #b9c5b1;
+}
+.ticket-tag {
+  font-size: 22rpx;
+  color: #687365;
+}
+.warning-title {
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #28382e;
+  margin-bottom: 8rpx;
+}
+.warning-desc {
+  font-size: 24rpx;
+  line-height: 1.75;
+  color: #687365;
+}
+
+/* 规约账册系统 */
+.ledger-panel {
+  margin-bottom: 36rpx;
+}
+.ledger-panel .panel-heading {
+  margin-bottom: 18rpx;
+  border-bottom: 0;
+  padding-bottom: 8rpx;
+}
+.ledger-panel .panel-title {
+  font-size: 38rpx;
+  font-weight: 600;
+}
+.rule-ledger {
+  background: #fbfaf5;
+  border: 1rpx solid #b9c5b1;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+.ledger-row {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1rpx solid #cbd3c2;
+}
+.ledger-row:last-child {
+  border-bottom: 0;
+}
+.ledger-index {
+  flex: 0 0 136rpx;
+  background: #e5eadb;
+  border-right: 1rpx dashed #bac5b0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 8rpx;
+  gap: 4rpx;
+}
+.index-num {
+  font-family: Georgia, serif;
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #274d3b;
+}
+.index-label {
+  font-size: 20rpx;
+  color: #687365;
+  text-align: center;
+}
+.ledger-content {
+  flex: 1;
+  min-width: 0;
+  padding: 20rpx 24rpx;
+}
+.item-title {
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #28382e;
+  margin-bottom: 6rpx;
+}
+.item-desc {
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: #687365;
+}
+
+/* 联系方式按钮 */
+.contact-btn {
+  margin-top: 18rpx;
+  height: 80rpx;
+  font-size: 26rpx;
+  border-radius: 10rpx;
+}
+.light-arrow {
+  filter: brightness(0) invert(1);
+  width: 26rpx;
+  height: 26rpx;
+  margin-left: 8rpx;
+}
+
+@media (max-width: 350px) {
+  .hero-left-stub {
+    flex-basis: 128rpx;
+  }
+  .motto-main {
+    font-size: 34rpx;
+  }
+  .ledger-index {
+    flex-basis: 120rpx;
+  }
+}

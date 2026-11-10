@@ -1,31 +1,114 @@
-<view class="journal about-page">
-  <view class="drink-warning" aria-label="理性饮酒提示">
-    <view class="dw-title">理性饮酒 · 未成年人请勿饮酒</view>
-    <view class="meta">本小程序内容仅面向达到法定饮酒年龄的用户。酒后请勿驾车，孕期及哺乳期不宜饮酒，饮酒过量有害健康。</view>
+<view class="journal organized-page about-page">
+  <view class="about-hero-ticket">
+    <view class="hero-left-stub">
+      <image class="hero-logo" src="/assets/brand/mangzhuo-lockup-v6.png" mode="aspectFit" aria-label="盲酌"/>
+      <view class="hero-badge">关于</view>
+    </view>
+    <view class="hero-main">
+      <view class="hero-kicker">盲酌 · 规则与公约</view>
+      <view class="hero-motto">
+        <text class="motto-main">去掉酒标，只凭味道</text>
+        <text class="motto-sub">专注白酒品鉴记录、盲品对饮与知味学习</text>
+      </view>
+      <view class="hero-foot">
+        <text class="app-version">版本 v{{version}}</text>
+        <view class="hero-seal">知味</view>
+      </view>
+    </view>
   </view>
 
-  <view class="paper-row about-block">
-    <view class="row-title">隐私政策摘要</view>
-    <view class="muted about-p">1. 品酒手记与「桌上品鉴」记录保存在当前设备，不会因微信登录自动上传或跨设备同步。清除小程序数据可能导致这些记录丢失。</view>
-    <view class="muted about-p">2. 头像与昵称由你主动选择填写（头像来自相册或拍照，昵称由你输入），我们不会静默读取你的微信资料。</view>
-    <view class="muted about-p">3. 使用「在线品鉴」时，微信登录凭证由品鉴后台校验；后台保存小程序身份标识、你主动同步的昵称与头像，以及你创建的活动、猜酒与评分。未登录时，头像与昵称仅保存在本机。</view>
-    <view class="muted about-p">4. 「保存酒卡到相册」需要相册写入权限，仅在你点击保存时使用，可在系统设置中随时关闭。</view>
-    <view class="muted about-p">5. 退出微信身份会清除本机登录会话，不会删除后台已有的活动与评分。我们不收集位置、通讯录、麦克风信息，不接入第三方广告或统计 SDK。</view>
+  <view class="content-panel warning-ticket" aria-label="理性饮酒提示">
+    <view class="ticket-header">
+      <view class="ticket-status-pill warning-pill">理性饮酒倡议</view>
+      <text class="ticket-tag">未成年人严禁饮酒</text>
+    </view>
+    <view class="ticket-body">
+      <view class="warning-title">适量品真味 · 醉意莫贪杯</view>
+      <view class="muted warning-desc">本小程序内容仅面向符合法定饮酒年龄的用户。酒后切勿驾车，孕妇与哺乳期不宜饮酒，过度饮酒有害身体健康。</view>
+    </view>
   </view>
 
-  <view class="paper-row about-block">
-    <view class="row-title">用户协议与免责声明</view>
-    <view class="muted about-p">1. 盲酌是一款白酒品鉴记录与知识工具，所有酒识文章、风味描述、估价与评分仅供品鉴交流参考，不构成任何购买建议或投资依据。</view>
-    <view class="muted about-p">2. 页面中出现的品牌名称、商标与产品信息，版权归原品牌所有，引用仅为品鉴学习目的。</view>
-    <view class="muted about-p">3. 「桌上品鉴」供同一设备使用；「在线品鉴」通过品鉴后台共享活动与评分，需要网络与微信身份。两种模式的记录分别保存。</view>
-    <view class="muted about-p">4. 请遵守所在法律法规理性饮酒；因不当饮酒行为产生的后果由行为人自行承担。</view>
+  <view class="content-panel ledger-panel">
+    <view class="panel-heading">
+      <view class="panel-title">隐私政策要点</view>
+      <text class="meta">数据权属归用户</text>
+    </view>
+    <view class="rule-ledger">
+      <view class="ledger-row">
+        <view class="ledger-index"><text class="index-num">01</text><text class="index-label">本地储存</text></view>
+        <view class="ledger-content">
+          <view class="item-title">品酒手记与桌上酒局</view>
+          <view class="muted item-desc">品酒手记及「桌上品鉴」记录仅保存在当前设备，绝不静默上传或多端同步。清理微信缓存可能导致数据遗失，请妥善留存。</view>
+        </view>
+      </view>
+      <view class="ledger-row">
+        <view class="ledger-index"><text class="index-num">02</text><text class="index-label">主动授权</text></view>
+        <view class="ledger-content">
+          <view class="item-title">头像与品鉴昵称</view>
+          <view class="muted item-desc">仅在用户自主选择或手动录入时保存；盲酌绝不未经许可静默读取你的个人微信资料与隐私。</view>
+        </view>
+      </view>
+      <view class="ledger-row">
+        <view class="ledger-index"><text class="index-num">03</text><text class="index-label">在线品鉴</text></view>
+        <view class="ledger-content">
+          <view class="item-title">局内互动与评分</view>
+          <view class="muted item-desc">使用「在线品鉴」功能时，仅由服务后台校验活动标识，储存本人活动、盲猜与评分。未登录时仅保存在本地设备。</view>
+        </view>
+      </view>
+      <view class="ledger-row">
+        <view class="ledger-index"><text class="index-num">04</text><text class="index-label">权限申明</text></view>
+        <view class="ledger-content">
+          <view class="item-title">相册与系统权限</view>
+          <view class="muted item-desc">「保存酒卡到相册」仅在明确点击操作时申请写入权限；绝不抓取通讯录、地理位置或麦克风权限，无第三方广告跟踪 SDK。</view>
+        </view>
+      </view>
+    </view>
   </view>
 
-  <view class="paper-row about-block">
-    <view class="row-title">联系我们</view>
-    <view class="muted about-p">对内容或功能有疑问、建议或侵权反馈，欢迎通过邮箱联系我们。</view>
-    <button class="text-link" bindtap="copyContact">复制联系邮箱 →</button>
+  <view class="content-panel ledger-panel">
+    <view class="panel-heading">
+      <view class="panel-title">服务协议与免责声明</view>
+      <text class="meta">品评交流参考</text>
+    </view>
+    <view class="rule-ledger">
+      <view class="ledger-row">
+        <view class="ledger-index"><text class="index-num">01</text><text class="index-label">参考性质</text></view>
+        <view class="ledger-content">
+          <view class="item-title">品鉴交流工具</view>
+          <view class="muted item-desc">小程序所有酒识文章、风味轮词库、估价与品评分数仅供盲饮与文化研讨参考，不构成任何商业投资、购买或质量背书。</view>
+        </view>
+      </view>
+      <view class="ledger-row">
+        <view class="ledger-index"><text class="index-num">02</text><text class="index-label">知识产权</text></view>
+        <view class="ledger-content">
+          <view class="item-title">品牌与商标声明</view>
+          <view class="muted item-desc">文内涉及的白酒品牌、生产酒厂、包装商标及国标资料，其知识产权均归原权利人所有，此处引用仅限学习考证。</view>
+        </view>
+      </view>
+      <view class="ledger-row">
+        <view class="ledger-index"><text class="index-num">03</text><text class="index-label">行为责任</text></view>
+        <view class="ledger-content">
+          <view class="item-title">自律守法饮酒</view>
+          <view class="muted item-desc">请切实遵守有关法律法规。因过量饮酒、劝酒或不当行为产生的民事与人身责任，均由行为主体自行承担。</view>
+        </view>
+      </view>
+    </view>
   </view>
 
-  <view class="chapter-foot">盲酌 v{{version}} · 只凭味道</view>
+  <view class="content-panel contact-ticket">
+    <view class="ticket-header">
+      <view class="ticket-status-pill contact-pill">意见与反馈</view>
+      <text class="ticket-tag">客服支持</text>
+    </view>
+    <view class="ticket-body">
+      <view class="item-title">联系盲酌编辑部</view>
+      <view class="muted item-desc">若对酒识考证、功能体验有建议，或有侵权线索与勘误反馈，欢迎来信沟通。</view>
+      <button class="btn-primary contact-btn" bindtap="copyContact">
+        <text>复制联系邮箱 (support@mangzhuo.app)</text>
+        <image class="small-arrow light-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/>
+      </button>
+    </view>
+  </view>
+
+  <view class="quiet-footer">一杯一记 · 留下风味 · 也留下记忆</view>
 </view>

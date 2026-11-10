@@ -1,11 +1,14 @@
 <brand-nav/>
 <view class="journal organized-page gather-page">
   <view class="page-kicker"><text>与 知 己 同 席</text><text class="chapter-number">第二章 · 聚</text></view>
-  <view class="page-intro"><view class="compact-title">和知己，品一局</view><view class="heading-desc">把酒名暂时藏起，让感受先开口。</view></view>
+  <view class="chapter-hero-banner gather-hero">
+    <image class="chapter-title-svg" src="/assets/brand/gather-hero-title.svg" mode="aspectFit" aria-label="和知己，品一局，藏起酒标，味道开口"/>
+    <image class="chapter-pose-svg" src="/assets/brand/libai-gather.svg" mode="aspectFit" aria-label="李白举杯邀饮，盲酌品牌插画"/>
+  </view>
   <view class="content-panel gather-start">
     <view class="mode-tabs">
-      <button class="mode-tab {{currentTab === 'local' ? 'active' : ''}}" bindtap="switchTabMode" data-tab="local" aria-label="桌上品鉴" aria-pressed="{{currentTab === 'local'}}">桌上品鉴</button>
-      <button class="mode-tab {{currentTab === 'online' ? 'active' : ''}}" bindtap="switchTabMode" data-tab="online" aria-label="在线品鉴" aria-pressed="{{currentTab === 'online'}}">在线品鉴</button>
+      <button class="mode-tab {{currentTab === 'local' ? 'active' : ''}}" bindtap="switchTabMode" data-tab="local" aria-label="桌上品鉴" aria-pressed="{{currentTab === 'local'}}"><view class="mode-tab-label">桌上品鉴</view></button>
+      <button class="mode-tab {{currentTab === 'online' ? 'active' : ''}}" bindtap="switchTabMode" data-tab="online" aria-label="在线品鉴" aria-pressed="{{currentTab === 'online'}}"><view class="mode-tab-label">在线品鉴</view></button>
     </view>
     <block wx:if="{{currentTab === 'local'}}">
       <view class="ink-block">
@@ -32,28 +35,67 @@
       </view>
     </block>
   </view>
-  <view class="content-panel room-panel" wx:if="{{currentTab === 'local'}}">
-    <view class="panel-heading"><view class="panel-title">酒局记录</view><view class="meta">{{rooms.length}} 场</view></view>
-    <button class="room-entry" wx:for="{{rooms}}" wx:key="roomId" bindtap="onTapRoom" data-room-id="{{item.roomId}}">
-      <view class="room-title-line"><view class="row-title">{{item.name}}</view><text class="room-status {{item.status === 'revealed' ? 'status-done' : ''}}">{{item.status === 'revealed' ? '已揭晓' : (item.status === 'finished' ? '品评结束' : '进行中')}}</text></view>
-      <view class="muted room-description">{{item.description || '编号入杯，独立记录，一起品鉴。'}}</view>
-      <view class="room-summary"><text>房间 {{item.roomCode}} · {{item.sampleCount}} 款 · {{item.memberCount}} 人</text><text class="room-link">{{item.status === 'revealed' ? '看结果' : '进入酒局'}} →</text></view>
-    </button>
-    <view wx:if="{{!rooms.length}}" class="panel-empty"><view class="row-title">还没有酒局</view><view class="muted">邀请朋友，从一场真实的品鉴开始。</view></view>
-  </view>
-  <view class="content-panel room-panel" wx:else>
-    <view class="panel-heading"><view class="panel-title">在线品鉴活动</view><view class="meta" wx:if="{{isLoggedIn}}">{{onlineCount}} 场</view></view>
-    <view wx:if="{{!isLoggedIn}}" class="panel-empty"><view class="muted">登录后，这里会显示在线活动。</view></view>
-    <view wx:elif="{{onlineLoading && !onlineListCount}}" class="panel-empty"><view class="muted">正在加载在线活动…</view></view>
-    <view wx:elif="{{onlineError && !onlineListCount}}" class="panel-empty"><view class="muted">{{onlineError}}</view><button class="text-link" bindtap="loadOnlineTastes">点击重试 →</button></view>
-    <block wx:elif="{{onlineListCount}}">
-      <button class="room-entry" wx:for="{{onlineList}}" wx:key="id" bindtap="onTapOnlineItem" data-id="{{item.id}}">
-        <view class="room-title-line"><view class="row-title">{{item.title}}</view><view class="online-tags"><text wx:if="{{item.isOwner}}" class="owner-badge">我发起的</text><text class="room-status {{item.status === 1 ? 'status-done' : ''}}">{{item.status === 1 ? '已揭晓' : '进行中'}}</text></view></view>
-        <view class="room-summary"><text>活动 #{{item.id}} · {{item.createdAtText || '近期活动'}}</text><text class="room-link">{{item.status === 1 ? '看结果' : '参与品鉴'}} →</text></view>
+  <view id="local-room-records" class="content-panel room-panel local-room-panel" wx:if="{{currentTab === 'local'}}">
+    <view class="records-context"><text>桌上品鉴</text><text>本机记录</text></view>
+    <view class="panel-heading records-heading"><view class="panel-title">酒局记录</view><view class="meta">{{roomCounts.all}} 场</view></view>
+    <view class="room-filters" wx:if="{{rooms.length}}">
+      <button class="room-filter {{roomFilter === 'all' ? 'is-selected' : ''}}" bindtap="selectRoomFilter" data-filter="all" aria-pressed="{{roomFilter === 'all'}}"><view class="room-filter-label">全部 {{roomCounts.all}}</view></button>
+      <button class="room-filter {{roomFilter === 'playing' ? 'is-selected' : ''}}" bindtap="selectRoomFilter" data-filter="playing" aria-pressed="{{roomFilter === 'playing'}}"><view class="room-filter-label">进行中</view></button>
+      <button class="room-filter {{roomFilter === 'revealed' ? 'is-selected' : ''}}" bindtap="selectRoomFilter" data-filter="revealed" aria-pressed="{{roomFilter === 'revealed'}}"><view class="room-filter-label">已揭晓</view></button>
+      <button wx:if="{{roomCounts.finished || roomFilter === 'finished'}}" class="room-filter {{roomFilter === 'finished' ? 'is-selected' : ''}}" bindtap="selectRoomFilter" data-filter="finished" aria-pressed="{{roomFilter === 'finished'}}"><view class="room-filter-label">品评结束</view></button>
+    </view>
+    <view class="room-tickets" wx:if="{{filteredRooms.length}}">
+      <button class="room-ticket {{item.statusClass}}" wx:for="{{filteredRooms}}" wx:key="roomId" bindtap="onTapRoom" data-room-id="{{item.roomId}}" aria-label="{{item.displayName}}，房间号 {{item.roomCode}}，{{item.statusLabel}}，{{item.sampleCount}} 款酒样，{{item.memberCount}} 人参与，{{item.actionLabel}}">
+        <view class="ticket-code">
+          <text class="ticket-code-label">房间号</text>
+          <text class="ticket-code-value">{{item.roomCode}}</text>
+        </view>
+        <view class="ticket-main">
+          <view class="ticket-status">{{item.statusLabel}}</view>
+          <view class="ticket-title">{{item.displayName}}</view>
+          <view class="ticket-foot">
+            <view class="ticket-facts"><text>{{item.sampleCount}} 款酒样</text><text>{{item.memberCount}} 人参与</text></view>
+            <view class="ticket-action"><text>{{item.actionLabel}}</text><image class="ticket-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></view>
+          </view>
+        </view>
       </button>
+    </view>
+    <view wx:elif="{{rooms.length}}" class="panel-empty filtered-empty">
+      <view class="row-title">{{roomFilter === 'playing' ? '暂时没有进行中的酒局' : (roomFilter === 'revealed' ? '暂时没有已揭晓的酒局' : '暂时没有品评结束的酒局')}}</view>
+      <view class="muted">切换状态，或看看全部酒局。</view>
+      <button class="text-link" bindtap="selectRoomFilter" data-filter="all">查看全部酒局</button>
+    </view>
+    <view wx:else class="panel-empty"><view class="row-title">还没有酒局</view><view class="muted">邀请朋友，从一场真实的品鉴开始。</view></view>
+  </view>
+  <view class="content-panel room-panel local-room-panel" wx:else>
+    <view class="records-context"><text>在线品鉴</text><text>{{isLoggedIn ? '云端记录' : '待微信登录'}}</text></view>
+    <view class="panel-heading records-heading"><view class="panel-title">在线品鉴活动</view><view class="meta" wx:if="{{isLoggedIn}}">{{onlineCount}} 场</view></view>
+    <view wx:if="{{!isLoggedIn}}" class="online-state-ticket"><view class="row-title">尚未登录微信</view><view class="muted">登录后，这里会显示你可参与的在线品鉴活动。</view></view>
+    <view wx:elif="{{onlineLoading && !onlineListCount}}" class="online-state-ticket"><view class="muted">正在加载在线活动…</view></view>
+    <view wx:elif="{{onlineError && !onlineListCount}}" class="online-state-ticket"><view class="muted">{{onlineError}}</view><button class="text-link" bindtap="loadOnlineTastes">点击重试 →</button></view>
+    <block wx:elif="{{onlineListCount}}">
+      <view class="room-tickets">
+        <button class="room-ticket {{item.status === 1 ? 'is-revealed' : 'is-playing'}}" wx:for="{{onlineList}}" wx:key="id" bindtap="onTapOnlineItem" data-id="{{item.id}}">
+          <view class="ticket-code">
+            <text class="ticket-code-label">活动号</text>
+            <text class="ticket-code-value">#{{item.id}}</text>
+          </view>
+          <view class="ticket-main">
+            <view class="online-status-row">
+              <view class="ticket-status">{{item.status === 1 ? '已揭晓' : '进行中'}}</view>
+              <text wx:if="{{item.isOwner}}" class="owner-pill">我发起的</text>
+            </view>
+            <view class="ticket-title">{{item.title}}</view>
+            <view class="ticket-foot">
+              <view class="ticket-facts"><text>{{item.createdAtText || '近期活动'}}</text></view>
+              <view class="ticket-action"><text>{{item.status === 1 ? '查看结果' : '参与品鉴'}}</text><image class="ticket-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></view>
+            </view>
+          </view>
+        </button>
+      </view>
       <view class="list-tail" wx:if="{{onlineLoading}}">正在加载更多…</view><view class="list-tail" wx:elif="{{hasMoreOnline}}">上拉加载更多</view><view class="list-tail" wx:else>已加载全部活动</view>
     </block>
-    <view wx:else class="panel-empty"><view class="muted">还没有在线活动，发起一场邀朋友来品鉴吧。</view></view>
+    <view wx:else class="online-state-ticket"><view class="muted">还没有在线活动，发起一场邀朋友来品鉴吧。</view></view>
   </view>
   <view class="quiet-footer">编号酒样 · 独立品评 · 一起揭晓</view>
 </view>

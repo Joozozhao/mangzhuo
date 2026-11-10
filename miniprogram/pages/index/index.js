@@ -1,8 +1,26 @@
 const journal = require('../../services/journal');
 const PRIVACY_KEY = 'mz_privacy_ack_v1';
 
+function withDatePresentation(note) {
+  const dateLabel = typeof note.date === 'string' ? note.date : '';
+  const displayed = { ...note, dateMonthDay: '未记日期', dateYear: '', dateLabel };
+  const match = /^(\d{4})([./-])(\d{2})\2(\d{2})$/.exec(dateLabel);
+  if (!match || match[0] !== dateLabel) return displayed;
+  const year = Number(match[1]);
+  const month = Number(match[3]);
+  const day = Number(match[4]);
+  const leapYear = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const daysInMonth = [31, leapYear ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (year < 1 || month < 1 || month > 12 || day < 1 || day > daysInMonth[month - 1]) return displayed;
+  displayed.dateMonthDay = match[3] + '.' + match[4];
+  displayed.dateYear = match[1];
+  return displayed;
+}
+
 Page({
-  data: { notes: [] },
+  data: {
+    notes: []
+  },
   onShow() {
     const tabBar = this.getTabBar && this.getTabBar();
     if (tabBar) tabBar.setData({ selected: 0 });
@@ -23,7 +41,7 @@ Page({
       });
     }
   },
-  refresh() { this.setData({ notes: journal.all().slice(0, 3) }); },
+  refresh() { this.setData({ notes: journal.all().slice(0, 3).map(withDatePresentation) }); },
   onPullDownRefresh() { this.refresh(); wx.stopPullDownRefresh(); },
   checkin() { wx.navigateTo({ url: '/pages/checkin/checkin' }); },
   shareLatest() {

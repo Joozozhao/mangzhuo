@@ -2,23 +2,47 @@
 <view class="journal organized-page home-page">
   <view class="content-panel home-start">
     <view class="page-kicker"><text>品 鉴 手 记</text><text class="chapter-number">第一章 · 记</text></view>
-    <view class="home-hero">
-      <view class="home-title" aria-label="记下这一杯"><view class="title-column"><text>记</text><text>下</text></view><view class="title-column"><text>这</text><text>一</text><text>杯</text></view></view>
-      <view class="vertical-note"><text>先</text><text>写</text><text>感</text><text>受</text><text>，</text><text>最</text><text>后</text><text>揭</text><text>晓</text></view>
-      <image class="home-art bamboo-art" src="/assets/brand/libai-home.png" mode="aspectFit" aria-label="李白举杯，盲酌品牌插画"/>
+    <view class="chapter-hero-banner home-hero">
+      <image class="chapter-title-svg home-title-svg" src="/assets/brand/home-hero-title.svg" mode="aspectFit" aria-label="记下这一杯，先写感受，最后揭晓"/>
+      <image class="chapter-pose-svg home-pose-svg" src="/assets/brand/libai-home.svg" mode="aspectFit" aria-label="李白闻香，盲酌品牌插画"/>
     </view>
     <view class="home-description">记酒款，记风味，也记相聚。</view>
     <button class="btn-primary" bindtap="checkin"><text>记一杯</text><text class="button-arrow" aria-hidden="true">＋</text></button>
-    <button class="inline-action share-latest" bindtap="shareLatest"><text>制作分享酒卡</text><text class="action-arrow" aria-hidden="true">↗</text></button>
+    <button class="share-ticket" bindtap="shareLatest" aria-label="制作分享酒卡">
+      <view class="share-stub">
+        <text class="share-stub-mark">酒卡</text>
+      </view>
+      <view class="share-body">
+        <view class="share-title">制作分享酒卡</view>
+        <view class="share-desc">把最近一次品鉴，留在一张纸签里</view>
+      </view>
+      <view class="share-open"><image class="ledger-chevron" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></view>
+    </button>
   </view>
   <view class="content-panel record-panel">
-    <view class="panel-heading"><view class="panel-title">最近手记</view><button class="text-link" bindtap="mine">全部手记 ↗</button></view>
-    <button class="record-row" wx:for="{{notes}}" wx:key="id" bindtap="openNote" data-id="{{item.id}}">
-      <text class="record-number">{{index > 8 ? index + 1 : '0' + (index + 1)}}</text>
-      <view class="record-body"><view class="row-title">{{item.title}}</view><view class="meta">{{item.aromaType}} · {{item.date}}</view></view>
-      <text class="record-arrow" aria-hidden="true">↗</text>
-    </button>
-    <view wx:if="{{!notes.length}}" class="panel-empty"><view class="row-title">第一杯，值得留一页</view><view class="muted">写下真实的感受，慢慢认识自己的口味。</view><button class="text-link" bindtap="checkin">写下第一篇 ↗</button></view>
+    <view class="panel-heading notes-heading">
+      <view class="panel-title">最近手记</view>
+      <button class="mine-link-pill" bindtap="mine"><text>全部手记</text><image class="small-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></button>
+    </view>
+    <view class="note-ledger" wx:if="{{notes.length}}">
+      <button class="ledger-row" wx:for="{{notes}}" wx:key="id" bindtap="openNote" data-id="{{item.id}}" aria-label="{{item.dateLabel}}，{{item.aromaType}}，{{item.title}}，查看手记">
+        <view class="ledger-date">
+          <text class="date-month-day">{{item.dateMonthDay}}</text>
+          <text wx:if="{{item.dateYear}}" class="date-year">{{item.dateYear}}</text>
+        </view>
+        <view class="ledger-copy">
+          <view class="note-aroma">{{item.aromaType}}</view>
+          <view class="note-title">{{item.title}}</view>
+          <view class="note-excerpt">{{item.note || '打开手记，回顾这一杯的风味。'}}</view>
+        </view>
+        <view class="ledger-open"><image class="ledger-chevron" src="/assets/icons/chevron-right.svg" mode="aspectFit" aria-hidden="true"/></view>
+      </button>
+    </view>
+    <view wx:else class="empty-ledger">
+      <view class="empty-ledger-title">第一杯，值得留一页</view>
+      <view class="muted">写下真实的感受，慢慢认识自己的口味。</view>
+      <button class="mine-checkin empty-checkin" bindtap="checkin"><text>写下第一篇</text><image class="small-arrow light-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></button>
+    </view>
   </view>
   <view class="quiet-footer">少量品鉴 · 理性饮酒 · 未成年人请勿饮酒</view>
 </view>
