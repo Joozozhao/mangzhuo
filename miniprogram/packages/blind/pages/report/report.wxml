@@ -1,14 +1,14 @@
-<view class="container" wx:if="{{insights}}">
+<view class="container flow-page report-page" wx:if="{{insights}}">
   <!-- 报告仪式感封面卡片 -->
   <view class="report-cover card">
-    <view class="cover-brand">🍶 盲酌 · 酒局报告</view>
+    <view class="cover-brand">盲酌 · 酒局报告</view>
     <view class="cover-title">{{room.name}}</view>
     <view class="cover-quote">“去掉酒标，只凭味道。这是现场 {{insights.totalMembers}} 位品鉴官用味蕾票选出的真实结果。”</view>
     <view class="cover-divider"></view>
     <view class="cover-stats">
       <view class="cs-col"><text class="cs-v">{{insights.totalMembers}}</text><text class="cs-k">参与品鉴官</text></view>
       <view class="cs-col"><text class="cs-v">{{insights.totalSamples}}</text><text class="cs-k">盲测酒样数</text></view>
-      <view class="cs-col"><text class="cs-v">100%</text><text class="cs-k">双盲公平度</text></view>
+      <view class="cs-col"><text class="cs-v">{{room.roomCode}}</text><text class="cs-k">酒局编号</text></view>
     </view>
   </view>
 
@@ -17,7 +17,7 @@
     <!-- 1. 全场最受欢迎 -->
     <view class="award-card card gold-glow" wx:if="{{insights.mostPopular}}">
       <view class="award-header">
-        <text class="award-icon">🌟</text>
+        <text class="award-index">01</text>
         <text class="award-badge">全场最受欢迎酒款</text>
       </view>
       <view class="award-main">
@@ -31,7 +31,7 @@
     <!-- 2. 最大黑马 -->
     <view class="award-card card" wx:if="{{insights.biggestDarkHorse}}">
       <view class="award-header">
-        <text class="award-icon">🐴</text>
+        <text class="award-index">02</text>
         <text class="award-badge tag-green">全场最大性价比黑马</text>
       </view>
       <view class="award-main">
@@ -49,7 +49,7 @@
     <!-- 3. 最难猜酒款 -->
     <view class="award-card card" wx:if="{{insights.hardestSample}}">
       <view class="award-header">
-        <text class="award-icon">🎭</text>
+        <text class="award-index">03</text>
         <text class="award-badge tag-dark">最神秘/最难猜酒款</text>
       </view>
       <view class="award-main">
@@ -63,7 +63,7 @@
     <!-- 4. 本场猜酒王 -->
     <view class="award-card card" wx:if="{{insights.topGuesser}}">
       <view class="award-header">
-        <text class="award-icon">👑</text>
+        <text class="award-index">04</text>
         <text class="award-badge tag-gold">本场猜酒王</text>
       </view>
       <view class="award-main">
@@ -80,7 +80,7 @@
 
   <!-- 底部操作按钮 -->
   <view class="report-actions">
-    <button class="btn-primary" bindtap="generatePoster">🎨 生成酒局战报海报 (朋友圈)</button>
+    <button class="btn-primary" bindtap="generatePoster">生成酒局战报海报</button>
     <button class="btn-secondary" bindtap="backToHome">返回首页发起新盲品</button>
   </view>
 

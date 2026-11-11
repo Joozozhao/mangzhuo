@@ -1,35 +1,39 @@
-<view class="container" wx:if="{{room}}">
+<view class="container flow-page room-page" wx:if="{{room}}">
   <view class="room-banner card">
     <view class="banner-top">
-      <view class="banner-code" bindtap="copyRoomCode">
+      <button class="banner-code" bindtap="copyRoomCode" aria-label="复制房间码 {{room.roomCode}}">
         <text class="c-label">房间码</text>
         <text class="c-val">{{room.roomCode}}</text>
         <text class="c-copy">复制</text>
-      </view>
-      <view class="status-pill status-{{room.status}}">{{room.status === 'revealed' ? '已开奖揭晓' : (isAllSubmitted ? '全员已交卷' : '盲测进行中')}}</view>
+      </button>
+      <view class="status-pill status-{{room.status}}">{{room.status === 'revealed' ? '已开奖揭晓' : (!samples.length ? '待布置酒样' : (isAllSubmitted ? '全员已交卷' : '盲测进行中'))}}</view>
     </view>
     <view class="banner-name">{{room.name}}</view>
     <view class="banner-desc">{{room.description}}</view>
-    <view class="share-hint">💬 现场好友输入房间码 <text class="highlight">{{room.roomCode}}</text> 或直接扫码入局</view>
+    <view class="share-hint">现场好友输入房间码 <text class="highlight">{{room.roomCode}}</text> 或直接扫码入局</view>
   </view>
 
   <view class="section-header">
     <text class="section-title">现场酒样盲品进度</text>
-    <text class="section-sub">{{mySubmittedCount}} / {{samples.length}} 款已完成</text>
+    <text wx:if="{{samples.length}}" class="section-sub">{{mySubmittedCount}} / {{samples.length}} 款已完成</text>
   </view>
   <view class="sample-list">
-    <view class="sample-item card" wx:for="{{samples}}" wx:key="sampleId" bindtap="startSampleTasting" data-index="{{index}}">
+    <view wx:if="{{!samples.length}}" class="room-empty card">
+      <view class="meta-title">酒样尚未布置</view>
+      <view class="banner-desc">请房主先完成酒样布置，再开始盲猜与品鉴。</view>
+    </view>
+    <button class="sample-item card" wx:for="{{samples}}" wx:key="sampleId" bindtap="startSampleTasting" data-index="{{index}}" aria-label="第 {{item.number}} 款酒样，{{myStatusMap[item.sampleId] ? '已完成，可查看' : '开始盲猜与评分'}}">
       <view class="sample-left">
         <view class="bottle-badge">{{item.number}}号酒</view>
         <view class="sample-meta">
           <view class="meta-title">第 {{item.number}} 杯神秘盲样</view>
           <view class="meta-status {{myStatusMap[item.sampleId] ? 'status-done' : ''}}">
-            {{myStatusMap[item.sampleId] ? "✓ 我已完成盲猜 & 评分" : "👉 点击开始盲猜 & 评分"}}
+            {{myStatusMap[item.sampleId] ? "已完成盲猜与评分" : "开始盲猜与评分"}}
           </view>
         </view>
       </view>
       <view class="sample-arrow">→</view>
-    </view>
+    </button>
   </view>
 
   <view class="section-header">
@@ -50,8 +54,8 @@
   </view>
 
   <view class="bottom-actions">
-    <button class="btn-primary" wx:if="{{room.status !== 'revealed'}}" bindtap="triggerReveal">👑 房主公布答案 & 立即开奖</button>
-    <button class="btn-primary" wx:else bindtap="goToReveal">🏆 查看开奖总榜 & 完整报告</button>
+    <button class="btn-primary" wx:if="{{room.status !== 'revealed'}}" bindtap="triggerReveal" disabled="{{!samples.length}}">{{samples.length ? '公布答案，揭晓本局' : '等待酒样布置'}}</button>
+    <button class="btn-primary" wx:else bindtap="goToReveal">查看揭晓与酒局报告</button>
     <button class="btn-secondary" open-type="share" style="margin-top: 16rpx;">邀请微信好友入局</button>
   </view>
 </view>

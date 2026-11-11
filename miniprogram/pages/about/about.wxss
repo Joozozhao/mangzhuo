@@ -128,7 +128,7 @@
 }
 
 /* 警示与联系票签卡 */
-.warning-ticket, .contact-ticket {
+.about-page .warning-ticket, .about-page .contact-ticket {
   background: #fbfaf5;
   border: 1rpx solid #b9c5b1;
   border-radius: 12rpx;
@@ -139,6 +139,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12rpx 20rpx;
   margin-bottom: 16rpx;
   padding-bottom: 12rpx;
   border-bottom: 1rpx dashed #bac5b0;
@@ -166,14 +168,14 @@
 }
 .warning-title {
   font-family: "Songti SC", "STSong", serif;
-  font-size: 32rpx;
+  font-size: 30rpx;
   font-weight: 600;
   color: #28382e;
   margin-bottom: 8rpx;
 }
-.warning-desc {
+.about-page .warning-desc {
   font-size: 24rpx;
-  line-height: 1.75;
+  line-height: 1.8;
   color: #687365;
 }
 
@@ -238,24 +240,54 @@
   color: #28382e;
   margin-bottom: 6rpx;
 }
-.item-desc {
+.about-page .item-desc {
   font-size: 24rpx;
-  line-height: 1.7;
+  line-height: 1.8;
   color: #687365;
 }
 
-/* 联系方式按钮 */
-.contact-btn {
-  margin-top: 18rpx;
-  height: 80rpx;
-  font-size: 26rpx;
-  border-radius: 10rpx;
+/* 联系方式：邮箱作为正文，复制操作保持轻量 */
+.contact-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin-top: 20rpx;
+  padding-top: 18rpx;
+  border-top: 1rpx dashed #bac5b0;
 }
-.light-arrow {
-  filter: brightness(0) invert(1);
+.contact-email {
+  flex: 1;
+  min-width: 0;
+  color: #52654c;
+  font-size: 23rpx;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.about-page .contact-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 140rpx;
+  min-height: 44px;
+  height: 72rpx;
+  margin: 0;
+  padding: 0 20rpx;
+  background: #e5eadb;
+  border: 1rpx solid #b9c5b1;
+  border-radius: 36rpx;
+  color: #274d3b;
+  font-size: 24rpx;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.contact-arrow {
   width: 26rpx;
   height: 26rpx;
-  margin-left: 8rpx;
+  flex-shrink: 0;
 }
 
 @media (max-width: 350px) {
@@ -267,5 +299,10 @@
   }
   .ledger-index {
     flex-basis: 120rpx;
+  }
+  .contact-actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12rpx;
   }
 }

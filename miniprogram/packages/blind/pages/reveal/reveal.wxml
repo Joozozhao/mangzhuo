@@ -1,12 +1,12 @@
-<view class="container" wx:if="{{room}}">
+<view class="container flow-page reveal-page" wx:if="{{room}}">
   <view class="reveal-hero card">
-    <view class="rh-badge">🏆 盲品正式揭晓</view>
+    <view class="rh-badge">盲品正式揭晓</view>
     <view class="rh-title">真相大白，好酒见真章</view>
     <view class="rh-sub">共品鉴 {{samples.length}} 款酒 · 参与人数 {{members.length}} 人</view>
     
     <view class="nav-shortcuts">
-      <button class="btn-dark shortcut-btn" bindtap="goToRanking">查看排行榜 🏅</button>
-      <button class="btn-primary shortcut-btn" bindtap="goToReport">酒局报告 📊</button>
+      <button class="btn-secondary shortcut-btn" bindtap="goToRanking">查看排行榜</button>
+      <button class="btn-primary shortcut-btn" bindtap="goToReport">酒局报告</button>
     </view>
   </view>
 
@@ -40,17 +40,13 @@
           <text class="comp-k">盲测平均估价</text>
           <text class="comp-v">¥{{item.avgEstimatedPrice}}</text>
         </view>
-        <view class="comp-divider">|</view>
         <view class="comp-col">
           <text class="comp-k">品牌猜中率</text>
           <text class="comp-v">{{item.brandAccuracy}}%</text>
         </view>
-        <view class="comp-divider">|</view>
         <view class="comp-col">
           <text class="comp-k">估价偏差</text>
-          <text class="comp-v {{item.priceDiff > 0 ? 'diff-high' : 'diff-low'}}">
-            {{item.priceDiff > 0 ? ('高估¥' + item.priceDiff) : (item.priceDiff < 0 ? ('低估¥' + (-item.priceDiff)) : '精准')}}
-          </text>
+          <text class="comp-v {{item.priceDiff > 0 ? 'diff-high' : 'diff-low'}}">{{item.priceDiff > 0 ? ('高估¥' + item.priceDiff) : (item.priceDiff < 0 ? ('低估¥' + (-item.priceDiff)) : '精准')}}</text>
         </view>
       </view>
 

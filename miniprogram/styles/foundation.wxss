@@ -1,0 +1,159 @@
+/* 竹影手札共用基线：一级页面沿用章节构图，二级页面沿用同一纸色与留白。 */
+page {
+  --mz-ink: #274d3b;
+  --mz-text: #28382e;
+  --mz-muted: #687365;
+  --mz-paper: #fbfaf5;
+  --mz-tint: #e5eadb;
+  --mz-line: #b9c5b1;
+  --mz-seal: #a8382b;
+  --mz-gutter: 46rpx;
+  --mz-panel-space: 28rpx;
+  --mz-radius: 12rpx;
+}
+
+.container,
+.form-page,
+.journal.form-page {
+  width: 100%;
+  max-width: 900rpx;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 32rpx var(--mz-gutter) calc(80rpx + env(safe-area-inset-bottom));
+  color: var(--mz-text);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.container button,
+.container input,
+.container textarea,
+.container picker {
+  font-family: inherit;
+}
+
+.container .card,
+.form-page .card {
+  min-width: 0;
+  padding: var(--mz-panel-space);
+  margin-bottom: 24rpx;
+  background: var(--mz-paper);
+  border: 1rpx solid var(--mz-line);
+  border-radius: var(--mz-radius);
+  box-shadow: none;
+}
+
+.container .page-title,
+.form-page .page-title,
+.form-page .journal-title {
+  color: var(--mz-text);
+  font-family: "Songti SC", "STSong", "SimSun", serif;
+  font-size: 48rpx;
+  font-weight: 400;
+  letter-spacing: 2rpx;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.container .page-desc,
+.container .muted,
+.container .empty-desc {
+  color: var(--mz-muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.container button,
+.journal.card-page button {
+  min-height: 44px;
+  min-width: 44px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+button.btn-primary,
+button.btn-secondary,
+button.btn-dark,
+.form-page button.btn-primary,
+.form-page button.btn-secondary,
+.form-page button.btn-dark {
+  min-height: 48px;
+  height: auto;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 22rpx 24rpx;
+  border-radius: var(--mz-radius);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  box-shadow: none;
+}
+
+button.btn-primary,
+button.btn-dark {
+  background: var(--mz-ink);
+  color: #fbfaf5;
+}
+
+button.btn-secondary {
+  background: transparent;
+  border-color: var(--mz-line);
+  color: var(--mz-ink);
+}
+
+button.btn-primary[disabled],
+.organized-page button.btn-primary[disabled],
+.form-page button.btn-primary[disabled] {
+  background: #b7c2b3;
+  border-color: #b7c2b3;
+  color: #fff;
+  opacity: 1;
+}
+
+.container .gold-text { color: var(--mz-ink); }
+.container .gold-badge { background: var(--mz-tint); color: var(--mz-ink); }
+.container .badge-gray { background: #edf0e7; color: var(--mz-muted); }
+.container .badge-green { background: var(--mz-tint); color: var(--mz-ink); }
+.container .badge-gold { background: #f7edea; color: var(--mz-seal); }
+.container .profile-hint { background: #edf0e7; color: var(--mz-ink); border-color: var(--mz-line); font-size: 14px; font-weight: 400; line-height: 1.8; }
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 6rpx 16rpx;
+  border: 1rpx solid #cbd3c2;
+  border-radius: 24rpx;
+  background: #edf0e7;
+  color: var(--mz-ink);
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.status-revealed { color: var(--mz-muted); background: var(--mz-paper); }
+
+.flow-page .section-title {
+  color: var(--mz-text);
+  font-family: "Songti SC", "STSong", "SimSun", serif;
+  font-size: 36rpx;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.flow-page .bottom-actions,
+.flow-page .report-actions {
+  padding-bottom: 0;
+}
+
+.flow-page .empty-state { padding: 48rpx 24rpx; }
+.flow-page .empty-title { color: var(--mz-text); font-size: 18px; font-weight: 500; }
+
+@media (max-width: 350px) {
+  page { --mz-gutter: 36rpx; --mz-panel-space: 24rpx; }
+  .container, .form-page, .journal.form-page { padding-left: 36rpx; padding-right: 36rpx; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .container button, .journal button { transition: none; }
+}

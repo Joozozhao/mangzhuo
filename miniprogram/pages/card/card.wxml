@@ -1,4 +1,4 @@
-<view class="journal card-page">
+<view class="journal form-page card-page">
   <block wx:if="{{note}}">
     <view class="card-heading">
       <view class="card-kicker">品鉴手记 · {{note.date}}</view>

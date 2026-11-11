@@ -51,7 +51,7 @@ Page({
       title: "确定揭晓答案？",
       content: "公布真实酒款后，将自动根据计分规则计算排行榜并生成酒局报告！",
       confirmText: "立即揭晓",
-      confirmColor: "#a97832",
+      confirmColor: "#274d3b",
       success: (res) => {
         if (res.confirm) {
           room.status = "revealed";

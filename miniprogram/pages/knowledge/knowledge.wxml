@@ -1,5 +1,5 @@
 <brand-nav />
-<view class="journal organized-page knowledge-page">
+<view class="journal organized-page knowledge-page {{selected || selectedWine ? 'is-reading' : ''}}">
   <block wx:if="{{selected ? false : !selectedWine}}">
     <view class="page-kicker"><text>杯 中 自 有 天 地</text><text class="chapter-number">第三章 · 识</text></view>
     <view class="chapter-hero-banner knowledge-hero">
@@ -109,17 +109,22 @@
         </view>
       </view>
       <view class="practice">
-        <view class="eyebrow">杯中练习</view>
-        <view class="muted" wx:if="{{selected.tip}}">{{selected.tip}}</view>
-        <button class="btn-primary practice-btn" bindtap="practice">记下我的品鉴</button>
+        <view class="practice-title">杯中练习</view>
+        <view class="practice-tip" wx:if="{{selected.tip}}">{{selected.tip}}</view>
+        <button class="btn-primary practice-btn" bindtap="practice"><text>记下我的品鉴</text><image class="practice-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></button>
       </view>
       <view class="source-block">
-        <view class="meta">{{selected.type === 'remote-article' ? '酒文化公开内容' : (selected.sources.length ? '出处与延伸阅读 · 点击复制链接' : '盲酌编辑部 · 品鉴记录建议')}}</view>
-        <block wx:for="{{selected.sources}}" wx:key="url">
-          <button class="source-link" data-url="{{item.url}}" bindtap="copy">{{item.title}} ↗</button>
-          <view class="meta source-checked" wx:if="{{item.checkedAt}}">核验于 {{item.checkedAt}}</view>
-        </block>
-        <view class="meta" wx:if="{{selected.updated}}">整理于 {{selected.updated}}</view>
+        <view class="source-meta">
+          <text class="source-origin">{{selected.type === 'remote-article' ? '酒文化公开内容' : '盲酌编辑部'}}</text>
+          <text class="source-date" wx:if="{{selected.updated}}">整理于 {{selected.updated}}</text>
+        </view>
+        <view class="source-list" wx:if="{{selected.sources.length}}">
+          <view class="source-heading"><text>参考资料</text><text>点击复制链接</text></view>
+          <view class="source-item" wx:for="{{selected.sources}}" wx:key="url">
+            <button class="source-link" data-url="{{item.url}}" bindtap="copy" aria-label="复制资料链接：{{item.title}}"><text class="source-title">{{item.title}}</text><text class="source-copy" aria-hidden="true">复制</text></button>
+            <view class="source-checked" wx:if="{{item.checkedAt}}">核验于 {{item.checkedAt}}</view>
+          </view>
+        </view>
       </view>
     </view>
   </block>
@@ -132,7 +137,7 @@
       </view>
       <view class="fact-grid"><view class="fact"><view class="fact-label">香型</view><view class="fact-value">{{selectedWine.aromaType || '暂未提供'}}</view></view><view class="fact"><view class="fact-label">酒精度</view><view class="fact-value">{{selectedWine.degree || '暂未提供'}}</view></view><view class="fact"><view class="fact-label">目录参考价</view><view class="fact-value">{{selectedWine.defaultPrice !== null ? '¥ ' + selectedWine.defaultPrice : '暂未提供'}}</view></view></view>
       <view class="panel-note">资料来自酒款目录。参考价不代表实时售价，香型与度数请以实际酒标为准。</view>
-      <view class="practice"><view class="eyebrow">写下自己的感受</view><view class="muted">酒款资料是线索，自己的观察才是手记。</view><button class="btn-primary practice-btn" bindtap="practice"><text>去记一杯</text><text class="button-arrow" aria-hidden="true">↗</text></button></view>
+      <view class="practice"><view class="practice-title">写下自己的感受</view><view class="practice-tip">酒款资料是线索，自己的观察才是手记。</view><button class="btn-primary practice-btn" bindtap="practice"><text>去记一杯</text><image class="practice-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></button></view>
     </view>
   </block>
 </view>

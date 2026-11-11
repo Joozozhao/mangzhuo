@@ -1,32 +1,33 @@
-.reveal-hero { text-align: center; padding: 44rpx 32rpx; margin-bottom: 30rpx; background: linear-gradient(135deg, #fffdf8, #f8f1e2); border: 2rpx solid #d7b36d; }
-.rh-badge { display: inline-block; font-size: 24rpx; font-weight: 700; color: #8c5d1e; background: #f4e7ca; padding: 6rpx 20rpx; border-radius: 20rpx; margin-bottom: 16rpx; }
-.rh-title { font-size: 42rpx; font-weight: 800; color: #181713; margin-bottom: 8rpx; }
-.rh-sub { font-size: 26rpx; color: #827b70; margin-bottom: 30rpx; }
+.reveal-page .reveal-hero { text-align: left; padding: 32rpx 28rpx; margin-bottom: 32rpx; background: #fbfaf5; border-color: #b9c5b1; }
+.rh-badge { display: inline-block; font-size: 12px; font-weight: 500; color: #a8382b; background: #f7edea; border: 1rpx solid #dcb2a8; padding: 6rpx 20rpx; border-radius: 24rpx; margin-bottom: 20rpx; }
+.rh-title { font-family: "Songti SC", "STSong", serif; font-size: 44rpx; font-weight: 400; line-height: 1.5; color: #28382e; margin-bottom: 12rpx; }
+.rh-sub { font-size: 14px; color: #687365; margin-bottom: 28rpx; }
 .nav-shortcuts { display: flex; gap: 20rpx; justify-content: center; }
 .shortcut-btn { flex: 1; height: 86rpx; font-size: 28rpx; }
 .sample-reveal-card { padding: 32rpx; margin-bottom: 26rpx; }
 .src-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12rpx; margin-bottom: 16rpx; }
-.src-bottle-tag { font-size: 24rpx; font-weight: 800; color: #8c5d1e; background: #f4ebd9; padding: 6rpx 18rpx; border-radius: 12rpx; }
+.src-bottle-tag { font-size: 12px; font-weight: 500; color: #274d3b; background: #e5eadb; padding: 6rpx 18rpx; border-radius: 8rpx; }
 .src-score-badge { display: flex; align-items: baseline; }
-.sb-label { font-size: 22rpx; color: #827a6f; margin-right: 8rpx; }
-.sb-val { font-size: 38rpx; font-weight: 800; color: #a97832; }
+.sb-label { font-size: 12px; color: #687365; margin-right: 8rpx; }
+.sb-val { font-family: Georgia, serif; font-size: 40rpx; font-weight: 400; color: #274d3b; }
 .src-real-info { margin-bottom: 18rpx; }
 .src-sample-photo { display: block; width: 100%; height: 420rpx; border-radius: 12rpx; margin-bottom: 24rpx; background: #eee7dc; }
-.real-brand { font-size: 38rpx; font-weight: 800; color: #181713; }
-.real-product { font-size: 30rpx; font-weight: 600; color: #443e35; margin-top: 4rpx; }
+.real-brand { font-family: "Songti SC", "STSong", serif; font-size: 40rpx; font-weight: 400; color: #28382e; }
+.real-product { font-size: 16px; font-weight: 500; color: #374c3d; margin-top: 8rpx; }
 .src-tags-row { display: flex; flex-wrap: wrap; gap: 10rpx; margin-bottom: 24rpx; }
-.info-pill { font-size: 22rpx; background: #f4efe4; color: #5a5448; padding: 6rpx 16rpx; border-radius: 10rpx; }
-.price-pill { background: #171714; color: #fff; font-weight: 600; }
-.comparison-bar { display: flex; align-items: center; justify-content: space-around; background: #fbf7ee; border-radius: 16rpx; padding: 18rpx 12rpx; margin-bottom: 20rpx; border: 1rpx solid #ede3d1; }
-.comp-col { flex: 1; min-width: 0; text-align: center; overflow-wrap: anywhere; word-break: break-all; }
-.comp-k { font-size: 20rpx; color: #877f72; display: block; }
-.comp-v { font-size: 26rpx; font-weight: 800; color: #181713; margin-top: 4rpx; }
+.info-pill { font-size: 12px; background: #edf0e7; color: #52654c; padding: 6rpx 16rpx; border-radius: 8rpx; }
+.price-pill { background: #e5eadb; color: #274d3b; font-weight: 500; }
+.comparison-bar { display: flex; align-items: stretch; background: #f0f2e9; border-radius: 12rpx; padding: 22rpx 0; margin-bottom: 24rpx; border: 1rpx solid #d6ddcf; }
+.comp-col { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 12rpx; min-width: 0; padding: 0 10rpx; text-align: center; overflow-wrap: anywhere; word-break: break-all; }
+.comp-col + .comp-col { border-left: 1rpx dashed #bac5b0; }
+.comp-k { font-size: 12px; color: #687365; display: block; }
+.comp-v { font-size: 14px; font-weight: 500; color: #274d3b; }
 .comp-divider { flex-shrink: 0; color: #d8cebd; font-size: 22rpx; }
-.diff-high { color: #c94b40; }
-.diff-low { color: #2e8b57; }
-.notes-quote { font-size: 24rpx; color: #6e675b; font-style: italic; background: #faf6ed; padding: 16rpx 20rpx; border-left: 6rpx solid #a97832; margin-bottom: 20rpx; border-radius: 4rpx; }
+.diff-high { color: #a8382b; }
+.diff-low { color: #274d3b; }
+.notes-quote { font-size: 14px; color: #52654c; line-height: 1.8; background: #f0f2e9; padding: 20rpx 24rpx; border-left: 3rpx solid #a7b79d; margin-bottom: 24rpx; border-radius: 0; }
 .mini-btn { height: 76rpx; font-size: 26rpx; width: 100%; }
 .reveal-knowledge { border-top: 1rpx solid #e6dfd3; padding-top: 20rpx; margin-bottom: 24rpx; }
-.knowledge-caption { color: #897b68; font-size: 23rpx; }
-.reveal-knowledge .knowledge-link { display: flex; align-items: center; width: 100% !important; min-width: 0; min-height: 44px; height: auto; text-align: left; background: transparent; color: #893e32; font-size: 27rpx; line-height: 1.6; padding: 14rpx 0; margin: 0; white-space: normal; overflow-wrap: anywhere; word-break: break-all; }
+.knowledge-caption { color: #687365; font-size: 12px; }
+.reveal-knowledge .knowledge-link { display: flex; align-items: center; width: 100% !important; min-width: 0; min-height: 44px; height: auto; text-align: left; background: transparent; color: #274d3b; font-size: 14px; line-height: 1.6; padding: 14rpx 0; margin: 0; white-space: normal; overflow-wrap: anywhere; word-break: break-all; }
 .real-brand, .real-product, .info-pill, .notes-quote { max-width: 100%; overflow-wrap: anywhere; word-break: break-all; }

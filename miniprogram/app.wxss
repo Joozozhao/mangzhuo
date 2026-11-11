@@ -12,7 +12,7 @@ view, text, input, button, scroll-view {
   box-sizing: border-box;
 }
 
-:root {
+page {
   --bg: #f7f6ef;
   --card: #fffdf8;
   --card-tint: #fbf7ee;
@@ -322,3 +322,4 @@ button.wine-suggestion{display:block;width:100%;min-height:44px;padding:20rpx 24
 .wine-suggestion:last-child{border-bottom:0;}.wine-suggestion-title{font-size:15px;color:#274d3b;overflow-wrap:anywhere;}.wine-suggestion-meta{font-size:12px;color:#687365;margin-top:6rpx;overflow-wrap:anywhere;}
 
 @import "styles/forms.wxss";
+@import "styles/foundation.wxss";

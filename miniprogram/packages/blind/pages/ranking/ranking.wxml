@@ -1,12 +1,12 @@
-<view class="container">
+<view class="container flow-page ranking-page">
   <!-- 榜单类型切换 Tab -->
   <view class="rank-nav card">
-    <view class="nav-tab {{activeTab === 'guess' ? 'active' : ''}}" bindtap="switchTab" data-tab="guess">
-      🏅 猜酒高手榜
-    </view>
-    <view class="nav-tab {{activeTab === 'taste' ? 'active' : ''}}" bindtap="switchTab" data-tab="taste">
-      🍶 大众口味榜
-    </view>
+    <button class="nav-tab {{activeTab === 'guess' ? 'active' : ''}}" bindtap="switchTab" data-tab="guess" aria-label="猜酒高手榜，{{activeTab === 'guess' ? '已选中' : '未选中'}}">
+      猜酒高手榜
+    </button>
+    <button class="nav-tab {{activeTab === 'taste' ? 'active' : ''}}" bindtap="switchTab" data-tab="taste" aria-label="大众口味榜，{{activeTab === 'taste' ? '已选中' : '未选中'}}">
+      大众口味榜
+    </button>
   </view>
 
   <!-- 1. 猜酒高手榜 -->
@@ -15,10 +15,7 @@
     <view class="rank-list">
       <view class="rank-card card {{item.rank <= 3 ? ('top-' + item.rank) : ''}}" wx:for="{{guessRanking}}" wx:key="userId">
         <view class="rank-num">
-          <text wx:if="{{item.rank === 1}}">🥇</text>
-          <text wx:elif="{{item.rank === 2}}">🥈</text>
-          <text wx:elif="{{item.rank === 3}}">🥉</text>
-          <text wx:else>{{item.rank}}</text>
+          <text>{{item.rank < 10 ? '0' + item.rank : item.rank}}</text>
         </view>
         <image wx:if="{{item.avatarImg}}" class="user-avatar user-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
         <view wx:else class="user-avatar">{{item.avatar}}</view>

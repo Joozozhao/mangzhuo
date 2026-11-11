@@ -1,4 +1,4 @@
-<view class="container" wx:if="{{currentSample}}">
+<view class="container flow-page compare-page" wx:if="{{currentSample}}">
   <view class="sample-target card">
     <view class="st-tag">{{currentSample.bottleTag}} 揭晓标准答案</view>
     <image wx:if="{{currentSample.photo}}" class="st-sample-photo" src="{{currentSample.photo}}" mode="aspectFill" />

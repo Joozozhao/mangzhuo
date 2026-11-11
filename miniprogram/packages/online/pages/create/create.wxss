@@ -1,13 +1,13 @@
 .journal.create-page {
   width: 100%;
   min-width: 0;
-  padding: 32rpx 36rpx 80rpx;
+  padding: 32rpx 46rpx 80rpx;
   padding-bottom: calc(80rpx + env(safe-area-inset-bottom));
 }
 .create-page .chapter-mast { flex-wrap: wrap; align-items: baseline; gap: 10rpx 20rpx; padding-bottom: 24rpx; }
 .create-page .chapter-brand { min-width: 0; font-family: "Songti SC", "STSong", "SimSun", serif; font-size: 36rpx; line-height: 1.5; letter-spacing: 2rpx; }
 .create-page .chapter-no { font-size: 12px; line-height: 1.6; letter-spacing: 1rpx; }
-.create-page .form-card { min-width: 0; margin: 24rpx 0 0; padding: 30rpx; border-color: #d6ddcf; border-radius: 16rpx; }
+.create-page .form-card { min-width: 0; margin: 24rpx 0 0; padding: 28rpx; border-color: #b9c5b1; border-radius: 12rpx; }
 .form-title { font-size: 18px; font-weight: 500; line-height: 1.5; color: #28382e; margin-bottom: 26rpx; }
 .form-header-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12rpx 20rpx; margin-bottom: 14rpx; }
 .form-header-row .form-title { margin: 0; }
@@ -34,6 +34,6 @@
 .action-footer { margin-top: 32rpx; }
 .chapter-brand, .hint-text, .catalog-feedback { word-break: break-all; overflow-wrap: anywhere; }
 @media (max-width: 350px) {
-  .journal.create-page { padding-left: 28rpx; padding-right: 28rpx; }
-  .create-page .form-card { padding: 26rpx; }
+  .journal.create-page { padding-left: 36rpx; padding-right: 36rpx; }
+  .create-page .form-card { padding: 24rpx; }
 }

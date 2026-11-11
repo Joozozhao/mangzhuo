@@ -103,10 +103,13 @@
     <view class="ticket-body">
       <view class="item-title">联系盲酌编辑部</view>
       <view class="muted item-desc">若对酒识考证、功能体验有建议，或有侵权线索与勘误反馈，欢迎来信沟通。</view>
-      <button class="btn-primary contact-btn" bindtap="copyContact">
-        <text>复制联系邮箱 (support@mangzhuo.app)</text>
-        <image class="small-arrow light-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/>
-      </button>
+      <view class="contact-actions">
+        <text class="contact-email" user-select="true">support@mangzhuo.app</text>
+        <button class="contact-btn" bindtap="copyContact" aria-label="复制联系邮箱 support@mangzhuo.app">
+          <text>复制邮箱</text>
+          <image class="contact-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/>
+        </button>
+      </view>
     </view>
   </view>
 

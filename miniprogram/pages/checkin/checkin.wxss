@@ -1,8 +1,8 @@
-.checkin-intro { padding: 0 8rpx 32rpx; }
+.checkin-intro { padding: 0 0 32rpx; }
 .checkin-page .eyebrow { margin: 0 0 12rpx; font-size: 12px; letter-spacing: 4rpx; }
 .checkin-page .journal-title { margin-bottom: 12rpx; }
 .checkin-page .muted { font-size: 14px; }
-.form-section { margin-bottom: 24rpx; padding: 28rpx; border: 1rpx solid #e1e5da; border-radius: 16rpx; background: #fffdf8; }
+.form-section { margin-bottom: 24rpx; padding: 28rpx; border: 1rpx solid #b9c5b1; border-radius: 12rpx; background: #fbfaf5; }
 .section-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8rpx 16rpx; margin-bottom: 26rpx; }
 .section-title { display: flex; align-items: center; gap: 14rpx; font-size: 16px; font-weight: 600; line-height: 1.5; }
 .section-number { color: #78866f; font-family: Georgia, serif; font-size: 14px; font-weight: 400; }
