@@ -175,7 +175,7 @@ test('welinkClient test suite', async (t) => {
       });
     };
     await assert.rejects(async () => {
-      await welinkClient.getTasteList(1, 10);
+      await welinkClient.request({ url: '/taste/applet/tastes?page=1&limit=10', raw: true });
     }, /业务异常/);
   });
 
@@ -682,9 +682,12 @@ test('welinkClient test suite', async (t) => {
         sent = opts;
         opts.success({ statusCode: 200, data: { code: 0, data: { id: 1 } } });
       };
-      assert.deepEqual(await welinkClient.getTasteDetail(1), { id: 1 });
+      assert.deepEqual(await welinkClient.request({ url: '/taste/applet/tastes/1' }), { id: 1 });
       assert.equal(sent.url, 'https://other.example.com/taste/applet/tastes/1');
       assert.equal(sent.header.Cookie, undefined);
+      sent = null;
+      await assert.rejects(welinkClient.getTasteDetail(1), error => error.code === 401);
+      assert.equal(sent, null, 'Private API wrappers must not send an anonymous request after switching backends');
     } finally {
       config.WELINK_BASE_URL = previousBase;
       welinkClient.clearSession();

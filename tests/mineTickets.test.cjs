@@ -248,7 +248,8 @@ test('guest, signed-in and completed-profile states stay independent and refresh
   values.mz_current_user = signedInUser({ userId: 'switched-local-user', profileCompleted: true });
   values.mz_tasting_journal_v1 = [];
   page.onShow();
-  assert.equal(page.data.isWechat, false);
+  // 短期会话过期不清除本机绑定的微信身份。
+  assert.equal(page.data.isWechat, true);
   assert.equal(page.data.profileCompleted, true);
   assert.equal(page.data.user.userId, 'switched-local-user');
   assert.equal(page.data.roomCount, 0);

@@ -110,7 +110,7 @@ Page({
           content: res.message + ' 本地资料可正常保存，游客功能不受影响。',
           showCancel: false,
           confirmText: '知道了',
-          confirmColor: '#a97832'
+          confirmColor: '#274d3b'
         });
       }
     } catch (e) {
@@ -119,7 +119,7 @@ Page({
         content: ((e && e.message) || '登录服务暂不可用，请稍后再试') + '。本地资料可正常保存，游客功能不受影响。',
         showCancel: false,
         confirmText: '知道了',
-        confirmColor: '#a97832'
+        confirmColor: '#274d3b'
       });
     } finally {
       this.setData({ loggingIn: false });
@@ -151,7 +151,7 @@ Page({
             content: '头像未能保存，请重新选择头像后再保存。原头像与资料未改动。',
             showCancel: false,
             confirmText: '知道了',
-            confirmColor: '#a97832'
+            confirmColor: '#274d3b'
           });
         }
         return;
@@ -165,7 +165,7 @@ Page({
           content: '后台昵称同步未完成，资料已保存在本机。要重试同步吗？',
           confirmText: '重试保存',
           cancelText: '先这样',
-          confirmColor: '#a97832',
+          confirmColor: '#274d3b',
           success: (r) => {
             if (r.confirm) {
               this.onSave();
@@ -189,7 +189,7 @@ Page({
         content: ((e && e.message) || '保存未完成，请检查网络后重试。'),
         showCancel: false,
         confirmText: '知道了',
-        confirmColor: '#a97832'
+        confirmColor: '#274d3b'
       });
     } finally {
       this.setData({ saving: false });

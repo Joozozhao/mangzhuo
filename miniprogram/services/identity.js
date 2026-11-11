@@ -7,7 +7,8 @@
  * 2. 展示资料：头像与昵称由用户主动选择填写，不静默读取微信头像昵称。
  * 3. 关系稳定：本地 userId 稳定不变，openid / welinkOpenid 仅附加在用户资料上，不破坏房主与评分归属。
  * 4. 身份与凭证分离：远端 userId 单独保存，不覆盖本机酒局 userId；
- *    accessToken 过期后回到重新登录状态，本机手记与酒局记录保持可用。
+ *    accessToken 过期只失效联网凭证，不清除本机保存的微信身份。
+ *    主动退出或服务端明确拒绝身份时才回到游客模式。
  */
 
 const storage = require('./storage');
@@ -31,17 +32,23 @@ function initWelinkSessionListener() {
             loginState: 'guest',
             welinkOpenid: '',
             welinkNickname: '',
+            welinkBaseUrl: '',
             welinkUserId: null,
             welinkUnionId: ''
           });
           storage.setCurrentUser(next);
           syncGlobal(next);
         }
+      } else if (event === 'session_expired') {
+        // 短期访问令牌过期不等于用户主动退出。保留本机身份与资料，
+        // 联网操作由 welinkClient 在发送前重新换取有效凭证。
+        return;
       } else if (event === 'logged_in' && data && data.openid) {
         const user = storage.getCurrentUser();
         const next = Object.assign({}, user, {
           loginState: 'wechat',
           welinkOpenid: data.openid,
+          welinkBaseUrl: data.baseUrl,
           welinkNickname: data.nickname || '',
           loginAt: Date.now()
         });
@@ -87,8 +94,9 @@ function isLoggedIn() {
   initWelinkSessionListener();
   const user = storage.getCurrentUser();
   if (config.IDENTITY_PROVIDER === 'welink') {
-    // 身份展示必须与会话一致，避免令牌过期后仍显示可同步资料。
-    return !!(user && user.welinkOpenid && user.loginState === 'wechat' && welinkClient.hasValidSession());
+    // accessToken 是短期请求凭证，不是用户登录状态本身。
+    // 页面重开时保留已绑定的微信身份；联网操作单独校验会话。
+    return !!(user && user.welinkOpenid && user.loginState === 'wechat');
   }
   return !!(user && user.openid && user.loginState === 'wechat');
 }
@@ -260,7 +268,7 @@ async function loginWithWeChat(userProfile) {
  * 本地持久化失败返回 null，调用方保留原头像。
  */
 async function persistAvatar(tempPath, openid) {
-  if (config.IDENTITY_PROVIDER === 'welink' && isLoggedIn() && welinkClient.hasValidSession()) {
+  if (config.IDENTITY_PROVIDER === 'welink' && isLoggedIn()) {
     return welinkClient.uploadAvatar(tempPath);
   }
   if (cloudReady && wx.cloud && wx.cloud.uploadFile) {
@@ -337,7 +345,7 @@ async function saveProfile(options) {
 
 async function syncProfileToWelink(user) {
   const result = { cloudSynced: false, avatarCloudSynced: false, avatarLocalOnly: true, error: '' };
-  if (!user.welinkOpenid || !welinkClient.hasValidSession()) {
+  if (!user.welinkOpenid || user.loginState !== 'wechat') {
     result.error = 'NOT_LOGGED_IN';
     return result;
   }

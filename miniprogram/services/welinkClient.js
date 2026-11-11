@@ -9,6 +9,7 @@
  * 5. GET 失败不自动重试写接口；超时设置；参数与响应格式严格校验。
  */
 const config = require('../config');
+const storage = require('./storage');
 
 const DEFAULT_SAFE_BASE_URL = 'https://applet.51welink.com';
 
@@ -220,6 +221,23 @@ function clearSession() {
   notifySessionListeners('session_cleared', null);
 }
 
+// JWT 自然过期仅清理请求凭证。与主动退出/服务端 401 不同，
+// 此事件不会把本机保存的微信身份重置为游客。
+function expireSession() {
+  sessionGeneration++;
+  const activeBase = resolveBaseUrl();
+  currentSession = createEmptySession(activeBase);
+  activeBaseUrlCache = activeBase;
+  try {
+    if (typeof wx !== 'undefined' && wx.removeStorageSync) {
+      wx.removeStorageSync('mz_welink_session');
+    }
+  } catch (e) {
+    console.warn('Failed to expire session:', e);
+  }
+  notifySessionListeners('session_expired', null);
+}
+
 function getSession() {
   const activeBase = resolveBaseUrl();
   if (activeBaseUrlCache && activeBaseUrlCache !== activeBase) {
@@ -239,7 +257,7 @@ function hasValidSession() {
   if (!token) return true;
   const expiresAt = getJwtExpiresAt(token);
   if (expiresAt !== null && expiresAt <= Date.now()) {
-    clearSession();
+    expireSession();
     return false;
   }
   return true;
@@ -263,8 +281,10 @@ function getJwtExpiresAt(token) {
     let decoded;
     if (typeof Buffer !== 'undefined') {
       decoded = Buffer.from(padded, 'base64').toString('utf8');
-    } else if (typeof wx !== 'undefined' && wx.base64ToArrayBuffer && typeof TextDecoder !== 'undefined') {
-      decoded = new TextDecoder().decode(wx.base64ToArrayBuffer(padded));
+    } else if (typeof wx !== 'undefined' && wx.base64ToArrayBuffer) {
+      // 小程序不一定提供 TextDecoder，不能因此漏掉 exp，直到请求 401 才发现过期。
+      const bytes = new Uint8Array(wx.base64ToArrayBuffer(padded));
+      decoded = decodeURIComponent(Array.from(bytes, byte => '%' + byte.toString(16).padStart(2, '0')).join(''));
     } else {
       return null;
     }
@@ -428,8 +448,8 @@ function request(options) {
     }
   }
 
-  if (!isPublic && s.cookie && s.baseUrl === baseUrl) {
-    reqHeaders['Cookie'] = s.cookie;
+  if (!isPublic && s.baseUrl === baseUrl) {
+    if (s.cookie) reqHeaders['Cookie'] = s.cookie;
     const bearerToken = getBearerToken(s);
     if (bearerToken) reqHeaders['Authorization'] = 'Bearer ' + bearerToken;
   }
@@ -455,7 +475,7 @@ function request(options) {
 
         // 1. 状态码判断
         const statusCode = res.statusCode;
-        if (!isPublic && (statusCode === 401 || statusCode === 403)) {
+        if (!isPublic && statusCode === 401) {
           clearSession();
           const err = new Error('登录会话已失效，请重新登录');
           err.statusCode = statusCode;
@@ -464,7 +484,9 @@ function request(options) {
         }
 
         if (statusCode < 200 || statusCode >= 300) {
-          const errMsg = (res.data && res.data.msg) || ('服务请求异常 (' + statusCode + ')');
+          // 在线酒局等接口可能单独返回 403，不能据此删除已确认的微信身份。
+          const errMsg = statusCode === 403 ? '暂时无法访问此功能，请稍后重试' :
+            ((res.data && res.data.msg) || ('服务请求异常 (' + statusCode + ')'));
           const err = new Error(errMsg);
           err.statusCode = statusCode;
           err.code = (res.data && res.data.code) || statusCode;
@@ -530,12 +552,39 @@ function request(options) {
 }
 
 /**
- * 带鉴权的请求：取消自动重放与静默重试。
- * 任何请求遇到 401 或失败立即由底层 clearSession 并抛出错误供用户主动重登，
- * 彻底避免并发竞态及写请求重复执行。
+ * 已确认的微信身份可在请求发送前更新过期凭证；业务请求只发送一次，
+ * 不重放已经收到 401 或网络失败的创建、评分等写操作。
  */
 function requestWithAuth(options) {
-  return request(options);
+  if (hasValidSession()) return request(options);
+  return ensureSession().then(session => {
+    if (session !== getSession() || !hasValidSession()) {
+      throw Object.assign(new Error('登录状态已变更，请重试'), { code: 'STALE_SESSION' });
+    }
+    return request(options);
+  });
+}
+
+async function ensureSession() {
+  if (hasValidSession()) return getSession();
+  const user = storage.getCurrentUser();
+  const baseUrl = resolveBaseUrl();
+  const rememberedBase = user.welinkBaseUrl || DEFAULT_SAFE_BASE_URL;
+  if (config.IDENTITY_PROVIDER !== 'welink' || user.loginState !== 'wechat' || !user.welinkOpenid || rememberedBase !== baseUrl) {
+    const error = new Error('请先微信登录');
+    error.code = 401;
+    throw error;
+  }
+  const session = await login({
+    nickName: user.welinkNickname || (user.profileCompleted ? user.nickname : ''),
+    avatarUrl: user.avatar
+  }, { silent: true, expectedOpenid: user.welinkOpenid });
+  if (session.openid !== user.welinkOpenid || getSession().openid !== user.welinkOpenid || !hasValidSession()) {
+    const error = new Error('登录状态已变更，请重新确认微信身份');
+    error.code = 'STALE_SESSION';
+    throw error;
+  }
+  return getSession();
 }
 
 // 公开内容不携带 Bearer/Cookie，其失败也不能清除用户的登录状态。
@@ -546,7 +595,7 @@ function requestPublic(options) {
 /**
  * 微信临时 code 登录（按规范使用 wx.getUserProfile 嵌套 wx.login，单飞并发保护）
  */
-function login(userProfile) {
+function login(userProfile, options = {}) {
   if (inFlightLoginPromise) {
     return inFlightLoginPromise;
   }
@@ -554,6 +603,14 @@ function login(userProfile) {
   const baseUrl = resolveBaseUrl();
   const loginGen = sessionGeneration;
   const loginBaseUrl = baseUrl;
+  const isStale = () => loginGen !== sessionGeneration || loginBaseUrl !== resolveBaseUrl();
+  const staleError = () => Object.assign(new Error('登录状态已变更，已丢弃过期登录响应'), { code: 'STALE_SESSION' });
+  const invalidateLogin = () => {
+    if (!isStale()) {
+      if (options.silent) expireSession();
+      else clearSession();
+    }
+  };
 
   inFlightLoginPromise = new Promise((resolve, reject) => {
     if (typeof wx === 'undefined') {
@@ -566,6 +623,7 @@ function login(userProfile) {
       }
       wx.login({
         success(res) {
+          if (isStale()) return reject(staleError());
           if (!res.code) {
             return reject(new Error('未获取到微信登录凭证 code'));
           }
@@ -602,11 +660,12 @@ function login(userProfile) {
             },
             timeout: 10000,
             success(httpRes) {
+              if (isStale()) return reject(staleError());
               const receivedNewCookie = extractJSessionId(httpRes);
               const statusCode = httpRes.statusCode;
 
               if (statusCode < 200 || statusCode >= 300) {
-                clearSession();
+                invalidateLogin();
                 const errMsg = (httpRes.data && httpRes.data.msg) || ('登录服务异常 (' + statusCode + ')');
                 const err = new Error(errMsg);
                 err.statusCode = statusCode;
@@ -617,14 +676,14 @@ function login(userProfile) {
 
               const respData = httpRes.data;
               if (!respData || typeof respData !== 'object' || Array.isArray(respData)) {
-                clearSession();
+                invalidateLogin();
                 const err = new Error('登录响应格式错误：非标准响应格式');
                 err.statusCode = statusCode;
                 return reject(err);
               }
 
               if (!isSuccessResponse(respData)) {
-                clearSession();
+                invalidateLogin();
                 const err = new Error(respData.msg || '登录失败');
                 err.code = respData.code;
                 err.statusCode = statusCode;
@@ -638,14 +697,14 @@ function login(userProfile) {
                 (payload.user && (payload.user.openid || payload.user.openId)) || '';
 
               if (!openid) {
-                clearSession();
+                invalidateLogin();
                 const err = new Error('后台未返回有效身份标识 openid');
                 err.code = respData.code;
                 return reject(err);
               }
 
               if (!receivedNewCookie) {
-                clearSession();
+                invalidateLogin();
                 const err = new Error('登录未收到有效服务端会话凭证 (accessToken/JSESSIONID)');
                 return reject(err);
               }
@@ -654,6 +713,11 @@ function login(userProfile) {
               if (loginGen !== sessionGeneration || loginBaseUrl !== currentBase) {
                 const err = new Error('登录过程中会话状态或基地址已变更，已丢弃本次登录响应');
                 return reject(err);
+              }
+
+              if (options.expectedOpenid && openid !== options.expectedOpenid) {
+                clearSession();
+                return reject(new Error('微信账号已变化，请主动登录后继续'));
               }
 
               const remoteNick = payload.nickname || payload.nickName || respData.nickname || respData.nickName ||
@@ -682,7 +746,8 @@ function login(userProfile) {
               resolve(newSession);
             },
             fail(err) {
-              clearSession();
+              if (isStale()) return reject(staleError());
+              invalidateLogin();
               const rawMsg = (err && err.errMsg) || '';
               let message = rawMsg || '微信登录网络不可用，请稍后重试';
               if (rawMsg.includes('url not in domain list')) {
@@ -698,7 +763,7 @@ function login(userProfile) {
       });
     };
 
-    if (typeof wx.getUserProfile === 'function') {
+    if (!options.silent && typeof wx.getUserProfile === 'function') {
       const useFallbackProfile = (err) => {
         const errMsg = (err && err.errMsg) || (err && err.message) || String(err || '');
         if (errMsg.indexOf('auth deny') !== -1 || errMsg.indexOf('cancel') !== -1) {
@@ -789,8 +854,8 @@ async function updateProfile(nickname) {
   if (cleanNick.length > 20) {
     throw new Error('昵称长度不可超过 20 个字符');
   }
-  const session = getSession();
-  if (!hasValidSession()) throw new Error('请先微信登录后设置昵称');
+  const session = await ensureSession();
+  if (session !== getSession()) throw new Error('登录状态已变更，请重试');
   const generation = sessionGeneration;
   await requestWithAuth({
     url: '/taste/userInfo/updateNick',
@@ -820,8 +885,8 @@ function normalizeUserInfo(data) {
 }
 
 async function getUserInfo() {
-  const session = getSession();
-  if (!session.openid || !hasValidSession()) throw new Error('请先微信登录');
+  const session = await ensureSession();
+  if (session !== getSession()) throw new Error('登录状态已变更，请重试');
   const data = await requestWithAuth({
     url: '/taste/userInfo/' + encodeURIComponent(session.openid) + '/get',
     method: 'GET'
@@ -833,13 +898,59 @@ async function getUserInfo() {
 
 function parseUploadBody(body) {
   if (typeof body === 'string') {
-    try { return JSON.parse(body); } catch (_) { throw new Error('头像上传响应格式异常'); }
+    try { return JSON.parse(body.trim()); } catch (_) { throw new Error('头像上传响应格式异常'); }
   }
   return body;
 }
 
-function uploadAvatar(filePath) {
-  const session = getSession();
+// 相册返回的 compressed 图片仍可能超过服务端上传限制，预留 multipart 开销。
+const MAX_AVATAR_UPLOAD_BYTES = 900 * 1024;
+
+function getAvatarFileSize(filePath) {
+  try {
+    const fs = wx.getFileSystemManager && wx.getFileSystemManager();
+    const stats = fs && fs.statSync(filePath);
+    return stats && typeof stats.size === 'number' ? stats.size : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+async function prepareAvatarUpload(filePath) {
+  const size = getAvatarFileSize(filePath);
+  if (size !== null && size <= MAX_AVATAR_UPLOAD_BYTES) return filePath;
+  if (!wx.compressImage) {
+    if (size !== null) throw new Error('头像图片过大，请选择小于 900 KB 的图片');
+    return filePath;
+  }
+  const options = { src: filePath, quality: 70 };
+  if (wx.getImageInfo) {
+    await new Promise(resolve => wx.getImageInfo({
+      src: filePath,
+      success(info) {
+        // 仅缩小长边，保留头像原比例，避免高分辨率 PNG 压缩后仍超限。
+        if (info.width >= info.height && info.width > 800) options.compressedWidth = 800;
+        else if (info.height > 800) options.compressedHeight = 800;
+        resolve();
+      },
+      fail: resolve
+    }));
+  }
+  const compressed = await new Promise((resolve, reject) => wx.compressImage(Object.assign({}, options, {
+    success(res) {
+      if (res && res.tempFilePath) resolve(res.tempFilePath);
+      else reject(new Error('头像处理失败，请重新选择图片'));
+    },
+    fail() { reject(new Error('头像处理失败，请重新选择图片')); }
+  })));
+  if (getAvatarFileSize(compressed) > MAX_AVATAR_UPLOAD_BYTES) {
+    throw new Error('头像图片过大，请裁剪后重新选择');
+  }
+  return compressed;
+}
+
+async function uploadAvatar(filePath) {
+  const session = await ensureSession();
   const token = getBearerToken(session);
   if (!hasValidSession() || !token) return Promise.reject(new Error('请先微信登录后上传头像'));
   const isLocalFile = typeof filePath === 'string' &&
@@ -850,10 +961,14 @@ function uploadAvatar(filePath) {
   if (typeof wx === 'undefined' || !wx.uploadFile) return Promise.reject(new Error('当前环境不支持头像上传'));
   const baseUrl = resolveBaseUrl();
   const generation = sessionGeneration;
+  const uploadFilePath = await prepareAvatarUpload(filePath);
+  if (generation !== sessionGeneration || baseUrl !== resolveBaseUrl()) {
+    throw new Error('登录状态已变更，请核对头像后再保存');
+  }
   return new Promise((resolve, reject) => {
     wx.uploadFile({
       url: baseUrl + '/taste/userInfo/uploadWxUrl',
-      filePath,
+      filePath: uploadFilePath,
       name: 'file',
       formData: { openid: session.openid },
       header: { Authorization: 'Bearer ' + token, Accept: 'application/json' },
@@ -863,12 +978,15 @@ function uploadAvatar(filePath) {
           return reject(new Error('登录状态已变更，请核对头像后再保存'));
         }
         try {
-          const body = parseUploadBody(res.data);
-          if (res.statusCode === 401 || res.statusCode === 403) {
+          // 网关/上传限制可能返回空文本或 HTML，先检查 HTTP 状态，避免 JSON 解析掩盖原因。
+          if (res.statusCode === 401) {
             clearSession();
             throw new Error('登录已失效，请重新登录后上传头像');
           }
-          if (res.statusCode < 200 || res.statusCode >= 300) throw new Error((body && body.msg) || '头像上传失败');
+          if (res.statusCode === 403) throw new Error('暂时无法上传头像，请稍后重试');
+          if (res.statusCode === 413) throw new Error('头像图片过大，请裁剪后重新选择');
+          if (res.statusCode < 200 || res.statusCode >= 300) throw new Error('头像上传失败（HTTP ' + res.statusCode + '），请稍后重试');
+          const body = parseUploadBody(res.data);
           if (!isSuccessResponse(body)) {
             if (body && (body.code === 401 || body.code === '401')) clearSession();
             throw new Error((body && body.msg) || '头像上传失败');
@@ -1049,6 +1167,7 @@ module.exports = {
   resolveBaseUrl,
   getSession,
   hasValidSession,
+  ensureSession,
   clearSession,
   addSessionListener,
   request,
