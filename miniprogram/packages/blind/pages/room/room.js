@@ -1,5 +1,6 @@
 const storageService = require("../../../../services/storage");
 const identity = require("../../../../services/identity");
+const memberLevel = require("../../../../services/memberLevel");
 Page({
   data: {
     roomId: "", room: null, samples: [], members: [], myStatusMap: {}, mySubmittedCount: 0, isAllSubmitted: false
@@ -29,7 +30,17 @@ Page({
     const { roomId } = this.data;
     const room = storageService.getRoomById(roomId);
     const samples = storageService.getSamples(roomId);
-    const members = storageService.getMembers(roomId).map(identity.withAvatarFlag);
+    const members = storageService.getMembers(roomId).map(m => {
+      const flagged = identity.withAvatarFlag(m);
+      if (memberLevel && memberLevel.getUserMemberLevel) {
+        const lvl = memberLevel.getUserMemberLevel(m.userId);
+        if (lvl && lvl.current) {
+          flagged.levelTitle = lvl.current.title;
+          flagged.levelBadge = lvl.current.badge;
+        }
+      }
+      return flagged;
+    });
     const user = storageService.getCurrentUser();
     const guesses = storageService.getGuesses(roomId, user.userId);
     const myStatusMap = {};

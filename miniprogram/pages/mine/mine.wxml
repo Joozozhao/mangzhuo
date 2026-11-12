@@ -8,34 +8,32 @@
 
   <view class="content-panel profile-panel">
     <view class="profile-ticket">
-      <view class="profile-stub">
-        <block wx:if="{{isWechat}}">
-          <button class="stub-avatar-btn" bindtap="openAvatarModal" aria-label="点击修改头像">
-            <image wx:if="{{avatarImg && !avatarLoadError}}" class="pe-avatar pe-avatar-logged" src="{{user.avatar}}" mode="aspectFill" binderror="onAvatarError"/>
-            <view wx:else class="pe-avatar pe-avatar-logged pe-emoji">{{avatarImg ? '知' : (user.avatar && user.avatar !== '知味' ? user.avatar : '知')}}</view>
+      <view class="profile-identity-row">
+        <button class="profile-avatar-action" bindtap="openAvatarModal" aria-label="点击修改头像">
+          <image wx:if="{{avatarImg && !avatarLoadError}}" class="pe-avatar" src="{{user.avatar}}" mode="aspectFill" binderror="onAvatarError"/>
+          <view wx:else class="pe-avatar pe-emoji">{{avatarImg ? '知' : (user.avatar && user.avatar !== '知味' ? user.avatar : '知')}}</view>
+        </button>
+        <view class="profile-main">
+          <button wx:if="{{isWechat}}" class="profile-name-action" bindtap="openNicknameModal" aria-label="点击修改昵称 {{displayNickname}}">
+            <text class="profile-title profile-nickname-text">{{displayNickname}}</text>
+            <text class="mine-profile-hint">微信已登录</text>
           </button>
-          <button class="stub-nickname-btn" bindtap="openNicknameModal" aria-label="点击修改昵称 {{displayNickname}}">
-            <text class="stub-nickname-text">{{displayNickname}}</text>
-          </button>
-        </block>
-        <block wx:else>
-          <button class="profile-avatar-action" bindtap="openProfileModal" data-field="all" aria-label="查看或编辑头像昵称">
-            <image wx:if="{{avatarImg && !avatarLoadError}}" class="pe-avatar" src="{{user.avatar}}" mode="aspectFill" binderror="onAvatarError"/>
-            <view wx:else class="pe-avatar pe-emoji">{{avatarImg ? '知味' : (user.avatar || '知味')}}</view>
-          </button>
-        </block>
-      </view>
-      <view class="profile-main">
-        <view class="profile-title">我的品鉴档案</view>
-        <view class="profile-state-row">
-          <view class="profile-copy">
-            <view class="identity-state">{{isWechat ? '微信已登录' : '游客模式'}}</view>
-            <view class="mine-profile-hint">{{isWechat ? '点左侧头像或昵称即可修改' : '资料与手记保存在本机'}}</view>
-          </view>
-          <button wx:if="{{!isWechat}}" class="profile-action {{registering ? 'is-busy' : ''}}" bindtap="register" loading="{{registering}}" disabled="{{registering}}" aria-label="微信登录">{{registering ? '登录中' : '微信登录'}}</button>
-          <button wx:else class="profile-action" bindtap="openProfileModal" data-field="all">{{profileCompleted ? '编辑资料' : '完善资料'}}</button>
+          <block wx:else>
+            <view class="profile-title">我的品鉴</view>
+            <view class="mine-profile-hint">游客 · 资料存于本机</view>
+          </block>
         </view>
+        <button wx:if="{{!isWechat}}" class="profile-action {{registering ? 'is-busy' : ''}}" bindtap="register" loading="{{registering}}" disabled="{{registering}}" aria-label="微信登录">{{registering ? '登录中' : '微信登录'}}</button>
+        <button wx:else class="profile-action profile-edit-action" bindtap="openProfileModal" data-field="all">{{profileCompleted ? '编辑资料' : '完善资料'}}</button>
       </view>
+      <button class="level-seal-badge" bindtap="openMemberLevels" aria-label="当前品阶：{{memberLevel.current.rank}} · {{memberLevel.current.title}}，打开知味九阶介绍页">
+        <view class="seal-meta">
+          <view class="seal-title-row"><text class="seal-rank">{{memberLevel.current.rank}}</text><text class="seal-name">{{memberLevel.current.title}}</text></view>
+          <view class="seal-progress-text" wx:if="{{memberLevel.next}}">距{{memberLevel.next.title}}还差 {{memberLevel.needRooms > 0 ? memberLevel.needRooms + ' 场' : ''}}{{memberLevel.needRooms > 0 && memberLevel.needScore > 0 ? ' · ' : ''}}{{memberLevel.needScore > 0 ? memberLevel.needScore + ' 分' : ''}}</view>
+          <view class="seal-progress-text" wx:else>已登绝顶 · 返璞归真</view>
+        </view>
+        <image class="small-arrow seal-arrow" src="/assets/icons/chevron-right.svg" mode="aspectFit" aria-hidden="true"/>
+      </button>
     </view>
   </view>
 
@@ -48,10 +46,10 @@
       <view class="stat-number">{{roomCount}}</view>
       <view class="stat-copy"><text>参与酒局</text><image class="small-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></view>
     </button>
-    <view class="stat-ticket">
-      <view class="stat-number">{{aromaCount}}</view>
-      <view class="stat-copy">已记香型</view>
-    </view>
+    <button class="stat-ticket stat-score-ticket" bindtap="openMemberLevels" aria-label="累计盲品得分 {{memberLevel.stats.totalScore}} 分，打开知味九阶介绍页">
+      <view class="stat-number">{{memberLevel.stats.totalScore}}</view>
+      <view class="stat-copy"><text>盲品积分</text><image class="small-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></view>
+    </button>
   </view>
 
   <view class="content-panel record-panel">
@@ -66,8 +64,10 @@
           <text wx:if="{{item.dateYear}}" class="date-year">{{item.dateYear}}</text>
         </view>
         <view class="ledger-copy">
-          <view class="note-aroma">{{item.aromaType}}</view>
+          <view class="note-aroma">{{item.sampleLabel || item.aromaType}}</view>
           <view class="note-title">{{item.title}}</view>
+          <view class="note-room" wx:if="{{item.hasRoom}}">{{item.roomName}}</view>
+          <view class="note-room-facts" wx:if="{{item.hasRoom}}">{{item.roomFacts}}</view>
           <view class="note-excerpt">{{item.note || '打开手记，回顾这一杯的风味。'}}</view>
         </view>
         <view class="ledger-open"><image class="ledger-chevron" src="/assets/icons/chevron-right.svg" mode="aspectFit" aria-hidden="true"/></view>
@@ -116,4 +116,5 @@
       </view>
     </view>
   </view>
+
 </view>

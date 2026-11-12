@@ -1,4 +1,6 @@
 const journal = require('../../services/journal');
+const journalContext = require('../../services/journalContext');
+const storage = require('../../services/storage');
 const kb = require('../../utils/liquorKnowledge');
 const { searchLiquors, refreshLiquors } = require('../../utils/liquorDb');
 
@@ -12,10 +14,22 @@ function mergeField(text, words) {
 }
 
 Page({
-  data: { aromas, index: 0, saving: false, groups: [], placeholders, title: '', titleError: '', titleFocused: false, note: '', suggestions: [], catalogLoading: false, catalogSource: 'builtin', catalogError: '' },
-  onLoad() {
+  data: { aromas, index: 0, saving: false, groups: [], placeholders, title: '', titleError: '', titleFocused: false, note: '', suggestions: [], catalogLoading: false, catalogSource: 'builtin', catalogError: '', roomOptions: [], roomIndex: -1, selectedRoom: null, sampleOptions: [], sampleIndex: -1, selectedSample: null },
+  onLoad(options = {}) {
     this._disposed = false;
-    this.setData({ groups: kb.getFlavorGroups().map(group => ({ ...group, selectedCount: 0 })) });
+    const roomOptions = journalContext.getRoomOptions(storage.getCurrentUser().userId);
+    const roomIndex = roomOptions.findIndex(room => room.roomId === options.roomId);
+    const selectedRoom = roomIndex >= 0 ? roomOptions[roomIndex] : null;
+    const sampleOptions = selectedRoom ? selectedRoom.samples : [];
+    const sampleIndex = sampleOptions.findIndex(sample => sample.sampleId === options.sampleId);
+    const selectedSample = sampleIndex >= 0 ? sampleOptions[sampleIndex] : null;
+    const sampleAroma = selectedSample && selectedSample.aromaType;
+    this.setData({
+      groups: kb.getFlavorGroups().map(group => ({ ...group, selectedCount: 0 })),
+      roomOptions, roomIndex, selectedRoom, sampleOptions, sampleIndex, selectedSample,
+      title: selectedSample ? selectedSample.label : '',
+      index: sampleAroma && aromas.includes(sampleAroma) ? aromas.indexOf(sampleAroma) : 0
+    });
     this.loadWineCatalog();
   },
   async loadWineCatalog(force = false) {
@@ -27,6 +41,7 @@ Page({
   retryWineCatalog() { this.loadWineCatalog(true); },
   onUnload() { this._disposed = true; },
   onTitleInput(e) {
+    this._titleEdited = true;
     this._suggestionQuery = e.detail.value;
     this.setData({ title: e.detail.value, titleError: '', suggestions: searchLiquors(e.detail.value) });
   },
@@ -37,8 +52,25 @@ Page({
     const title = wine.product;
     if (title.length > 40) { wx.showToast({ title: '酒名较长，请手动填写简称', icon: 'none' }); return; }
     this._suggestionQuery = '';
+    this._titleEdited = true;
     const index = this.data.aromas.indexOf(wine.aromaType);
     this.setData({ title, titleError: '', suggestions: [], index: index >= 0 ? index : this.data.index });
+  },
+  chooseRoom(e) {
+    const roomIndex = Number(e.detail.value);
+    const selectedRoom = this.data.roomOptions[roomIndex] || null;
+    this.setData({ roomIndex: selectedRoom ? roomIndex : -1, selectedRoom, sampleOptions: selectedRoom ? selectedRoom.samples : [], sampleIndex: -1, selectedSample: null });
+  },
+  chooseSample(e) {
+    const sampleIndex = Number(e.detail.value);
+    const selectedSample = this.data.sampleOptions[sampleIndex] || null;
+    const patch = { sampleIndex: selectedSample ? sampleIndex : -1, selectedSample };
+    if (selectedSample && !this._titleEdited) patch.title = selectedSample.label;
+    if (selectedSample && selectedSample.aromaType) {
+      const index = this.data.aromas.indexOf(selectedSample.aromaType);
+      if (index >= 0) patch.index = index;
+    }
+    this.setData(patch);
   },
   choose(e) {
     this.setData({ index: Number(e.detail.value) });
@@ -74,6 +106,15 @@ Page({
       });
       const row = journal.save({
         ...value,
+        roomId: this.data.selectedRoom ? this.data.selectedRoom.roomId : '',
+        sampleId: this.data.selectedSample ? this.data.selectedSample.sampleId : '',
+        sampleLabel: this.data.selectedSample ? this.data.selectedSample.label : '',
+        roomSnapshot: this.data.selectedRoom ? {
+          roomId: this.data.selectedRoom.roomId,
+          name: this.data.selectedRoom.name,
+          sampleCount: this.data.selectedRoom.sampleCount,
+          memberCount: this.data.selectedRoom.memberCount
+        } : null,
         aroma: merged.aroma || '',
         taste: merged.taste || '',
         finish: merged.finish || '',

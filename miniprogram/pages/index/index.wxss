@@ -1,24 +1,62 @@
-.home-page .home-start{margin-bottom:48rpx;}
-.home-hero{min-height:380rpx;margin-top:8rpx;}
-.home-title-svg{width:372rpx;height:330rpx;}
-.home-pose-svg{right:-52rpx;bottom:4rpx;width:392rpx;height:392rpx;}
-.home-description{font-size:14px;color:#4c5c4b;line-height:1.8;margin:28rpx 0 30rpx;}
-.journal.organized-page .share-ticket{display:flex;align-items:stretch;width:100% !important;min-height:142rpx;margin:22rpx 0 0;padding:0;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:12rpx;text-align:left;overflow:visible;}
-.share-stub{position:relative;display:flex;flex:0 0 132rpx;align-items:center;justify-content:center;padding:18rpx 8rpx;background:#e5eadb;border-right:1rpx dashed #bac5b0;border-radius:11rpx 0 0 11rpx;}
-.share-stub::before,.share-stub::after{content:"";position:absolute;right:-14rpx;width:24rpx;height:24rpx;border:1rpx solid #b9c5b1;border-radius:50%;background:#f7f6ef;z-index:1;}
-.share-stub::before{top:-13rpx;border-top-color:transparent;border-left-color:transparent;transform:rotate(45deg);}
-.share-stub::after{bottom:-13rpx;border-bottom-color:transparent;border-right-color:transparent;transform:rotate(45deg);}
-.share-stub-mark{font-family:"Songti SC","STSong",serif;font-size:34rpx;font-weight:600;letter-spacing:2rpx;color:#274d3b;}
-.share-body{flex:1;min-width:0;padding:22rpx 12rpx 22rpx 24rpx;display:flex;flex-direction:column;justify-content:center;}
-.share-title{font-family:"Songti SC","STSong",serif;font-size:34rpx;font-weight:600;line-height:1.4;color:#28382e;}
-.share-desc{margin-top:6rpx;font-size:12px;line-height:1.6;color:#687365;}
-.share-open{display:flex;align-items:center;justify-content:center;flex:0 0 64rpx;}
-.home-page .record-panel{margin:0 -12rpx 34rpx;}
+.home-hero{min-height:254rpx;margin:0 0 24rpx;}
+.home-title-svg{width:280rpx;height:246rpx;}
+.home-pose-svg{right:-30rpx;bottom:-8rpx;width:250rpx;height:250rpx;}
+.home-task{padding:28rpx;background:#274d3b;border-radius:12rpx;color:#f7f6ef;}
+.task-kicker{display:flex;justify-content:space-between;gap:16rpx;color:#cbd8c7;font-size:11px;line-height:1.7;letter-spacing:2rpx;}
+.task-title{margin-top:14rpx;font-family:"Songti SC","STSong",serif;font-size:38rpx;line-height:1.5;overflow-wrap:anywhere;}
+.task-facts{margin-top:8rpx;color:#d8e1d2;font-size:12px;line-height:1.8;overflow-wrap:anywhere;}
+.task-progress{margin-top:8rpx;color:#cbd8c7;font-size:11px;}
+.journal.organized-page .home-task .home-task-action{width:100%;min-height:48px;margin:24rpx 0 0;padding:18rpx 24rpx;background:#f7f6ef;border-color:#f7f6ef;color:#274d3b;font-size:16px;}
+.home-task-action .button-arrow{display:block;width:30rpx;height:30rpx;}
+.gather-action-surface{margin:28rpx 0 12rpx;padding:22rpx 24rpx 24rpx;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:14rpx;}
+.tasting-steps-row{display:flex;align-items:baseline;justify-content:space-between;padding:4rpx 12rpx 20rpx;border-bottom:1rpx dashed #ccd5c4;}
+.step-item{display:flex;align-items:baseline;gap:8rpx;}
+.step-num{font-family:"Songti SC","STSong",serif;font-size:15px;font-weight:600;color:#274d3b;}
+.step-txt{font-family:"Songti SC","STSong",serif;font-size:12px;color:#687365;letter-spacing:1rpx;}
+.step-dot{color:#9aa792;font-size:14px;}
+.gather-action-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18rpx;margin-top:20rpx;}
+.journal.organized-page .action-card{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;width:100%!important;min-width:0;min-height:160rpx;margin:0;padding:22rpx;background:#f7f6ef;border:1rpx solid #d0d9c9;border-radius:10rpx;text-align:left;box-shadow:none;}
+.journal.organized-page .action-card.join-card{background:#eef2e9;border-color:#b5c4ad;}
+.journal.organized-page .action-card.demo-card{background:#faf9f4;}
+.card-icon-line{display:flex;align-items:center;justify-content:space-between;gap:12rpx;}
+.card-action-icon{width:36rpx;height:36rpx;flex-shrink:0;}
+.card-arrow-icon{width:28rpx;height:28rpx;flex-shrink:0;opacity:.7;}
+.card-main-title{margin-top:16rpx;font-family:"Songti SC","STSong","SimSun",serif;font-size:32rpx;font-weight:600;line-height:1.4;color:#274d3b;}
+.card-sub-title{margin-top:6rpx;font-size:11px;line-height:1.6;color:#687365;overflow-wrap:anywhere;}
+.home-secondary-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:1rpx solid #d6ddcf;}
+.journal.organized-page .home-secondary-action{display:flex;align-items:center;justify-content:space-between;gap:8rpx;width:100%;min-width:0;min-height:48px;margin:0;padding:12rpx 4rpx;background:transparent;border:0;border-radius:0;color:#274d3b;font-size:13px;text-align:left;}
+.home-secondary-action+.home-secondary-action{padding-left:22rpx;border-left:1rpx solid #d6ddcf;}
+.home-secondary-action image{width:28rpx;height:28rpx;flex-shrink:0;}
+.home-progress,.home-result{margin-top:38rpx;}
+.home-section-heading{display:flex;align-items:center;justify-content:space-between;gap:16rpx;min-height:44px;margin-bottom:16rpx;}
+.home-section-heading .panel-title{font-size:36rpx;font-weight:500;line-height:1.45;}
+.section-note{color:#687365;font-size:11px;line-height:1.6;text-align:right;}
+.journal.organized-page .home-level-card{display:block;width:100%;min-width:0;min-height:44px;margin:0;padding:22rpx 24rpx;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:10rpx;color:#274d3b;text-align:left;}
+.level-card-top{display:flex;align-items:center;gap:18rpx;min-width:0;}
+.level-card-rank{flex-shrink:0;color:#75552e;font-size:13px;}
+.level-card-title{display:block;width:152rpx;height:58rpx;}
+.level-card-arrow{width:28rpx;height:28rpx;margin-left:auto;flex-shrink:0;}
+.level-card-stats{display:flex;gap:34rpx;margin-top:14rpx;color:#4c5c4b;font-size:14px;line-height:1.6;}
+.level-progress-track{height:6rpx;margin-top:16rpx;background:#d7dfce;overflow:hidden;}
+.level-progress-track>view{height:100%;background:#496c50;}
+.level-card-next{margin-top:12rpx;color:#687365;font-size:12px;line-height:1.7;}
+.journal.organized-page .latest-result-card{display:flex;align-items:center;gap:20rpx;width:100%;min-width:0;min-height:104rpx;margin:0;padding:22rpx 24rpx;background:#eef2e9;border:1rpx solid #b9c5b1;border-radius:10rpx;text-align:left;}
+.latest-result-copy{flex:1;min-width:0;}
+.latest-result-title{font-family:"Songti SC","STSong",serif;font-size:30rpx;line-height:1.5;color:#28382e;overflow-wrap:anywhere;}
+.latest-result-facts{margin-top:6rpx;color:#687365;font-size:11px;line-height:1.7;}
+.latest-result-score{flex-shrink:0;text-align:right;color:#75552e;}
+.latest-result-score>text{font-family:Georgia,serif;font-size:44rpx;line-height:1.3;font-variant-numeric:tabular-nums;}
+.latest-result-score>view{margin-top:4rpx;color:#687365;font-size:10px;}
+.home-page .record-panel{margin:0 0 34rpx;}
 .home-page .notes-heading{align-items:center;gap:18rpx;min-height:44px;margin:0 0 24rpx;padding:0;border:0;}
-.home-page .notes-heading .panel-title{font-size:52rpx;font-weight:600;line-height:1.35;letter-spacing:1rpx;}
+.home-page .notes-heading .panel-title{font-size:44rpx;font-weight:500;line-height:1.35;letter-spacing:1rpx;}
 .journal.organized-page .mine-link-pill{display:flex;align-items:center;justify-content:center;gap:8rpx;flex-shrink:0;width:auto !important;min-height:44px;margin:0;padding:8rpx 22rpx;border:1rpx solid #b9c5b1;border-radius:40rpx;background:#fbfaf5;color:#274d3b;font-size:13px;font-weight:500;line-height:1.5;}
 .small-arrow{display:block;width:28rpx;height:28rpx;flex-shrink:0;}
 .light-arrow{filter:brightness(0) invert(1);}
+.journal.organized-page .write-note-link{display:grid;grid-template-columns:minmax(0,1fr) 30rpx;gap:4rpx 16rpx;width:100%;min-height:60px;margin:0 0 22rpx;padding:16rpx 2rpx;background:transparent;border:0;border-top:1rpx solid #d6ddcf;border-bottom:1rpx solid #d6ddcf;border-radius:0;color:#274d3b;text-align:left;}
+.write-note-link>text:first-child{grid-column:1;font-family:"Songti SC","STSong",serif;font-size:17px;line-height:1.5;}
+.write-note-link>text:nth-child(2){grid-column:1;color:#687365;font-size:11px;line-height:1.7;}
+.write-note-link>image{grid-column:2;grid-row:1 / 3;align-self:center;width:28rpx;height:28rpx;}
 .note-ledger{position:relative;border:1rpx solid #b9c5b1;border-radius:12rpx;background:#fbfaf5;}
 .note-ledger::before,.note-ledger::after{content:"";position:absolute;left:138rpx;width:26rpx;height:26rpx;border:1rpx solid #b9c5b1;border-radius:50%;background:#f7f6ef;z-index:1;}
 .note-ledger::before{top:-14rpx;border-top-color:transparent;border-left-color:transparent;transform:rotate(45deg);}
@@ -34,11 +72,19 @@
 .date-year{font-family:Georgia,"Times New Roman",serif;font-size:13px;line-height:1.4;color:#687365;}
 .ledger-copy{flex:1;min-width:0;padding:24rpx 0 24rpx 26rpx;}
 .note-aroma{font-size:12px;line-height:1.6;color:#687365;overflow-wrap:anywhere;}
-.note-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:6rpx;font-family:"Songti SC","STSong","SimSun",serif;font-size:42rpx;font-weight:500;line-height:1.4;color:#28382e;overflow-wrap:anywhere;}
+.note-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:6rpx;font-family:"Songti SC","STSong","SimSun",serif;font-size:38rpx;font-weight:500;line-height:1.4;color:#28382e;overflow-wrap:anywhere;}
+.note-room{margin-top:12rpx;color:#274d3b;font-size:12px;font-weight:500;line-height:1.6;overflow-wrap:anywhere;}
+.note-room-facts{margin-top:2rpx;color:#687365;font-size:11px;line-height:1.6;overflow-wrap:anywhere;}
 .note-excerpt{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:10rpx;font-size:13px;line-height:1.7;color:#687365;overflow-wrap:anywhere;}
 .ledger-open{display:flex;align-items:center;justify-content:center;flex:0 0 56rpx;}
 .ledger-chevron{display:block;width:32rpx;height:32rpx;flex-shrink:0;}
 .empty-ledger{padding:30rpx 28rpx;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:12rpx;}
 .empty-ledger-title{font-family:"Songti SC","STSong",serif;font-size:36rpx;line-height:1.5;color:#28382e;margin-bottom:12rpx;}
 .journal.organized-page .mine-checkin{display:inline-flex;align-items:center;justify-content:center;gap:10rpx;width:auto !important;min-height:44px;margin:24rpx 0 0;padding:10rpx 24rpx;border:0;border-radius:40rpx;background:#274d3b;color:#f7f6ef;font-size:14px;line-height:1.5;}
-@media(max-width:350px){.home-hero{min-height:344rpx;}.home-title-svg{width:320rpx;height:284rpx;}.home-pose-svg{right:-62rpx;width:348rpx;height:348rpx;}.home-page .record-panel{margin-left:0;margin-right:0;}.share-stub{flex-basis:116rpx;}.ledger-date{flex-basis:132rpx;}.note-ledger::before,.note-ledger::after{left:118rpx;}.ledger-copy{padding-left:20rpx;}}
+.journal.organized-page .home-learning{display:block;width:100%;min-height:44px;margin:0;padding:26rpx 0;background:transparent;border:0;border-top:1rpx solid #b9c5b1;border-bottom:1rpx solid #b9c5b1;border-radius:0;color:#28382e;text-align:left;}
+.learning-kicker{color:#75552e;font-size:11px;line-height:1.7;letter-spacing:2rpx;}
+.learning-title{margin-top:8rpx;font-family:"Songti SC","STSong",serif;font-size:30rpx;line-height:1.6;overflow-wrap:anywhere;}
+.learning-bottom{display:flex;align-items:flex-end;gap:20rpx;margin-top:10rpx;color:#687365;font-size:12px;line-height:1.8;}
+.learning-bottom>text{flex:1;min-width:0;}
+.learning-bottom>image{width:30rpx;height:30rpx;margin-bottom:4rpx;flex-shrink:0;}
+@media(max-width:350px){.home-hero{min-height:238rpx;}.home-title-svg{width:256rpx;height:228rpx;}.home-pose-svg{right:-38rpx;width:228rpx;height:228rpx;}.home-page .record-panel{margin-left:0;margin-right:0;}.ledger-date{flex-basis:132rpx;}.note-ledger::before,.note-ledger::after{left:118rpx;}.ledger-copy{padding-left:20rpx;}.task-title{font-size:34rpx;}.section-note{font-size:10px;}.home-secondary-action{font-size:12px;}.latest-result-score>text{font-size:40rpx;}}

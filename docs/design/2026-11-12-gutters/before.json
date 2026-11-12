@@ -1,0 +1,241 @@
+{
+  "rows": [
+    {
+      "name": "home",
+      "route": "/pages/index/index",
+      "actualRoute": "pages/index/index",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "gather",
+      "route": "/pages/gather/gather",
+      "actualRoute": "pages/gather/gather",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "knowledge",
+      "route": "/pages/knowledge/knowledge",
+      "actualRoute": "pages/knowledge/knowledge",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "mine",
+      "route": "/pages/mine/mine",
+      "actualRoute": "pages/mine/mine",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "profile",
+      "route": "/pages/profile/profile",
+      "actualRoute": "pages/profile/profile",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "checkin",
+      "route": "/pages/checkin/checkin",
+      "actualRoute": "pages/checkin/checkin",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "card",
+      "route": "/pages/card/card",
+      "actualRoute": "pages/card/card",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "about",
+      "route": "/pages/about/about",
+      "actualRoute": "pages/about/about",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "member-level",
+      "route": "/pages/member-level/member-level",
+      "actualRoute": "pages/member-level/member-level",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "blind-create",
+      "route": "/packages/blind/pages/create/create",
+      "actualRoute": "packages/blind/pages/create/create",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "setup",
+      "route": "/packages/blind/pages/setup/setup?roomId=room_demo_01&count=4",
+      "actualRoute": "packages/blind/pages/setup/setup",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "join",
+      "route": "/packages/blind/pages/join/join",
+      "actualRoute": "packages/blind/pages/join/join",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "room",
+      "route": "/packages/blind/pages/room/room?roomId=room_demo_01",
+      "actualRoute": "packages/blind/pages/room/room",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "tasting",
+      "route": "/packages/blind/pages/tasting/tasting?roomId=room_demo_01&sampleIndex=0",
+      "actualRoute": "packages/blind/pages/tasting/tasting",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "scoring",
+      "route": "/packages/blind/pages/scoring/scoring?roomId=room_demo_01&sampleIndex=0",
+      "actualRoute": "packages/blind/pages/scoring/scoring",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "submitted",
+      "route": "/packages/blind/pages/submitted/submitted?roomId=room_demo_01",
+      "actualRoute": "packages/blind/pages/submitted/submitted",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "reveal",
+      "route": "/packages/blind/pages/reveal/reveal?roomId=room_demo_01",
+      "actualRoute": "packages/blind/pages/reveal/reveal",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "compare",
+      "route": "/packages/blind/pages/compare/compare?roomId=room_demo_01&sampleId=s_01_1",
+      "actualRoute": "packages/blind/pages/compare/compare",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "ranking",
+      "route": "/packages/blind/pages/ranking/ranking?roomId=room_demo_01",
+      "actualRoute": "packages/blind/pages/ranking/ranking",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "report",
+      "route": "/packages/blind/pages/report/report?roomId=room_demo_01",
+      "actualRoute": "pages/about/about",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    },
+    {
+      "name": "online-create",
+      "route": "/packages/online/pages/create/create",
+      "error": "timeout waiting for automator response"
+    },
+    {
+      "name": "online-detail",
+      "route": "/packages/online/pages/detail/detail?id=1",
+      "actualRoute": "packages/online/pages/detail/detail",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px"
+    }
+  ],
+  "errors": []
+}

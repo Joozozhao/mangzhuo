@@ -8,7 +8,8 @@
     "pages/profile/profile",
     "pages/checkin/checkin",
     "pages/card/card",
-    "pages/about/about"
+    "pages/about/about",
+    "pages/member-level/member-level"
   ],
   "subpackages": [
     {

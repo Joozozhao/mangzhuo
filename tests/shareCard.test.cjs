@@ -7,7 +7,7 @@ const path = require('node:path');
 function makePage(note, canvasReady = true) {
   const draws = [];
   const ctx = {
-    fillRect() {}, drawImage() {},
+    fillRect() {}, strokeRect() {}, drawImage() {},
     measureText(s) { return { width: Array.from(s).length * 26 }; },
     fillText(value, x, y) { draws.push({ value, y }); }
   };
@@ -15,8 +15,8 @@ function makePage(note, canvasReady = true) {
   const identity = {
     getUser: () => ({ nickname: '品鉴客', avatar: '' }),
     hasCompletedProfile: () => true,
-    loadCanvasImage: () => Promise.resolve(null),
-    drawCanvasAvatar: () => Promise.resolve()
+    loadCanvasImage: (canvas, path) => Promise.resolve({ width: 100, height: 100 }),
+    drawCanvasAvatar: (canvas, ctx, x, y, r, avatar, check) => Promise.resolve()
   };
   const wx = {
     canvasToTempFilePath({ success }) { success({ tempFilePath: '/tmp/card.png' }); },
@@ -38,14 +38,14 @@ test('long tasting notes generate a bounded card with clear truncation and share
   const long = '酱香和果香'.repeat(45);
   const { page, draws, canvas } = makePage({ title: long, date: '2026.10.30', aromaType: '酱香型', aroma: long, taste: long, finish: long, note: long });
   page.renderCard();
-  await new Promise(resolve => setImmediate(resolve));
+  await new Promise(resolve => setTimeout(resolve, 50));
   assert.equal(page.data.busy, false);
   assert.equal(page.data.imagePath, '/tmp/card.png');
   assert.equal(canvas.height, 1200);
   assert(draws.some(d => String(d.value).endsWith('…')));
-  const noteLabel = draws.find(d => d.value === '品鉴随记');
+  const noteLabel = draws.find(d => d.value === '此刻的手记');
   const author = draws.find(d => d.value === '品鉴客');
-  assert(noteLabel.y < 1048 && author.y > 1048);
+  assert(noteLabel.y < 1034 && author.y > 1034);
   const share = page.onShareAppMessage();
   assert.equal(share.path, '/pages/index/index');
   assert.equal(share.imageUrl, '/tmp/card.png');

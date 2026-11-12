@@ -1,6 +1,7 @@
 const storageService = require("../../../../services/storage");
 const identity = require("../../../../services/identity");
 const { generateRoomAnalysis } = require("../../../../utils/scoring");
+const memberLevel = require("../../../../services/memberLevel");
 
 Page({
   data: {
@@ -20,8 +21,20 @@ Page({
     const ratings = storageService.getRatings(roomId);
 
     const res = generateRoomAnalysis(room, samples, members, guesses, ratings);
+    const enrichedGuessRanking = (res.guessRanking || []).map(item => {
+      const flagged = identity.withAvatarFlag(item);
+      if (memberLevel && memberLevel.getUserMemberLevel) {
+        const lvl = memberLevel.getUserMemberLevel(item.userId);
+        if (lvl && lvl.current) {
+          flagged.levelTitle = lvl.current.title;
+          flagged.levelBadge = lvl.current.badge;
+          flagged.levelRank = lvl.current.rank;
+        }
+      }
+      return flagged;
+    });
     this.setData({
-      guessRanking: res.guessRanking.map(identity.withAvatarFlag),
+      guessRanking: enrichedGuessRanking,
       tasteRanking: res.tasteRanking
     });
   },

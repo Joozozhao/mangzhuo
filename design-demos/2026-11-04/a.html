@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#274D3B">
+<title>盲酌 · 竹影手札</title>
+<!-- A「竹影手札」：以纸页、题签与绿色墨块构成现代品鉴手札。纯前端演示，仅本文件写入方向 A 专属存储。 -->
+<style>
+:root{--paper:#F7F6EF;--ink:#274D3B;--text:#293B31;--muted:#687167;--line:#D9DDD2;--wash:#E9EDE4;--serif:"Songti SC","STSong","SimSun",serif;--sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box}html{color-scheme:light}body{margin:0;background:#E4E7DF;color:var(--text);font:14px/1.65 var(--sans);-webkit-font-smoothing:antialiased}button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none;min-height:44px;min-width:44px;padding:8px 12px;-webkit-tap-highlight-color:transparent}button,input,textarea,select,a{touch-action:manipulation}button:disabled{cursor:default;opacity:.5}button:active:not(:disabled){transform:translateY(1px)}:focus-visible{outline:2px solid var(--ink);outline-offset:4px}input,textarea,select{display:block;width:100%;min-width:0;min-height:48px;border:1px solid #BBC5B7;border-radius:0;padding:11px 12px;background:#FFFDF7;font-size:16px}textarea{resize:vertical;min-height:132px;line-height:1.7}input::placeholder,textarea::placeholder{color:#747D72}h1,h2,h3,p{margin:0}h1,h2,h3{font-family:var(--serif);font-weight:500}h1{font-size:34px;line-height:1.4;letter-spacing:.04em}h2{font-size:23px;line-height:1.5}h3{font-size:19px;line-height:1.6}img{display:block;max-width:100%}svg{width:22px;height:22px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}small,.small{font-size:12px;line-height:1.7;color:var(--muted)}[hidden]{display:none!important}.app{width:100%;max-width:390px;min-height:100vh;min-height:100dvh;margin:0 auto;background:var(--paper);box-shadow:0 0 50px #263c2910;position:relative}header{height:69px;display:flex;align-items:center;justify-content:space-between;padding:8px 24px;border-bottom:1px solid var(--line);gap:8px}.brand{display:flex;align-items:center;gap:11px;min-width:0}.brand img{width:76px;height:auto}.brand p{font-size:12px;letter-spacing:.06em;line-height:1.8}.green-image{filter:brightness(0) saturate(100%) invert(25%) sepia(20%) saturate(860%) hue-rotate(101deg) brightness(91%) contrast(89%)}.demo{display:inline-flex;align-items:center;padding:1px 7px;border:1px solid #AEBBAA;color:var(--ink);font:12px/1.7 var(--sans);white-space:nowrap;vertical-align:middle}.demo.light{border-color:#9BB49D;color:#F7F6EF}main{padding:0 24px 96px}.page{animation:appear .25s ease-out}button,.page,.modal-body{overflow-wrap:anywhere}.eyebrow{display:flex;justify-content:space-between;gap:10px;font-size:12px;letter-spacing:.12em;color:var(--muted)}.page-head{padding:28px 0 23px}.page-head .eyebrow{margin-bottom:15px}.page-head p{margin-top:10px;color:var(--muted);font-size:14px}.primary{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--ink);color:var(--paper);width:100%;min-height:52px;padding:11px 18px;font-size:16px}.primary .plus{font-size:26px;font-weight:200;line-height:1}.outline{border:1px solid var(--line);min-height:48px;width:100%;color:var(--ink)}.text-button{padding:8px 0;font-size:14px;color:var(--ink)}.secondary{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:49px;padding:9px 0;color:var(--ink)}.secondary span:last-child{font-size:19px}.section-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:13px;min-height:58px}.section-title h2{font-size:20px}.footer{font-size:12px;text-align:center;color:var(--muted);margin:25px 0 0;letter-spacing:.06em}.hero{height:246px;position:relative;isolation:isolate;overflow:hidden;border-bottom:1px solid var(--line);margin:0 -24px 0 0;padding-top:18px}.hero .eyebrow{position:relative;z-index:1;padding-right:24px}.hero h1{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:10px;position:absolute;top:53px;left:0;z-index:2;font-size:43px;line-height:1.2;letter-spacing:.13em;color:var(--ink)}.hero h1 span{writing-mode:vertical-rl}.hero img{position:absolute;width:261px;max-width:none;right:-55px;bottom:-31px;z-index:-1}.hero-aside{position:absolute;top:65px;left:130px;writing-mode:vertical-rl;font-size:12px;letter-spacing:.22em;line-height:1.8;color:var(--muted)}.home-desc{padding:17px 0 15px;font-size:14px;letter-spacing:.02em}.note-row{display:grid;grid-template-columns:29px minmax(0,1fr) 14px;gap:11px;align-items:start;text-align:left;width:100%;padding:15px 0;border-top:1px solid var(--line);min-height:88px}.row-num{font:23px/1.25 var(--serif);color:#75816F}.note-row strong{display:block;font:18px/1.5 var(--serif);font-weight:500;color:var(--text);margin-bottom:3px}.note-row .small{display:block}.arrow{font-size:18px;color:var(--ink);align-self:center}.nav{position:fixed;z-index:8;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:390px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:7px 12px max(8px,env(safe-area-inset-bottom));background:var(--paper);border-top:1px solid var(--line)}.nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#72796F;min-height:57px;padding:4px}.nav span{font-size:12px}.nav button[aria-current="page"]{color:var(--ink);position:relative}.nav button[aria-current="page"]:before{content:"";position:absolute;top:-8px;width:22px;height:2px;background:var(--ink)}.nav button[aria-current="page"] span{font-weight:600}.mode{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line);margin-bottom:20px}.mode button{font-size:16px;min-height:51px;color:var(--muted);position:relative}.mode button[aria-pressed="true"]{color:var(--ink)}.mode button[aria-pressed="true"]:after{content:"";position:absolute;height:2px;background:var(--ink);bottom:-1px;left:24px;right:24px}.ink-block{background:var(--ink);color:var(--paper);padding:22px;position:relative}.ink-block .eyebrow{color:#CED9CB;letter-spacing:.08em}.ink-block h2{font-size:29px;line-height:1.6;margin:19px 0 9px;letter-spacing:.08em}.ink-block p{color:#E1E8DA;font-size:14px}.ink-block .primary{background:var(--paper);color:var(--ink);margin-top:24px}.ink-block.online{background:#E5EADF;color:var(--ink);border:1px solid #C9D3C3}.ink-block.online p,.ink-block.online .eyebrow{color:#52664F}.ink-block.online .primary{background:var(--ink);color:var(--paper)}.ink-block.online .demo{color:var(--ink);border-color:#A4B49F}.steps{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:17px 0;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}.steps b{font:18px var(--serif);color:var(--ink);margin-right:4px}.join{margin:23px 0 0}.join label{display:block;font-family:var(--serif);font-size:20px;margin-bottom:11px}.join-line{display:flex;gap:8px}.join-line input{flex:1;width:0;min-width:0}.join-line button{background:var(--ink);color:var(--paper);width:70px;font-size:16px}.join .small{margin-top:8px;display:block}.error{color:#82442D!important;font-size:13px}.sample-row{display:block;width:100%;padding:18px 0;text-align:left;border-bottom:1px solid var(--line)}.sample-row>span{display:flex;align-items:center;justify-content:space-between;gap:8px}.sample-row strong{font-size:17px;font-family:var(--serif);font-weight:500}.sample-row p{margin-top:5px}.search{display:flex;align-items:center;background:var(--wash);gap:10px;padding:0 12px}.search input{border:0;background:transparent;padding-left:0;min-height:49px}.search svg{width:19px}.categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line);margin-top:12px}.categories button{min-width:0;padding:12px 2px;min-height:50px;font-size:13px;white-space:nowrap;color:var(--muted)}.categories button[aria-pressed="true"]{color:var(--ink);box-shadow:inset 0 -2px var(--ink)}.featured{display:block;width:100%;text-align:left;padding:23px 0 21px;border-bottom:1px solid var(--line)}.featured h2{font-size:28px;line-height:1.6;margin:13px 0 10px}.featured p{font-size:14px;color:var(--muted)}.featured .read-more{display:block;font-size:14px;color:var(--ink);margin-top:17px}.reference-title{margin:25px 0 12px;font:19px var(--serif)}.reference-row{width:100%;text-align:left;border-top:1px solid var(--line);padding:14px 0;display:grid;grid-template-columns:49px minmax(0,1fr);gap:14px}.reference-row b{font-family:var(--serif);font-size:20px;letter-spacing:.1em;font-weight:500}.reference-row span{font-size:14px;color:var(--muted)}.empty{padding:30px 8px;text-align:center;font-size:14px;color:var(--muted)}.knowledge-foot{border-top:1px solid var(--line);margin-top:22px;padding-top:14px;font-size:12px;color:var(--muted)}.profile{display:grid;grid-template-columns:64px minmax(0,1fr);gap:19px;align-items:center;padding:34px 0 27px}.monogram{width:64px;height:82px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font:29px var(--serif);writing-mode:vertical-rl;letter-spacing:.15em}.profile h1{font-size:29px;margin-bottom:8px}.profile .small{margin-top:8px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0;text-align:center}.stats div+div{border-left:1px solid var(--line)}.stats b{display:block;font:33px/1.3 var(--serif);color:var(--ink)}.stats span{font-size:12px;color:var(--muted)}.local-note{margin-top:12px;font-size:12px;color:var(--muted)}.menu{margin-top:20px}.menu button{display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;border-bottom:1px solid var(--line);padding:17px 0;font-size:16px;gap:10px;min-height:61px}.menu button span:last-child{font-size:13px;color:var(--muted)}.mine-quote{margin:32px 0 12px;border-left:1px solid #A6B39D;padding-left:17px;font:21px/1.9 var(--serif);color:var(--ink)}.mine-quote small{display:block;font:12px/1.8 var(--sans);margin-top:10px;color:var(--muted)}dialog{border:0;padding:0;background:var(--paper);color:var(--text);width:calc(100% - 24px);max-width:366px;max-height:90vh;max-height:90dvh;margin:auto;overflow-y:auto;overscroll-behavior:contain;box-shadow:0 20px 80px #14261A40}dialog::backdrop{background:#14271DB8;backdrop-filter:blur(3px)}.modal-top{display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line);padding:5px 9px 5px 21px;position:sticky;top:0;background:var(--paper);z-index:2}.modal-top h2{font-size:20px}.close{font-size:25px;font-family:var(--sans);font-weight:300}.modal-body{padding:22px 21px 26px;min-width:0}.modal-body>p{margin-bottom:17px}.field{display:block;font-size:14px;margin-bottom:16px}.field>span{display:block;margin-bottom:7px}.field .small{display:block;margin-top:5px}.modal-body .primary{margin-top:18px}.modal-body .outline{margin-top:12px}.modal-body h1{font-size:28px;margin:14px 0 17px}.prose{font-size:16px;line-height:1.95;white-space:pre-wrap;overflow-wrap:anywhere}.prose p{margin-bottom:17px}.tip{padding:15px;background:var(--wash);margin:20px 0;font-size:14px}.detail-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px}.archive .note-row:first-child{border-top:0}.share-card{border:1px solid #BCC8B4;background:#F7F6EF;padding:24px 21px;position:relative}.share-card:before{content:"";display:block;width:29px;height:4px;background:var(--ink);margin-bottom:24px}.share-card h3{font-size:26px;margin:15px 0}.share-card .prose{font-size:16px;line-height:1.9}.share-card footer{border-top:1px solid var(--line);margin-top:26px;padding-top:13px;font-size:12px;color:var(--muted)}.sample-picker{display:flex;gap:8px;margin:17px 0}.sample-picker button{flex:1;border:1px solid #A9B8A1;font-size:16px}.sample-picker button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}.saved-feeling{background:var(--wash);padding:12px;margin:12px 0;white-space:pre-wrap;font-size:14px}.reveal{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-size:14px}.reveal p{margin:8px 0}.toast{position:fixed;z-index:30;bottom:96px;left:50%;transform:translateX(-50%);max-width:calc(100% - 40px);width:max-content;background:#203F30;color:var(--paper);padding:12px 18px;font-size:14px;box-shadow:0 4px 24px #1A301F24;pointer-events:none;overflow-wrap:anywhere}.result-label{margin:20px 0 0;font-size:12px;color:var(--muted)}@keyframes appear{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}@media(max-width:340px){header{padding-left:20px;padding-right:20px}.brand{gap:8px}.brand img{width:68px}.brand p{letter-spacing:0}main{padding-left:20px;padding-right:20px}.hero{margin-right:-20px}.hero h1{font-size:40px;gap:7px}.hero img{right:-68px;width:249px}.hero-aside{left:116px}.hero .eyebrow{padding-right:20px}.ink-block{padding:19px}.page-head h1{font-size:31px}.featured h2{font-size:25px}.categories button{font-size:13px}}@media(prefers-reduced-motion:reduce){.page{animation:none}button:active:not(:disabled){transform:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand"><img class="green-image" src="../../miniprogram/assets/brand/mangzhuo-lockup-v6.png" alt="盲酌"><p>去掉酒标<br>只凭味道</p></div>
+    <span class="demo">原型演示</span>
+  </header>
+  <main id="main">
+    <section class="page" id="home" aria-label="首页">
+      <div class="hero">
+        <div class="eyebrow"><span>品 鉴 手 记</span><span>第一章 · 记</span></div>
+        <h1 aria-label="记下这一杯"><span>记下</span><span>这一杯</span></h1>
+        <div class="hero-aside">先写感受，最后揭晓</div>
+        <img class="green-image" src="../../miniprogram/assets/brand/libai-home.png" alt="李白举杯，盲酌品牌插画">
+      </div>
+      <p class="home-desc">记酒款，记风味，也记相聚。</p>
+      <button class="primary" data-action="new-note"><span>记一杯</span><span class="plus" aria-hidden="true">＋</span></button>
+      <button class="secondary" data-action="share"><span>制作分享酒卡</span><span aria-hidden="true">↗</span></button>
+      <div class="section-title"><h2>最近手记</h2><button class="text-button" data-action="notes">全部手记 ↗</button></div>
+      <div id="recent-notes"></div>
+      <p class="footer">少量品鉴 · 理性饮酒 · 仅限成年人</p>
+    </section>
+    <section class="page" id="gather" aria-label="酒局" hidden>
+      <div class="page-head"><div class="eyebrow"><span>与 知 己 同 席</span><span>第二章 · 聚</span></div><h1>和知己，品一局</h1><p>把酒名暂时藏起，让感受先开口。</p></div>
+      <div class="mode" aria-label="品鉴模式"><button data-mode="table" aria-pressed="true">桌上品鉴</button><button data-mode="online" aria-pressed="false">在线品鉴</button></div>
+      <div id="gather-mode"></div>
+      <div class="steps"><span><b>一</b>酒样编号</span><span><b>二</b>各记感受</span><span><b>三</b>一起揭晓</span></div>
+      <form class="join" id="join-form"><label for="room-code">已有一席，凭号入座</label><div class="join-line"><input id="room-code" name="code" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="输入4位房间号" aria-describedby="join-hint" required><button type="submit">加入</button></div><span class="small" id="join-hint">演示房间 2026 · 仅可加入示例或本机记录</span></form>
+      <button class="sample-row" data-action="sample"><span><strong>周五盲品小聚</strong><span class="demo">演示</span></span><p class="small">3款酒样 / 4人 / 房间号 2026</p><span class="small">体验示例局 <span class="arrow" aria-hidden="true">↗</span></span></button>
+      <p class="footer">以味会友，尽兴有度。</p>
+    </section>
+    <section class="page" id="knowledge" aria-label="酒识" hidden>
+      <div class="page-head"><div class="eyebrow"><span>杯 中 自 有 天 地</span><span>第三章 · 识</span></div><h1>读懂杯中味</h1><p>从一个气味，到自己的品鉴语言。</p></div>
+      <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input type="search" id="search" placeholder="搜索香型、风味或文章" aria-label="搜索酒识" autocomplete="off"></label>
+      <div class="categories" aria-label="酒识分类"><button data-category="0" aria-pressed="true">香型入门</button><button data-category="1" aria-pressed="false">盲品风味</button><button data-category="2" aria-pressed="false">名酒档案</button><button data-category="3" aria-pressed="false">慢读文章</button></div>
+      <div id="knowledge-results" aria-live="polite"></div>
+      <p class="knowledge-foot">阅读演示 · 内容摘自项目酒识资料。保留原文语境与资料日期，未作最新核验。</p>
+      <p class="footer">慢一点读，也慢一点品。</p>
+    </section>
+    <section class="page" id="mine" aria-label="我的" hidden>
+      <div class="profile"><div class="monogram" aria-hidden="true">知味</div><div><h1>品鉴者</h1><span class="demo">演示身份</span><p class="small">未登录微信 · 一册自己的风味记忆</p></div></div>
+      <div class="eyebrow" style="margin-bottom:12px"><span>我 的 品 鉴 档 案</span><span>演示数据</span></div>
+      <div class="stats"><div><b>2</b><span>篇手记</span></div><div><b>1</b><span>场酒局</span></div><div><b>2</b><span>种香型</span></div></div>
+      <p class="local-note" id="local-summary"></p>
+      <div class="menu"><button data-action="notes"><span>个人手记</span><span id="notes-count">2篇 · 演示与本机 ↗</span></button><button data-action="rooms"><span>我的酒局</span><span>桌上记录 ↗</span></button><button data-action="profile"><span>个人资料</span><span>演示档案 ↗</span></button><button data-action="storage"><span>关于这本手札</span><span>本机保存说明 ↗</span></button></div>
+      <blockquote class="mine-quote">味道会散去，<br>记忆可以留下。<small>先写感受，最后揭晓。</small></blockquote>
+      <button class="primary" data-action="new-note"><span>再记一杯</span><span class="plus" aria-hidden="true">＋</span></button>
+      <p class="footer">少量品鉴 · 理性饮酒 · 仅限成年人</p>
+    </section>
+  </main>
+  <nav class="nav" aria-label="一级导航">
+    <button data-page="home" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v11h14V9M10 20v-7h4v7"/></svg><span>首页</span></button>
+    <button data-page="gather"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v11H3zM7 3v4m10-4v4M7 18v3m10-3v3M8 11h2m4 0h2M8 14h8"/></svg><span>酒局</span></button>
+    <button data-page="knowledge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5C8 2 3 4 3 4v15s5-2 9 1c4-3 9-1 9-1V4s-5-2-9 1Zm0 0v15M6 8h3m6 0h3M6 11h3m6 0h3"/></svg><span>酒识</span></button>
+    <button data-page="mine"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg><span>我的</span></button>
+  </nav>
+</div>
+<dialog id="modal" aria-labelledby="modal-title"></dialog>
+<div id="toast" class="toast" role="status" hidden></div>
+<script>
+(() => {
+'use strict';
+const $ = (s, root=document) => root.querySelector(s);
+const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pages = ['home','gather','knowledge','mine'];
+const KEY = 'mangzhuo-prototype-a-v1';
+const demoNotes = [
+  {id:'demo-jiang',title:'初识酱香',feeling:'先是烘烤谷物般的香气，入口后层次慢慢展开。先留下自己的感受，再去对照酒标。',aroma:'酱香',wine:'未记录具体酒款',date:'2026.10.28',demo:true},
+  {id:'demo-qing',title:'一杯清香的午后',feeling:'香气清晰，想到刚蒸好的粮食。把闻香与入口分开记，才发现自己喜欢的细节。',aroma:'清香',wine:'未记录具体酒款',date:'2026.10.26',demo:true}
+];
+// 正文保留 miniprogram/utils/knowledge.js 原文；香型摘要来自 miniprogram/data/liquor-knowledge.js。
+const articles = [
+  {id:'styles',category:0,title:'香型，是认识白酒的第一张地图',desc:'先认识酱香、浓香、清香，再建立自己的感官记忆。',paragraphs:['白酒产品标准按不同类别分别制定。香型可以帮助我们整理酒款，但不能单独说明一瓶酒的价格、品质或是否适合自己。','入门可以先挑选明确标注香型的酒款，分别建立酱香、浓香、清香的记录页。同一香型下也存在不同产品风格，不必寻找一个适用于所有酒款的唯一答案。','对比时先写自己的观察，揭晓后再补全瓶身信息。把“包装标注的香型”和“我闻到的香气”分别记录，日后复盘会更清晰。'],tip:'为最近一次打卡补上瓶身标注的香型。',source:'全国标准信息公共服务平台 · 白酒标准检索（项目原文引用）'},
+  {id:'observe',category:1,title:'先闻香，再写下第一印象',desc:'从自己的感受开始，不急着猜酒名。',paragraphs:['把酒样按编号放好，先记下第一印象，再与其他酒样比较。每次使用相同的杯型和接近的倒酒量，方便对比。','描述香气时，可以从熟悉的食物与气味找词：粮食、果香、花香、烘烤。没有闻到某种香气，也不需要照着别人的答案填写。','品评记录可以分为闻香、入口、回味三段。喜欢与不喜欢都可以记录，具体描述比一个总分更有价值。'],tip:'打开品酒打卡，把这一篇的方法用在自己的记录里。'},
+  {id:'read',category:2,title:'读一张酒标，记住哪些信息',desc:'酒款名称、香型与酒精度，先建立清晰记录。',paragraphs:['记录包装上的完整产品名称、香型和酒精度，同一品牌下的不同产品应分别记录。','如果需要做长期对比，也可以在手记里补充生产日期、批次及品饮日期，方便之后回看。','产品名称中的数字和瓶身上的日期，应按各自标注原样记录；不要直接把名称中的数字当成整瓶酒的实际酒龄。'],tip:'打开品酒打卡，把这一篇的方法用在自己的记录里。'},
+  {id:'blind',category:3,title:'一场盲品，怎样开始',desc:'编号、独立记录、最后揭晓。',paragraphs:['由一位组织者保存真实酒款信息，为每个样品分配编号。品鉴者在揭晓前以编号记录。','先独立填写感受，再一起讨论，可以减少别人先说出的酒名或评价对自己的影响。','揭晓后分别回看“我猜的是什么”和“我是否喜欢”。它们回答的是两个不同的问题。'],tip:'打开品酒打卡，把这一篇的方法用在自己的记录里。'}
+];
+const aromas = [
+  {name:'酱香',summary:'从酱香层次、酒体厚度与回味变化开始记录。',body:'盲品时先写下自己的闻香与入口感受，揭晓后再对照具体产品的香型。香型相同，也不意味着不同产品的体验相同。'},
+  {name:'浓香',summary:'借五粮液与国窖1573，比较同一香型的不同表达。',body:'五粮液的五粮原料为高粱、大米、糯米、小麦、玉米；这是具体品牌的配方线索，不是所有浓香酒的统一配方。可以比较两款浓香酒，把香气、甜感、酒体与收尾分别记下。'},
+  {name:'清香',summary:'从香气清晰度、入口与落口的感受认识清香。',body:'清香是香型名称，不能据此推定酒精度较低。选样时查看酒标，记录实际度数与品饮条件。'}
+];
+const categories = ['香型入门','盲品风味','名酒档案','慢读文章'];
+let state = {notes:[],rooms:[]}, storageOK = true, page = '', mode = 'table', category = 0;
+let returnFocus = null, toastTimer, currentRoom = null, selectedSample = 0, shareId = demoNotes[0].id;
+const modal = $('#modal');
+function cleanNote(n){return n && typeof n.id==='string' && !n.id.startsWith('demo-') && typeof n.title==='string' && typeof n.feeling==='string' && n.title.trim() && n.feeling.trim();}
+try {
+  const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+  state.notes = Array.isArray(saved.notes) ? saved.notes.filter(cleanNote).slice(0,100).map(n=>({id:n.id.slice(0,80),title:n.title.slice(0,60),feeling:n.feeling.slice(0,1200),aroma:String(n.aroma||'暂不判断').slice(0,20),wine:String(n.wine||'').slice(0,80),date:String(n.date||'本机记录').slice(0,20),demo:false})) : [];
+  state.rooms = Array.isArray(saved.rooms) ? saved.rooms.filter(r=>r && typeof r.name==='string' && /^\d{4}$/.test(r.code) && Number.isInteger(r.count) && r.count>=2 && r.count<=5).slice(0,40).map(r=>({name:r.name.slice(0,40),code:r.code,count:r.count,people:4,demo:false,feelings:Array.from({length:r.count},(_,i)=>String(r.feelings?.[i]||'').slice(0,600))})) : [];
+} catch {storageOK=false;}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(state));storageOK=true;return true;}catch{storageOK=false;return false;}}
+function allNotes(){return [...state.notes,...demoNotes];}
+function toast(message){clearTimeout(toastTimer);$('#toast').textContent=message;$('#toast').hidden=false;toastTimer=setTimeout(()=>$('#toast').hidden=true,3600);}
+function closeModal(){if(modal.open)modal.close();}
+function openModal(title,html){
+  if(!modal.open)returnFocus=document.activeElement;
+  modal.innerHTML=`<div class="modal-top"><h2 id="modal-title">${esc(title)}</h2><button class="close" data-action="close" aria-label="关闭弹窗">×</button></div><div class="modal-body">${html}</div>`;
+  if(!modal.open)modal.showModal();
+  modal.scrollTop=0;
+  const target=$('[autofocus]',modal)||$('.close',modal);target?.focus({preventScroll:true});
+}
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+modal.addEventListener('close',()=>{returnFocus?.focus?.({preventScroll:true});});
+function noteRows(list){return list.map((n,i)=>`<button class="note-row" data-note="${esc(n.id)}"><span class="row-num">${String(i+1).padStart(2,'0')}</span><span><strong>${esc(n.title)}</strong><span class="small">${n.demo?'演示':'本机'} · ${esc(n.aroma)} · ${esc(n.date)}</span></span><span class="arrow" aria-hidden="true">↗</span></button>`).join('');}
+function renderNotes(){
+  $('#recent-notes').innerHTML=noteRows(allNotes().slice(0,2));
+  $('#local-summary').textContent=`另有本机手记 ${state.notes.length} 篇、桌上酒局 ${state.rooms.length} 场。${storageOK?'仅存于当前浏览器。':'存储不可用，仅在本页保留。'}`;
+  $('#notes-count').textContent=`${allNotes().length}篇 · 演示与本机 ↗`;
+}
+function navigate(next,{write=true,notify=true}={}){
+  if(!pages.includes(next))return;
+  const changed=page!==next;page=next;closeModal();
+  pages.forEach(p=>$('#'+p).hidden=p!==page);
+  document.querySelectorAll('[data-page]').forEach(b=>{if(b.dataset.page===page)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+  if(write){try{const url=new URL(location.href);url.searchParams.set('page',page);history.replaceState({page},'',url);}catch{}}
+  if(changed)window.scrollTo({top:0,behavior:'instant'});
+  if(notify)parent.postMessage({source:'mangzhuo-prototype',type:'page-change',page,version:'a'},location.origin==='null'?'*':location.origin);
+}
+window.addEventListener('message',event=>{
+  if(event.source!==parent || event.origin!==location.origin)return;
+  const d=event.data;
+  if(!d || d.source!=='mangzhuo-review' || d.type!=='navigate' || !pages.includes(d.page))return;
+  navigate(d.page);
+});
+window.addEventListener('popstate',()=>navigate(new URLSearchParams(location.search).get('page')||'home',{write:false}));
+function newNote(){openModal('记下这一杯',`<p class="small">先留下真实感受，酒款可以揭晓后再补。手记仅保存在此 A 版原型的当前浏览器。</p><form id="note-form"><label class="field"><span>手记标题 *</span><input name="title" maxlength="60" placeholder="给这一杯起个名字" required autofocus></label><label class="field"><span>这一杯的感受 *</span><textarea name="feeling" maxlength="1200" placeholder="闻到了什么？入口与回味有什么变化？" required></textarea></label><label class="field"><span>香型</span><select name="aroma"><option>暂不判断</option><option>酱香</option><option>浓香</option><option>清香</option><option>其他香型</option></select></label><label class="field"><span>酒款名称 · 选填</span><input name="wine" maxlength="80" placeholder="可以等揭晓后再记"></label><button class="primary" type="submit"><span>收进手札</span><span aria-hidden="true">↗</span></button></form>`);}
+function viewNote(id){const n=allNotes().find(n=>n.id===id);if(!n)return;shareId=id;openModal('品鉴手记',`<div class="detail-meta"><span class="demo">${n.demo?'演示手记':'本机手记'}</span><span class="small">${esc(n.date)} · ${esc(n.aroma)}</span></div><h1>${esc(n.title)}</h1><p class="small">酒款：${esc(n.wine||'尚未填写')}</p><div class="prose">${esc(n.feeling)}</div><div class="tip">先写感受，最后揭晓。${n.demo?'此篇为演示内容，不代表真实品鉴记录。':'此篇仅保存于当前原型浏览器。'}</div><button class="primary" data-action="share-current"><span>把这一页做成酒卡</span><span aria-hidden="true">↗</span></button>`);}
+function noteArchive(){openModal('个人手记',`<p class="small">2篇演示手记与 ${state.notes.length} 篇本机手记。点击条目可阅读。</p><div class="archive">${noteRows(allNotes())}</div><button class="primary" data-action="new-note"><span>记一杯</span><span aria-hidden="true">＋</span></button>`);}
+function shareCard(id=allNotes()[0].id){
+  shareId=allNotes().some(n=>n.id===id)?id:allNotes()[0].id;
+  openModal('制作分享酒卡',`<label class="field"><span>选择一篇手记</span><select id="share-select">${allNotes().map(n=>`<option value="${esc(n.id)}" ${n.id===shareId?'selected':''}>${esc(n.title)}${n.demo?'（演示）':''}</option>`).join('')}</select></label><div id="card-preview"></div><button class="primary" data-action="download-card"><span>下载酒卡（SVG）</span><span aria-hidden="true">↓</span></button><p class="small" style="margin-top:12px">下载到本机后可自行分享，不调用微信服务。</p>`);renderCard();
+}
+function renderCard(){const n=allNotes().find(n=>n.id===shareId);$('#card-preview').innerHTML=`<div class="share-card"><span class="small">盲酌 / 去掉酒标，只凭味道</span><h3>${esc(n.title)}</h3><p class="prose">${esc(n.feeling.slice(0,110))}${n.feeling.length>110?'…':''}</p><footer>${esc(n.aroma)} · ${esc(n.date)}<br>${n.demo?'演示手记':'本机手记'} · 竹影手札 · 理性饮酒</footer></div>`;}
+function downloadCard(){
+  const n=allNotes().find(n=>n.id===shareId), lines=(text,size)=>Array.from(text).reduce((a,c,i)=>{if(i%size===0)a.push('');a[a.length-1]+=c;return a;},[]);
+  const titles=lines(n.title,13), thoughts=lines(n.feeling.slice(0,110),18);
+  const titleSVG=titles.map((l,i)=>`<text x="64" y="${214+i*58}" font-size="43">${esc(l)}</text>`).join('');
+  const start=244+titles.length*58;
+  const bodySVG=thoughts.map((l,i)=>`<text x="64" y="${start+i*45}" font-size="29">${esc(l)}</text>`).join('');
+  const height=Math.max(1000,start+thoughts.length*45+200);
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="780" height="${height}" viewBox="0 0 780 ${height}"><rect width="780" height="${height}" fill="#F7F6EF"/><g fill="#274D3B" font-family="serif"><rect x="64" y="66" width="60" height="8"/><text x="64" y="122" font-size="24">盲酌 / 去掉酒标，只凭味道</text>${titleSVG}${bodySVG}<path d="M64 ${height-148}H716" stroke="#BCC8B4"/><text x="64" y="${height-100}" font-size="22">${esc(n.aroma)} · ${esc(n.date)}</text><text x="64" y="${height-56}" font-size="22">${n.demo?'演示手记':'本机手记'} · 竹影手札 · 理性饮酒</text></g></svg>`;
+  const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='盲酌-竹影手札.svg';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);toast('已生成酒卡，请查看浏览器下载');
+}
+function renderMode(){
+  document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));
+  $('#gather-mode').innerHTML=mode==='table'?`<div class="ink-block"><div class="eyebrow"><span>桌上品鉴</span><span>本机记录</span></div><h2>一桌知己，<br>各记其味。</h2><p>一人组织，同席品鉴。<br>不必登录，先为酒样编上号。</p><button class="primary" data-action="create-room"><span>发起桌上酒局</span><span aria-hidden="true">↗</span></button></div>`:`<div class="ink-block online"><div class="eyebrow"><span>在线品鉴</span><span class="demo">待登录 · 未连接</span></div><h2>相隔千里，<br>也可同品。</h2><p>正式使用需微信身份与真实后台。<br>当前可查看流程、体验示例酒局。</p><button class="primary" data-action="online"><span>发起在线酒局</span><span aria-hidden="true">↗</span></button></div>`;
+  $('#join-hint').className='small';$('#join-hint').textContent=mode==='online'?'在线服务未连接；输入2026仅体验示例局。':'演示房间 2026 · 仅可加入示例或本机记录';
+}
+function createRoom(){openModal('发起桌上酒局',`<p class="small">创建一份本机桌上记录，与同席朋友现场品鉴。不会创建在线房间或邀请真实参与者。</p><form id="room-form"><label class="field"><span>这一局的名字 *</span><input name="name" maxlength="40" placeholder="如：三两知己的周末" required autofocus></label><label class="field"><span>准备几款酒样</span><select name="count"><option value="2">2款</option><option value="3" selected>3款</option><option value="4">4款</option><option value="5">5款</option></select></label><p class="small">酒样先按 A、B、C 编号；真实酒款由组织者现场揭晓。</p><button class="primary" type="submit"><span>建立本机记录</span><span aria-hidden="true">↗</span></button></form>`);}
+function sampleRoom(){currentRoom={name:'周五盲品小聚',code:'2026',count:3,people:4,demo:true,feelings:['','','']};selectedSample=0;renderRoom();}
+function renderRoom(){
+  const r=currentRoom;if(!r)return;const saved=r.feelings?.[selectedSample]||'',allSaved=Array.from({length:r.count},(_,i)=>r.feelings?.[i]).every(Boolean);
+  openModal(r.demo?'体验示例局':'桌上品鉴记录',`<div class="detail-meta"><span class="demo">${r.demo?'演示酒局':'本机酒局'}</span><span class="small">${r.demo?'房间号':'本机编号'} ${esc(r.code)}</span></div><h2>${esc(r.name)}</h2><p class="small">${r.count}款酒样${r.demo?' · 4人（演示席位）':' · 现场参与'} · ${r.demo?'没有真实参与者在线':'不连接在线服务'}</p><div class="sample-picker" aria-label="选择酒样">${Array.from({length:r.count},(_,i)=>`<button data-sample="${i}" aria-pressed="${i===selectedSample}">${String.fromCharCode(65+i)}${r.feelings?.[i]?' ✓':''}</button>`).join('')}</div><form id="feeling-form"><label class="field"><span>酒样 ${String.fromCharCode(65+selectedSample)} · 先写你的第一印象 *</span><textarea name="feeling" maxlength="600" placeholder="先闻香，再分别记录入口与回味。" required>${esc(saved)}</textarea></label><button class="outline" type="submit">${saved?'更新感受':'记下感受'}</button></form><p class="small" style="margin-top:14px">已记录 ${r.feelings.filter(Boolean).length}/${r.count} 款；全部记录后再揭晓。</p><button class="primary" data-action="reveal" ${allSaved?'':'disabled'}><span>${r.demo?'揭晓演示酒样':'查看现场揭晓提示'}</span><span aria-hidden="true">↗</span></button><div id="reveal-content" class="reveal" hidden></div>`);
+}
+function roomArchive(){openModal('我的酒局',`<p class="small">1场演示酒局与 ${state.rooms.length} 场本机桌上记录。</p><button class="sample-row" data-action="sample"><span><strong>周五盲品小聚</strong><span class="demo">演示</span></span><p class="small">3款酒样 · 4人 · 房间号2026</p></button>${state.rooms.map(r=>`<button class="sample-row" data-room="${esc(r.code)}"><span><strong>${esc(r.name)}</strong><span class="demo">本机</span></span><p class="small">${r.count}款酒样 · 本机编号 ${esc(r.code)}</p></button>`).join('')}<button class="primary" data-action="create-room"><span>发起桌上酒局</span><span aria-hidden="true">↗</span></button>`);}
+function articleDetail(id){const a=articles.find(a=>a.id===id);if(!a)return;openModal('酒识 · 慢读',`<div class="detail-meta"><span class="demo">阅读演示</span><span class="small">${categories[a.category]} · 1分钟</span></div><h1>${esc(a.title)}</h1><div class="prose">${a.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}</div><div class="tip">今日练习 / ${esc(a.tip)}</div><p class="small">摘自项目酒识原文 · 资料日期 2026-10-02${a.source?'<br>来源：'+esc(a.source):''}<br>原型未作最新资料核验。</p><button class="primary" data-action="new-note"><span>试着记一杯</span><span aria-hidden="true">↗</span></button>`);}
+function aromaDetail(index){const a=aromas[index];if(!a)return;openModal(a.name+'笔记',`<span class="demo">资料阅读演示</span><h1>${esc(a.name)}，从感受开始</h1><p class="prose">${esc(a.summary)}</p><p class="prose">${esc(a.body)}</p><div class="tip">风味词为学习线索，不是酒款鉴定结论。</div><p class="small">摘自项目香型资料 · 2026-10-03<br>未作最新核验，产品信息以具体酒标为准。</p><button class="primary" data-action="new-note"><span>留下自己的香型笔记</span><span aria-hidden="true">↗</span></button>`);}
+function renderKnowledge(){
+  const q=$('#search').value.trim().toLocaleLowerCase(), matches=articles.filter(a=>q?`${a.title}${a.desc}${a.paragraphs.join('')}`.toLocaleLowerCase().includes(q):a.category===category);
+  const refs=aromas.map((a,i)=>({...a,index:i})).filter(a=>q?`${a.name}${a.summary}${a.body}`.toLocaleLowerCase().includes(q):category===0);
+  let html=q?`<p class="result-label">找到 ${matches.length+refs.length} 条相关内容</p>`:'';
+  html+=matches.map((a,i)=>`<button class="featured" data-article="${a.id}"><div class="eyebrow"><span>${categories[a.category]} · 阅读演示</span><span>0${i+1}</span></div><h2>${esc(a.title)}</h2><p>${esc(a.desc)}</p><span class="read-more">展开阅读 ↗ <span class="small">约1分钟</span></span></button>`).join('');
+  if(refs.length)html+=`<h3 class="reference-title">${q?'相关香型':'从三种香型开始'}</h3>`+refs.map(a=>`<button class="reference-row" data-aroma="${a.index}"><b>${a.name}</b><span>${esc(a.summary)} ↗</span></button>`).join('');
+  if(!q && category!==0){const guides=[null,['闻香','从粮食、果香、花香、烘烤寻找熟悉的词。'],['酒标','完整产品名、香型、酒精度，分别记录。'],['盲品','编号 → 独立记录 → 讨论 → 最后揭晓。']];const g=guides[category];html+=`<div class="tip"><span class="small">手札旁注 / ${g[0]}</span><p>${g[1]}</p></div>`;}
+  if(!matches.length&&!refs.length)html+='<div class="empty">暂未找到相关内容。<br>试试“香型”“闻香”或“盲品”。<br><button class="text-button" data-action="clear-search">清空搜索</button></div>';
+  $('#knowledge-results').innerHTML=html;
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b||b.disabled)return;
+  if(b.dataset.page)return navigate(b.dataset.page);
+  if(b.dataset.mode){mode=b.dataset.mode;renderMode();return;}
+  if(b.dataset.category!==undefined){category=Number(b.dataset.category);$('#search').value='';document.querySelectorAll('[data-category]').forEach(x=>x.setAttribute('aria-pressed',String(Number(x.dataset.category)===category)));renderKnowledge();return;}
+  if(b.dataset.note)return viewNote(b.dataset.note);
+  if(b.dataset.article)return articleDetail(b.dataset.article);
+  if(b.dataset.aroma!==undefined)return aromaDetail(Number(b.dataset.aroma));
+  if(b.dataset.sample!==undefined){selectedSample=Number(b.dataset.sample);renderRoom();return;}
+  if(b.dataset.room){currentRoom=state.rooms.find(r=>r.code===b.dataset.room);selectedSample=0;renderRoom();return;}
+  switch(b.dataset.action){
+    case 'close':closeModal();break;
+    case 'new-note':newNote();break;
+    case 'notes':noteArchive();break;
+    case 'share':shareCard();break;
+    case 'share-current':shareCard(shareId);break;
+    case 'download-card':downloadCard();break;
+    case 'create-room':createRoom();break;
+    case 'sample':sampleRoom();break;
+    case 'rooms':roomArchive();break;
+    case 'online':openModal('在线品鉴 · 未连接',`<span class="demo">待登录微信</span><h1>先看看这一局<br>怎样开始。</h1><p>正式在线品鉴需完成微信登录，再创建房间、邀请朋友并同步记录。当前原型未连接微信或真实后台，不会创建在线房间。</p><div class="tip">你可以用示例局体验：选酒样 → 写感受 → 最后揭晓。</div><button class="primary" data-action="sample"><span>体验示例局</span><span aria-hidden="true">↗</span></button>`);break;
+    case 'profile':openModal('个人资料',`<span class="demo">演示身份</span><h1>品鉴者</h1><p>微信状态：未登录<br>个人档案：演示数据<br>手记：2篇 · 酒局：1场 · 香型：2种</p><div class="tip">此处不读取微信资料，也不代表真实账号。你新建的手记会独立保存于当前浏览器。</div><button class="outline" data-action="close">回到手札</button>`);break;
+    case 'storage':openModal('关于这本手札',`<h2>竹影手札 · 盲酌</h2><p style="margin-top:14px">去掉酒标，只凭味道。</p><p>这是可交互的视觉方向 A。示例手记、房间、身份与统计均为演示；新建手记和桌上记录仅保存于此设计方向的当前浏览器。</p><p>清除浏览器数据、切换浏览器或预览地址，记录可能无法保留。未连接真实服务，也不会同步到微信小程序。</p><p class="small">仅供成年人体验。少量品鉴，理性饮酒。</p><button class="outline" data-action="close">知道了</button>`);break;
+    case 'clear-search':$('#search').value='';renderKnowledge();$('#search').focus();break;
+    case 'reveal':if(currentRoom && currentRoom.feelings.length===currentRoom.count && currentRoom.feelings.every(Boolean)){$('#reveal-content').hidden=false;$('#reveal-content').innerHTML=currentRoom.demo?'<span class="demo">演示揭晓</span><p>A · 酱香方向<br>B · 清香方向<br>C · 浓香方向</p><p class="small">以上仅为体验流程设定，不对应真实酒款；没有标准答案。</p>':'<p>请由组织者现场展示真实酒标，将自己的感受与瓶身信息对照。原型不会替你猜测或鉴定酒款。</p>';b.disabled=true;}break;
+  }
+});
+document.addEventListener('submit',e=>{
+  const f=e.target;if(!['note-form','room-form','join-form','feeling-form'].includes(f.id))return;e.preventDefault();const data=new FormData(f);
+  if(f.id==='note-form'){
+    const title=String(data.get('title')||'').trim(),feeling=String(data.get('feeling')||'').trim();if(!title||!feeling){toast('请填写标题与真实感受');return;}
+    if(state.notes.length>=100){toast('此原型最多保存100篇本机手记');return;}
+    const n={id:'local-'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),title:title.slice(0,60),feeling:feeling.slice(0,1200),aroma:String(data.get('aroma')||'暂不判断').slice(0,20),wine:String(data.get('wine')||'').trim().slice(0,80),date:new Date().toLocaleDateString('zh-CN').replaceAll('/','.'),demo:false};
+    state.notes.unshift(n);const ok=persist();renderNotes();viewNote(n.id);toast(ok?'已收进本机手札':'存储不可用，仅在当前页面保留');
+  } else if(f.id==='room-form'){
+    const name=String(data.get('name')||'').trim(),count=Number(data.get('count'));if(!name||!Number.isInteger(count)||count<2||count>5){toast('请填写酒局名与酒样数量');return;}
+    if(state.rooms.length>=40){toast('此原型最多保存40场桌上记录');return;}
+    let code;do{code=String(Math.floor(1000+Math.random()*9000));}while(code==='2026'||state.rooms.some(r=>r.code===code));
+    currentRoom={name:name.slice(0,40),code,count,people:4,demo:false,feelings:Array(count).fill('')};state.rooms.unshift(currentRoom);selectedSample=0;const ok=persist();renderNotes();renderRoom();toast(ok?'已建立本机桌上记录':'存储不可用，仅在当前页面保留');
+  } else if(f.id==='join-form'){
+    const code=String(data.get('code')||'').trim();if(code==='2026'){sampleRoom();return;}
+    const room=mode==='table'?state.rooms.find(r=>r.code===code):null;if(room){currentRoom=room;selectedSample=0;renderRoom();return;}
+    $('#join-hint').className='small error';$('#join-hint').textContent=mode==='online'?'在线服务未连接；请输入2026体验示例。':'未找到本机记录；请输入2026体验示例。';$('#room-code').setAttribute('aria-invalid','true');$('#room-code').focus();
+  } else {
+    const value=String(data.get('feeling')||'').trim();if(!value){toast('先写一点自己的感受');return;}currentRoom.feelings[selectedSample]=value.slice(0,600);const ok=currentRoom.demo?true:persist();renderRoom();toast(currentRoom.demo?'演示感受已记下，仅在此次体验保留':ok?'感受已保存到本机':'存储不可用，仅在当前页面保留');
+  }
+});
+$('#search').addEventListener('input',renderKnowledge);
+$('#room-code').addEventListener('input',()=>{$('#room-code').removeAttribute('aria-invalid');});
+modal.addEventListener('change',e=>{if(e.target.id==='share-select'){shareId=e.target.value;renderCard();}});
+renderNotes();renderMode();renderKnowledge();
+const initial=new URLSearchParams(location.search).get('page');navigate(pages.includes(initial)?initial:'home');
+})();
+</script>
+</body>
+</html>

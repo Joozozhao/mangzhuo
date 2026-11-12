@@ -1,0 +1,128 @@
+/* 知味九阶：纸白竹绿，书法题名与循味登阶山水。 */
+.journal.organized-page.member-level-page {
+  padding-top: 28rpx;
+  padding-bottom: calc(52rpx + env(safe-area-inset-bottom));
+}
+.book-kicker, .cover-colophon { display:flex; align-items:center; justify-content:space-between; gap:16rpx; color:#687365; font-size:12px; line-height:1.7; }
+.book-kicker { letter-spacing:2rpx; }
+.book-edition { flex-shrink:0; color:#a8382b; letter-spacing:1rpx; }
+.book-cover { position:relative; min-height:416rpx; padding:32rpx 0 28rpx; }
+.cover-copy { position:relative; z-index:1; }
+.cover-eyebrow { color:#687365; font-size:10px; letter-spacing:2rpx; }
+.cover-title { width:400rpx; margin:16rpx 0 18rpx; color:#274d3b; font-family:"Songti SC","STSong","SimSun",serif; font-size:72rpx; font-weight:600; line-height:1.5; letter-spacing:4rpx; }
+.cover-title-art { display:block; width:400rpx; height:116rpx; margin:12rpx 0 16rpx -8rpx; }
+.cover-poem { width:260rpx; color:#4c5c4b; font-family:"Songti SC","STSong",serif; font-size:27rpx; line-height:1.9; letter-spacing:2rpx; }
+.cover-landscape { position:absolute; display:block; right:-12rpx; bottom:0; width:624rpx; height:260rpx; }
+.cover-seal { position:absolute; top:92rpx; right:170rpx; z-index:1; width:30rpx; padding:5rpx 3rpx; border:1rpx solid #a8382b; border-radius:3rpx; color:#a8382b; font-family:"Songti SC","STSong",serif; font-size:18rpx; line-height:1.25; text-align:center; }
+.cover-colophon { border-top:1rpx solid #b9c5b1; padding:16rpx 0 20rpx; font-size:11px; }
+.cover-colophon > text:last-child { flex-shrink:0; color:#a8382b; }
+.book-navigation { position:sticky; top:0; z-index:8; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin:0 0 42rpx; padding:0; border-top:1rpx solid #d6ddcf; border-bottom:1rpx solid #b9c5b1; background:#f7f6ef; }
+.member-level-page .book-nav-item, .member-level-page .reading-mode { display:flex; align-items:center; justify-content:center; line-height:1.5; text-align:center; }
+.member-level-page .book-nav-item { width:100%; min-width:0; min-height:48px; margin:0; padding:0 8rpx; background:transparent; border:0; border-radius:0; color:#274d3b; font-size:13px; }
+.book-nav-label, .reading-mode-label { display:block; white-space:nowrap; }
+.book-nav-item + .book-nav-item { border-left:1rpx solid #d6ddcf; }
+.section-heading { display:flex; align-items:baseline; gap:18rpx; margin-bottom:22rpx; }
+.section-number { flex-shrink:0; color:#8b6040; font-family:Georgia,serif; font-size:25rpx; }
+.section-title { color:#28382e; font-family:"Songti SC","STSong",serif; font-size:39rpx; font-weight:600; line-height:1.5; }
+.journey-section { margin-bottom:62rpx; }
+.journey-ticket { padding:30rpx; background:#eef2e9; border:1rpx solid #b9c5b1; border-radius:12rpx; }
+.journey-heading { display:flex; justify-content:space-between; align-items:center; gap:12rpx; }
+.journey-heading > view { flex:1; min-width:0; }
+.journey-kicker { color:#687365; font-size:11px; letter-spacing:2rpx; }
+.journey-title { display:flex; align-items:center; flex-wrap:wrap; gap:12rpx; margin-top:10rpx; color:#274d3b; font-family:"Songti SC","STSong",serif; font-size:45rpx; font-weight:600; line-height:1.5; }
+.journey-title-art { display:block; width:228rpx; height:78rpx; }
+.journey-rank { color:#75552e; font-size:26rpx; }
+.journey-status { flex-shrink:0; color:#274d3b; padding:5rpx 12rpx; border:1rpx solid #a7baa4; border-radius:4rpx; font-size:11px; line-height:1.5; }
+.journey-verse { margin-top:14rpx; color:#4c5c4b; font-family:"Songti SC","STSong",serif; font-size:27rpx; line-height:1.9; }
+.journey-stats { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22rpx; padding:26rpx 0; margin-top:12rpx; border-bottom:1rpx dashed #b9c5b1; }
+.journey-stat { min-width:0; }
+.journey-stat + .journey-stat { border-left:1rpx solid #c5d0bb; padding-left:24rpx; }
+.stat-value { display:block; color:#274d3b; font-family:Georgia,serif; font-size:52rpx; line-height:1.3; overflow-wrap:anywhere; font-variant-numeric:tabular-nums; }
+.stat-unit { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; font-size:12px; margin-left:8rpx; }
+.stat-label { display:block; margin-top:6rpx; color:#687365; font-size:12px; }
+.next-heading { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8rpx; margin-top:24rpx; color:#274d3b; font-size:13px; }
+.next-heading > text:last-child { color:#687365; font-size:11px; }
+.requirement-progress { margin-top:18rpx; }
+.requirement-label { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8rpx; color:#556253; font-size:12px; line-height:1.7; }
+.requirement-label .is-met { color:#274d3b; font-weight:500; }
+.progress-track { height:6rpx; margin-top:10rpx; background:#d7dfce; overflow:hidden; }
+.progress-ink { height:100%; background:#496c50; }
+.member-level-page .locate-current { display:flex; align-items:center; justify-content:space-between; gap:16rpx; width:100%; min-height:44px; margin:22rpx 0 -8rpx; padding:14rpx 0 0; background:transparent; border:0; border-top:1rpx dashed #b9c5b1; border-radius:0; color:#274d3b; font-size:12px; text-align:left; }
+.locate-current image { flex-shrink:0; width:34rpx; height:34rpx; }
+.journey-complete { margin-top:24rpx; color:#75552e; font-family:"Songti SC","STSong",serif; font-size:28rpx; line-height:1.9; }
+.record-scope { margin:14rpx 0 0; color:#687365; font-size:11px; line-height:1.7; }
+.levels-section { margin-bottom:64rpx; }
+.section-preface { color:#687365; font-size:13px; line-height:1.9; }
+.reading-modes { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0; margin:24rpx 0 32rpx; border:1rpx solid #b9c5b1; border-radius:8rpx; overflow:hidden; }
+.member-level-page .reading-mode { width:100%; min-width:0; min-height:44px; margin:0; padding:0 16rpx; background:transparent; border:0; border-radius:0; color:#687365; font-size:13px; }
+.member-level-page .reading-mode.mode-selected { background:#274d3b; color:#fbfaf5; }
+.level-chapter + .level-chapter { margin-top:48rpx; }
+.chapter-heading { display:flex; align-items:center; justify-content:space-between; gap:16rpx; padding-bottom:12rpx; border-bottom:1rpx solid #b9c5b1; }
+.chapter-name { display:flex; align-items:center; gap:18rpx; }
+.chapter-volume { color:#8b6040; font-family:"Songti SC","STSong",serif; font-size:11px; letter-spacing:2rpx; }
+.chapter-title { font-family:"Songti SC","STSong",serif; color:#274d3b; font-size:46rpx; font-weight:500; letter-spacing:6rpx; }
+.chapter-title-art { display:block; width:128rpx; height:74rpx; }
+.chapter-caption { color:#75552e; font-size:11px; letter-spacing:1rpx; }
+.chapter-prelude { color:#687365; padding:12rpx 0 22rpx; font-family:"Songti SC","STSong",serif; font-size:26rpx; line-height:1.8; }
+.level-leaf { display:flex; margin-bottom:20rpx; border:1rpx solid #d6ddcf; border-radius:6rpx; background:#fbfaf5; }
+.level-leaf.leaf-current { border-color:#496c50; background:#eef2e9; }
+.leaf-margin { display:flex; align-items:center; flex-direction:column; gap:8rpx; flex:0 0 80rpx; min-width:0; padding:30rpx 6rpx; border-right:1rpx solid #d6ddcf; }
+.leaf-ordinal { color:#496c50; font-family:"Songti SC","STSong",serif; font-size:39rpx; line-height:1.5; }
+.leaf-rank { color:#687365; font-size:10px; }
+.leaf-body { flex:1; min-width:0; padding:26rpx 24rpx 24rpx; }
+.leaf-heading { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8rpx; }
+.leaf-title { color:#274d3b; font-family:"Songti SC","STSong",serif; font-size:38rpx; font-weight:600; line-height:1.45; letter-spacing:2rpx; }
+.leaf-title-art { display:block; width:196rpx; height:70rpx; margin-left:-4rpx; }
+.leaf-state { font-size:10px; line-height:1.6; padding:3rpx 10rpx; border:1rpx solid #cbd3c2; border-radius:4rpx; color:#687365; }
+.state-current { color:#fbfaf5; background:#274d3b; border-color:#274d3b; }
+.state-reached { color:#496c50; }
+.leaf-poem { margin:14rpx 0 10rpx; color:#4c5c4b; font-family:"Songti SC","STSong",serif; font-size:29rpx; line-height:1.85; }
+.leaf-description { color:#687365; font-size:12px; line-height:1.85; }
+.leaf-thresholds { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14rpx; margin-top:20rpx; padding-top:14rpx; border-top:1rpx dashed #d0d8c9; }
+.threshold-label { display:block; color:#687365; font-size:10px; line-height:1.7; }
+.threshold-number { display:block; margin-top:4rpx; color:#75552e; font-family:Georgia,serif; font-size:31rpx; line-height:1.4; overflow-wrap:anywhere; font-variant-numeric:tabular-nums; }
+.threshold-unit { color:#687365; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; font-size:10px; padding-left:6rpx; }
+.leaf-origin { margin-top:12rpx; color:#687365; font-size:11px; }
+.overview-book { border:1rpx solid #b9c5b1; border-radius:8rpx; background:#fbfaf5; overflow:hidden; }
+.overview-title { padding:24rpx 22rpx 8rpx; color:#274d3b; font-family:"Songti SC","STSong",serif; font-size:30rpx; font-weight:600; }
+.overview-note { padding:0 22rpx 20rpx; color:#687365; font-size:11px; line-height:1.8; }
+.overview-row { display:grid; grid-template-columns:minmax(0,1fr) 106rpx 154rpx; align-items:center; gap:12rpx; min-height:96rpx; padding:18rpx 22rpx; border-top:1rpx solid #d6ddcf; }
+.overview-head { min-height:68rpx; background:#e5eadb; color:#556253; font-size:11px; }
+.overview-name { min-width:0; display:flex; flex-wrap:wrap; align-items:center; gap:6rpx 10rpx; }
+.overview-rank { color:#687365; font-size:10px; }
+.overview-level-title { color:#274d3b; font-family:"Songti SC","STSong",serif; font-size:29rpx; font-weight:500; }
+.overview-title-art { display:block; flex-shrink:0; width:142rpx; height:52rpx; }
+.numeric-cell { text-align:right; min-width:0; overflow-wrap:anywhere; }
+.overview-number { color:#4c5c4b; font-family:Georgia,serif; font-size:29rpx; font-variant-numeric:tabular-nums; }
+.overview-current { background:#eef2e9; }
+.overview-current-label { color:#a8382b; font-size:10px; }
+.overview-foot { padding:18rpx 22rpx; border-top:1rpx solid #d6ddcf; color:#687365; font-size:11px; line-height:1.8; }
+.rules-preface { color:#75552e; margin-bottom:12rpx; font-family:"Songti SC","STSong",serif; font-size:28rpx; line-height:1.8; }
+.rule-entry { display:flex; align-items:flex-start; gap:20rpx; padding:24rpx 0; border-bottom:1rpx solid #d6ddcf; }
+.rule-number { flex:0 0 32rpx; padding-top:4rpx; color:#8b6040; font-family:Georgia,serif; font-size:23rpx; }
+.rule-body { flex:1; min-width:0; }
+.rule-title { color:#28382e; font-family:"Songti SC","STSong",serif; font-size:31rpx; font-weight:500; line-height:1.6; }
+.rule-copy { margin-top:8rpx; color:#687365; font-size:13px; line-height:1.9; }
+.book-ending { text-align:center; margin-top:64rpx; padding-top:14rpx; }
+.ending-brand { width:104rpx; height:52rpx; filter:brightness(0) saturate(100%) invert(26%) sepia(14%) saturate(1159%) hue-rotate(93deg) brightness(92%) contrast(90%); }
+.ending-poem { margin-top:18rpx; color:#274d3b; font-family:"Songti SC","STSong",serif; font-size:37rpx; line-height:1.7; letter-spacing:2rpx; }
+.ending-copy { margin-top:8rpx; color:#687365; font-size:12px; line-height:1.9; }
+.member-level-page .return-to-mine { width:100%; min-height:48px; margin:28rpx 0 0; padding:16rpx; color:#274d3b; background:transparent; border:1rpx solid #b9c5b1; border-radius:8rpx; font-size:14px; }
+.book-signature { margin-top:24rpx; color:#687365; font-size:11px; line-height:1.8; letter-spacing:1rpx; }
+.member-level-page view, .member-level-page text { overflow-wrap:anywhere; }
+@media(max-width:350px) {
+  .book-cover { min-height:410rpx; }
+  .cover-title { font-size:64rpx; letter-spacing:2rpx; }
+  .cover-title-art { width:384rpx; height:112rpx; }
+  .cover-eyebrow { font-size:9px; letter-spacing:0; }
+  .cover-seal { right:160rpx; }
+  .journey-ticket { padding:24rpx; }
+  .journey-title { font-size:41rpx; }
+  .journey-title-art { width:216rpx; height:74rpx; }
+  .section-title { font-size:36rpx; }
+  .leaf-margin { flex-basis:66rpx; }
+  .leaf-body { padding:24rpx 20rpx; }
+  .leaf-poem { font-size:28rpx; }
+  .overview-row { grid-template-columns:minmax(0,1fr) 90rpx 134rpx; gap:10rpx; padding-left:18rpx; padding-right:18rpx; }
+  .overview-title-art { width:136rpx; height:50rpx; }
+}

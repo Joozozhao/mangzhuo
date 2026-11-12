@@ -1,48 +1,103 @@
 <brand-nav/>
 <view class="journal organized-page home-page">
-  <view class="content-panel home-start">
-    <view class="page-kicker"><text>品 鉴 手 记</text><text class="chapter-number">第一章 · 记</text></view>
-    <view class="chapter-hero-banner home-hero">
-      <image class="chapter-title-svg home-title-svg" src="/assets/brand/home-hero-title.svg" mode="aspectFit" aria-label="记下这一杯，先写感受，最后揭晓"/>
-      <image class="chapter-pose-svg home-pose-svg" src="/assets/brand/libai-home.svg" mode="aspectFit" aria-label="李白闻香，盲酌品牌插画"/>
+  <view class="page-kicker"><text>藏 起 酒 标 · 味 道 开 口</text><text class="chapter-number">第一章 · 记</text></view>
+  <view class="chapter-hero-banner home-hero">
+    <image class="chapter-title-svg home-title-svg" src="/assets/brand/home-hero-title.svg" mode="aspectFit" aria-label="记下这一杯，先写感受，最后揭晓"/>
+    <image class="chapter-pose-svg home-pose-svg" src="/assets/brand/libai-home.svg" mode="aspectFit" aria-label="李白闻香，盲酌品牌插画"/>
+  </view>
+
+  <view class="home-task" wx:if="{{active}}">
+    <block wx:if="{{active.kind === 'single'}}">
+      <view class="task-kicker"><text>本机待续品鉴</text><text>{{active.room.stage === 'waiting' ? '等待揭晓' : '进行中'}}</text></view>
+      <view class="task-title">{{active.room.title}}</view>
+      <view class="task-facts">{{active.room.sampleCount}} 款酒样 · {{active.room.memberCount}} 人同席</view>
+      <view class="task-progress" wx:if="{{active.room.sampleCount}}">已留下 {{active.room.answeredCount}} / {{active.room.sampleCount}} 款品鉴记录</view>
+    </block>
+    <block wx:else>
+      <view class="task-kicker"><text>本机待续品鉴</text><text>{{active.count}} 场</text></view>
+      <view class="task-title">几席风味，等你续杯。</view>
+      <view class="task-facts">选择一场酒局，接着写下你的感受。</view>
+    </block>
+    <button class="btn-primary home-task-action" bindtap="openActive"><text>{{active.kind === 'single' ? active.room.actionLabel : '选择待续酒局'}}</text><image class="button-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></button>
+  </view>
+  <view class="home-task" wx:else>
+    <view class="task-kicker"><text>桌上品鉴</text><text>本机酒局</text></view>
+    <view class="task-title">和知己，品一局。</view>
+    <view class="task-facts">一人组织，同席品鉴。先藏酒标，再各记其味。</view>
+    <button class="btn-primary home-task-action" bindtap="goToCreate"><text>发起桌上酒局</text><text class="button-arrow" aria-hidden="true">＋</text></button>
+  </view>
+  <view class="gather-action-surface home-action-surface">
+    <view class="tasting-steps-row">
+      <view class="step-item"><text class="step-num">壹</text><text class="step-txt">酒样编号</text></view>
+      <view class="step-dot">·</view>
+      <view class="step-item"><text class="step-num">贰</text><text class="step-txt">各记感受</text></view>
+      <view class="step-dot">·</view>
+      <view class="step-item"><text class="step-num">叁</text><text class="step-txt">一起揭晓</text></view>
     </view>
-    <view class="home-description">记酒款，记风味，也记相聚。</view>
-    <button class="btn-primary" bindtap="checkin"><text>记一杯</text><text class="button-arrow" aria-hidden="true">＋</text></button>
-    <button class="share-ticket" bindtap="shareLatest" aria-label="制作分享酒卡">
-      <view class="share-stub">
-        <text class="share-stub-mark">酒卡</text>
-      </view>
-      <view class="share-body">
-        <view class="share-title">制作分享酒卡</view>
-        <view class="share-desc">把最近一次品鉴，留在一张纸签里</view>
-      </view>
-      <view class="share-open"><image class="ledger-chevron" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></view>
+    <view class="gather-action-cards">
+      <button class="action-card join-card" bindtap="goToJoin" aria-label="凭号入座，已有酒局房间号">
+        <view class="card-icon-line">
+          <image class="card-action-icon" src="/assets/icons/gather.svg" mode="aspectFit" aria-hidden="true" />
+          <image class="card-arrow-icon" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true" />
+        </view>
+        <view class="card-main-title">凭号入座</view>
+        <view class="card-sub-title">输入同席房间号，开始盲品</view>
+      </button>
+      <button class="action-card demo-card" bindtap="openDemoRoom" aria-label="示例酒局，初次盲品体验流程">
+        <view class="card-icon-line">
+          <image class="card-action-icon" src="/assets/icons/knowledge.svg" mode="aspectFit" aria-hidden="true" />
+          <image class="card-arrow-icon" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true" />
+        </view>
+        <view class="card-main-title">初次盲品？</view>
+        <view class="card-sub-title">先看看示例酒局与揭晓报告</view>
+      </button>
+    </view>
+  </view>
+
+  <view class="content-panel home-progress" wx:if="{{levelCard}}">
+    <view class="home-section-heading"><view class="panel-title">知味有阶</view><text class="section-note">桌上酒局 · 本机记录</text></view>
+    <button class="home-level-card" bindtap="openMemberLevels" aria-label="{{levelCard.rank}} {{levelCard.title}}，查看品阶与晋升细则">
+      <view class="level-card-top"><text class="level-card-rank">{{levelCard.rank}}</text><image class="level-card-title" src="{{levelCard.titleSvg}}" mode="aspectFit" aria-label="{{levelCard.title}}"/><image class="level-card-arrow" src="/assets/icons/chevron-right.svg" mode="aspectFit" aria-hidden="true"/></view>
+      <view class="level-card-stats"><text>参局 {{levelCard.roomCount}} 场</text><text>盲猜 {{levelCard.scoreLabel}} 分</text></view>
+      <view class="level-progress-track"><view style="width:{{levelCard.progressPercent}}%;"/></view>
+      <view class="level-card-next">{{levelCard.nextText}}</view>
     </button>
   </view>
+
+  <view class="content-panel home-result" wx:if="{{latestResult}}">
+    <view class="home-section-heading"><view class="panel-title">最近揭晓</view><text class="section-note">答案已开，风味留存</text></view>
+    <button class="latest-result-card" bindtap="openLatestResult">
+      <view class="latest-result-copy"><view class="latest-result-title">{{latestResult.title}}</view><view class="latest-result-facts">{{latestResult.sampleCount}} 款酒样 · {{latestResult.memberCount}} 人同席</view></view>
+      <view class="latest-result-score"><text>{{latestResult.score}}</text><view>本局盲猜积分</view></view>
+    </button>
+  </view>
+
   <view class="content-panel record-panel">
-    <view class="panel-heading notes-heading">
+    <view class="home-section-heading notes-heading">
       <view class="panel-title">最近手记</view>
       <button class="mine-link-pill" bindtap="mine"><text>全部手记</text><image class="small-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></button>
     </view>
+    <button class="write-note-link" bindtap="checkin"><text>写品鉴手记</text><text>把这一杯的滋味，留在自己的手札里</text><image src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></button>
     <view class="note-ledger" wx:if="{{notes.length}}">
-      <button class="ledger-row" wx:for="{{notes}}" wx:key="id" bindtap="openNote" data-id="{{item.id}}" aria-label="{{item.dateLabel}}，{{item.aromaType}}，{{item.title}}，查看手记">
-        <view class="ledger-date">
-          <text class="date-month-day">{{item.dateMonthDay}}</text>
-          <text wx:if="{{item.dateYear}}" class="date-year">{{item.dateYear}}</text>
-        </view>
+      <button class="ledger-row" wx:for="{{notes}}" wx:key="id" bindtap="openNote" data-id="{{item.id}}" aria-label="{{item.dateLabel}}，{{item.title}}，{{item.roomName}}，{{item.roomFacts}}，查看手记">
+        <view class="ledger-date"><text class="date-month-day">{{item.dateMonthDay}}</text><text wx:if="{{item.dateYear}}" class="date-year">{{item.dateYear}}</text></view>
         <view class="ledger-copy">
-          <view class="note-aroma">{{item.aromaType}}</view>
+          <view class="note-aroma">{{item.sampleLabel || item.aromaType}}</view>
           <view class="note-title">{{item.title}}</view>
-          <view class="note-excerpt">{{item.note || '打开手记，回顾这一杯的风味。'}}</view>
+          <view class="note-room">{{item.roomName}}</view>
+          <view class="note-room-facts">{{item.roomFacts}}</view>
+          <view class="note-excerpt" wx:if="{{item.note}}">{{item.note}}</view>
         </view>
         <view class="ledger-open"><image class="ledger-chevron" src="/assets/icons/chevron-right.svg" mode="aspectFit" aria-hidden="true"/></view>
       </button>
     </view>
-    <view wx:else class="empty-ledger">
-      <view class="empty-ledger-title">第一杯，值得留一页</view>
-      <view class="muted">写下真实的感受，慢慢认识自己的口味。</view>
-      <button class="mine-checkin empty-checkin" bindtap="checkin"><text>写下第一篇</text><image class="small-arrow light-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></button>
-    </view>
+    <view wx:else class="empty-ledger"><view class="empty-ledger-title">第一杯，值得留一页</view><view class="muted">从酒局进入，可连同这场相聚一起记下。</view></view>
   </view>
+
+  <button class="home-learning" wx:if="{{knowledge}}" bindtap="readKnowledge">
+    <view class="learning-kicker">酒识一笺 · {{knowledge.minutes}} 分钟</view>
+    <view class="learning-title">{{knowledge.title}}</view>
+    <view class="learning-bottom"><text>{{knowledge.desc}}</text><image src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></view>
+  </button>
   <view class="quiet-footer">少量品鉴 · 理性饮酒 · 未成年人请勿饮酒</view>
 </view>

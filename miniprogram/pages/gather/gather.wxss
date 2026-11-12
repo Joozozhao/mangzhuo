@@ -8,11 +8,7 @@
 .ink-title{font-family:"Songti SC","STSong","SimSun",serif;font-size:56rpx;line-height:1.55;font-weight:400;margin:26rpx 0 20rpx;letter-spacing:3rpx;}
 .ink-description{font-size:14px;line-height:1.9;color:#e1e8d9;margin-bottom:36rpx;}
 .journal.organized-page .ink-block .ink-action{background:#f7f6ef;color:#274d3b;border-color:#f7f6ef;}
-.tasting-steps{display:flex;justify-content:space-between;gap:12rpx;font-family:"Songti SC","STSong",serif;color:#687365;padding:30rpx 0;border-bottom:1rpx solid #d6ddcf;font-size:12px;}
-.gather-page .join-entry{border-bottom:1rpx solid #d6ddcf;}
-.gather-page .demo-entry{padding:26rpx 0;}
-.demo-title{font-family:"Songti SC","STSong",serif;font-size:18px;color:#28382e;}
-.local-room-panel{margin:26rpx -12rpx 38rpx;}
+.local-room-panel{margin:26rpx 0 38rpx;}
 .records-context{display:flex;align-items:center;justify-content:space-between;gap:20rpx;padding:0 0 20rpx;border-bottom:1rpx solid #d6ddcf;color:#687365;font-size:12px;letter-spacing:1rpx;}
 .organized-page .records-heading{min-height:0;margin:30rpx 0 24rpx;padding:0;border:0;align-items:baseline;}
 .organized-page .records-heading .panel-title{font-size:60rpx;line-height:1.35;font-weight:600;letter-spacing:1rpx;}
@@ -22,26 +18,27 @@
 .journal.organized-page .room-filter.is-selected{color:#274d3b;font-weight:600;}
 .room-filter-label{display:flex;align-items:center;justify-content:center;min-height:48px;min-width:112rpx;padding:0 4rpx;border-bottom:3rpx solid transparent;}
 .room-filter.is-selected .room-filter-label{border-bottom-color:#274d3b;}
-.room-tickets{display:flex;flex-direction:column;gap:24rpx;margin:0 -8rpx;}
-.journal.organized-page .room-ticket{display:flex;align-items:stretch;width:100% !important;max-width:none;min-width:0;min-height:226rpx;margin:0;padding:0;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:12rpx;overflow:visible;text-align:left;box-shadow:none;}
-.ticket-code{position:relative;display:flex;flex:0 0 158rpx;min-width:0;flex-direction:column;align-items:center;justify-content:center;gap:10rpx;padding:24rpx 6rpx;background:#e5eadb;border-right:1rpx dashed #bac5b0;border-radius:11rpx 0 0 11rpx;}
-.ticket-code::before,.ticket-code::after{content:"";position:absolute;right:-14rpx;width:26rpx;height:26rpx;border:1rpx solid #b9c5b1;border-radius:50%;background:#f7f6ef;z-index:1;}
-.ticket-code::before{top:-14rpx;border-top-color:transparent;border-left-color:transparent;transform:rotate(45deg);}
-.ticket-code::after{bottom:-14rpx;border-bottom-color:transparent;border-right-color:transparent;transform:rotate(45deg);}
-.ticket-code-label{font-size:12px;color:#4c604c;line-height:1.5;}
-.ticket-code-value{max-width:100%;font-family:Georgia,"Times New Roman",serif;font-size:52rpx;font-style:italic;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.2;color:#274d3b;overflow-wrap:anywhere;}
-.ticket-main{flex:1;min-width:0;padding:22rpx 24rpx 16rpx;}
-.ticket-status{display:inline-flex;align-items:center;gap:10rpx;min-height:38rpx;padding:2rpx 14rpx;border:1rpx solid #274d3b;border-radius:30rpx;background:#274d3b;color:#f7f6ef;font-size:12px;font-weight:500;line-height:1.5;white-space:nowrap;}
+.room-tickets{display:flex;flex-direction:column;gap:18rpx;margin:0;}
+.journal.organized-page .room-ticket{display:flex;align-items:stretch;width:100% !important;max-width:none;min-width:0;min-height:164rpx;margin:0;padding:0;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:12rpx;overflow:visible;text-align:left;box-shadow:none;}
+.ticket-code{position:relative;display:flex;flex:0 0 150rpx;min-width:0;flex-direction:column;align-items:center;justify-content:center;gap:6rpx;padding:16rpx 6rpx;background:#e5eadb;border-right:1rpx dashed #bac5b0;border-radius:11rpx 0 0 11rpx;}
+.ticket-code::before,.ticket-code::after{content:"";position:absolute;right:-12rpx;width:22rpx;height:22rpx;border:1rpx solid #b9c5b1;border-radius:50%;background:#f7f6ef;z-index:1;}
+.ticket-code::before{top:-12rpx;border-top-color:transparent;border-left-color:transparent;transform:rotate(45deg);}
+.ticket-code::after{bottom:-12rpx;border-bottom-color:transparent;border-right-color:transparent;transform:rotate(45deg);}
+.ticket-code-label{font-size:11px;color:#4c604c;line-height:1.4;}
+.ticket-code-value{max-width:100%;font-family:Georgia,"Times New Roman",serif;font-size:46rpx;font-style:italic;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.15;color:#274d3b;overflow-wrap:anywhere;}
+.ticket-main{display:flex;flex-direction:column;justify-content:space-between;flex:1;min-width:0;padding:18rpx 22rpx 16rpx;}
+.ticket-header-row{display:flex;align-items:center;justify-content:space-between;gap:14rpx;min-width:0;}
+.ticket-status{display:inline-flex;align-items:center;gap:8rpx;flex-shrink:0;min-height:34rpx;padding:2rpx 12rpx;border:1rpx solid #274d3b;border-radius:30rpx;background:#274d3b;color:#f7f6ef;font-size:11px;font-weight:500;line-height:1.4;white-space:nowrap;}
 .ticket-status::before{content:"";width:10rpx;height:10rpx;flex-shrink:0;border-radius:50%;background:currentColor;}
 .is-revealed .ticket-status{background:transparent;color:#687365;border-color:#8a967e;}
 .is-finished .ticket-status{background:#f0e9d9;color:#766139;border-color:#c7b892;}
 .is-unknown .ticket-status{background:transparent;color:#687365;border-color:#b9c5b1;}
-.ticket-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;margin-top:8rpx;font-family:"Songti SC","STSong","SimSun",serif;font-size:44rpx;font-weight:600;line-height:1.4;color:#28382e;}
-.ticket-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8rpx 14rpx;margin-top:16rpx;padding-top:12rpx;border-top:1rpx dashed #bac5b0;}
-.ticket-facts{display:flex;align-items:center;gap:12rpx;flex-wrap:wrap;font-size:12px;line-height:1.6;color:#687365;}
-.ticket-facts text+text{padding-left:12rpx;border-left:1rpx solid #bac5b0;}
-.ticket-action{display:flex;align-items:center;gap:8rpx;flex-shrink:0;color:#274d3b;font-size:12px;font-weight:500;line-height:1.6;}
-.ticket-arrow{display:block;width:30rpx;height:30rpx;flex-shrink:0;}
+.ticket-title{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0;font-family:"Songti SC","STSong","SimSun",serif;font-size:36rpx;font-weight:600;line-height:1.35;color:#28382e;}
+.ticket-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8rpx 14rpx;margin-top:12rpx;padding-top:10rpx;border-top:1rpx dashed #bac5b0;}
+.ticket-facts{display:flex;align-items:center;gap:10rpx;flex-wrap:wrap;font-size:11px;line-height:1.5;color:#687365;}
+.ticket-facts text+text{padding-left:10rpx;border-left:1rpx solid #bac5b0;}
+.ticket-action{display:flex;align-items:center;gap:6rpx;flex-shrink:0;color:#274d3b;font-size:11px;font-weight:500;line-height:1.5;}
+.ticket-arrow{display:block;width:26rpx;height:26rpx;flex-shrink:0;}
 .filtered-empty{padding-bottom:28rpx;}
 .online-state-ticket{padding:30rpx 28rpx;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:12rpx;}
 .online-status-row{display:flex;align-items:center;gap:12rpx;flex-wrap:wrap;}
@@ -62,4 +59,4 @@
 .online-tags{display:flex;align-items:center;gap:10rpx;flex-wrap:wrap;justify-content:flex-end;}
 .owner-badge{font-size:12px;color:#274d3b;}
 .list-tail{font-size:12px;color:#687365;text-align:center;padding:24rpx 0;}
-@media(max-width:350px){.ink-block{padding:30rpx;}.ink-title{font-size:60rpx;}.room-title-line{flex-wrap:wrap;}.online-tags{justify-content:flex-start;}.local-room-panel{margin-left:0;margin-right:0;}.room-tickets{margin-left:-4rpx;margin-right:-4rpx;}.ticket-code{flex-basis:138rpx;}.ticket-code-value{font-size:48rpx;}.ticket-main{padding:20rpx;}.ticket-title{font-size:42rpx;}.ticket-action{margin-left:auto;}.journal.organized-page .room-filter{font-size:13px;}}
+@media(max-width:350px){.ink-block{padding:30rpx;}.ink-title{font-size:60rpx;}.room-title-line{flex-wrap:wrap;}.online-tags{justify-content:flex-start;}.room-tickets{margin-left:0;margin-right:0;}.ticket-code{flex-basis:138rpx;}.ticket-code-value{font-size:48rpx;}.ticket-main{padding:20rpx;}.ticket-title{font-size:42rpx;}.ticket-action{margin-left:auto;}.journal.organized-page .room-filter{font-size:13px;}}

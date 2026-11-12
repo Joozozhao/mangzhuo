@@ -1,0 +1,43 @@
+{
+  "phase": "before",
+  "navigation": {
+    "start": 416,
+    "readerTop": 0,
+    "restored": 120,
+    "difference": 296,
+    "category": "品鉴方法",
+    "item": "杯器与酒温：如何让杯中风味充分释放"
+  },
+  "metrics": {
+    "search": {
+      "size": {
+        "width": 366,
+        "height": 48
+      },
+      "offset": {
+        "left": 18,
+        "top": 179.8984375
+      }
+    },
+    "clear": {
+      "size": {
+        "width": 184,
+        "height": 44
+      },
+      "offset": {
+        "left": 196,
+        "top": 181.8984375
+      },
+      "display": "block",
+      "align": "normal"
+    },
+    "resume": {
+      "size": {
+        "width": 366,
+        "height": 70
+      },
+      "title": "杯器与酒温：如何让杯中风味充分释放"
+    }
+  },
+  "cleared": true
+}

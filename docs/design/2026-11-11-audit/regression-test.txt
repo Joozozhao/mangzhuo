@@ -1,0 +1,822 @@
+TAP version 13
+# Subtest: about page renders version and provides contact copy handler
+ok 1 - about page renders version and provides contact copy handler
+  ---
+  duration_ms: 5.147834
+  type: 'test'
+  ...
+# Subtest: failed avatar previews preserve the saved identity and unsaved profile edits
+ok 2 - failed avatar previews preserve the saved identity and unsaved profile edits
+  ---
+  duration_ms: 5.019917
+  type: 'test'
+  ...
+# Subtest: choosing a replacement avatar restores its preview without saving it
+ok 3 - choosing a replacement avatar restores its preview without saving it
+  ---
+  duration_ms: 0.446167
+  type: 'test'
+  ...
+# Subtest: avatar upload prepares large photos and preserves HTTP/session error handling
+    # Subtest: the rejected 1.2 MB photo is compressed before upload with the same identity
+    ok 1 - the rejected 1.2 MB photo is compressed before upload with the same identity
+      ---
+      duration_ms: 4.597583
+      type: 'test'
+      ...
+    # Subtest: portrait photos shrink by height and retain their proportions
+    ok 2 - portrait photos shrink by height and retain their proportions
+      ---
+      duration_ms: 0.374542
+      type: 'test'
+      ...
+    # Subtest: small avatars upload directly without an unnecessary recompression
+    ok 3 - small avatars upload directly without an unnecessary recompression
+      ---
+      duration_ms: 0.119333
+      type: 'test'
+      ...
+    # Subtest: photos with unavailable metadata are still compressed before upload
+    ok 4 - photos with unavailable metadata are still compressed before upload
+      ---
+      duration_ms: 0.130416
+      type: 'test'
+      ...
+    # Subtest: oversized or failed compression never sends an upload or changes the session avatar
+    ok 5 - oversized or failed compression never sends an upload or changes the session avatar
+      ---
+      duration_ms: 0.920208
+      type: 'test'
+      ...
+    # Subtest: a session change during compression prevents sending the old identity
+    ok 6 - a session change during compression prevents sending the old identity
+      ---
+      duration_ms: 3.845167
+      type: 'test'
+      ...
+    # Subtest: empty or HTML authentication responses report login failure before JSON parsing
+    ok 7 - empty or HTML authentication responses report login failure before JSON parsing
+      ---
+      duration_ms: 0.337917
+      type: 'test'
+      ...
+    # Subtest: 403, 413 and gateway text report upload errors without clearing the login
+    ok 8 - 403, 413 and gateway text report upload errors without clearing the login
+      ---
+      duration_ms: 0.526167
+      type: 'test'
+      ...
+    # Subtest: JSON with BOM/whitespace accepts the real file_url response
+    ok 9 - JSON with BOM/whitespace accepts the real file_url response
+      ---
+      duration_ms: 0.223958
+      type: 'test'
+      ...
+    # Subtest: malformed success and rejected business responses never persist a false avatar URL
+    ok 10 - malformed success and rejected business responses never persist a false avatar URL
+      ---
+      duration_ms: 0.292
+      type: 'test'
+      ...
+    # Subtest: a failed avatar upload leaves the saved nickname/avatar and local identity intact
+    ok 11 - a failed avatar upload leaves the saved nickname/avatar and local identity intact
+      ---
+      duration_ms: 1.596792
+      type: 'test'
+      ...
+    1..11
+ok 4 - avatar upload prepares large photos and preserves HTTP/session error handling
+  ---
+  duration_ms: 15.317625
+  type: 'test'
+  ...
+# Subtest: blank wine name stays in the form and points back to the required field
+ok 5 - blank wine name stays in the form and points back to the required field
+  ---
+  duration_ms: 2.377375
+  type: 'test'
+  ...
+# Subtest: multi-select and deselect keep counts and saved flavour words consistent
+ok 6 - multi-select and deselect keep counts and saved flavour words consistent
+  ---
+  duration_ms: 1.40175
+  type: 'test'
+  ...
+# Subtest: offline manual entry can save with all optional fields empty
+ok 7 - offline manual entry can save with all optional fields empty
+  ---
+  duration_ms: 2.750042
+  type: 'test'
+  ...
+# Subtest: catalogue choice clears required-field error and fills aroma without changing selections
+ok 8 - catalogue choice clears required-field error and fills aroma without changing selections
+  ---
+  duration_ms: 0.470959
+  type: 'test'
+  ...
+# Subtest: storage failure releases saving state and never leaves the form
+ok 9 - storage failure releases saving state and never leaves the form
+  ---
+  duration_ms: 0.407167
+  type: 'test'
+  ...
+# Subtest: gather exposes empty local ticket state before rooms load
+ok 10 - gather exposes empty local ticket state before rooms load
+  ---
+  duration_ms: 2.921958
+  type: 'test'
+  ...
+# Subtest: local tickets enrich real rooms and member counts with distinct exact statuses
+ok 11 - local tickets enrich real rooms and member counts with distinct exact statuses
+  ---
+  duration_ms: 2.282208
+  type: 'test'
+  ...
+# Subtest: local status filters separate finished from revealed and reject unsupported filters
+ok 12 - local status filters separate finished from revealed and reject unsupported filters
+  ---
+  duration_ms: 1.530375
+  type: 'test'
+  ...
+# Subtest: unknown or missing statuses remain unconfirmed and never count as playing
+ok 13 - unknown or missing statuses remain unconfirmed and never count as playing
+  ---
+  duration_ms: 0.666583
+  type: 'test'
+  ...
+# Subtest: local reloads retain the selected filter while refreshing statuses, counts and members
+ok 14 - local reloads retain the selected filter while refreshing statuses, counts and members
+  ---
+  duration_ms: 0.6855
+  type: 'test'
+  ...
+# Subtest: an empty filter differs from having no rooms and remains selected through both states
+ok 15 - an empty filter differs from having no rooms and remains selected through both states
+  ---
+  duration_ms: 2.124125
+  type: 'test'
+  ...
+# Subtest: ticket titles remove only exact presentation redundancy without rewriting stored names or codes
+ok 16 - ticket titles remove only exact presentation redundancy without rewriting stored names or codes
+  ---
+  duration_ms: 1.364125
+  type: 'test'
+  ...
+# Subtest: local ticket actions keep the existing routes and read current stored status
+ok 17 - local ticket actions keep the existing routes and read current stored status
+  ---
+  duration_ms: 0.619709
+  type: 'test'
+  ...
+# Subtest: online pagination and tap retries remain independent of the local ticket filter
+ok 18 - online pagination and tap retries remain independent of the local ticket filter
+  ---
+  duration_ms: 8.914292
+  type: 'test'
+  ...
+# Subtest: online login gating, guest cleanup and navigation stay compatible with local tickets
+ok 19 - online login gating, guest cleanup and navigation stay compatible with local tickets
+  ---
+  duration_ms: 1.9805
+  type: 'test'
+  ...
+# Subtest: home hero displays single enlarged SVG Li Bai pose (libai-home.svg) with calligraphy title
+ok 20 - home hero displays single enlarged SVG Li Bai pose (libai-home.svg) with calligraphy title
+  ---
+  duration_ms: 2.179208
+  type: 'test'
+  ...
+# Subtest: identity and session bridge test suite
+    # Subtest: 1. WeLink provider: does not use cloud identity, preserves userId & rooms/owner relationship
+    ok 1 - 1. WeLink provider: does not use cloud identity, preserves userId & rooms/owner relationship
+      ---
+      duration_ms: 13.571834
+      type: 'test'
+      ...
+    # Subtest: 2. 401 Session clear event notifies identity to update loginState to guest
+    ok 2 - 2. 401 Session clear event notifies identity to update loginState to guest
+      ---
+      duration_ms: 1.168708
+      type: 'test'
+      ...
+# 【盲酌】微信云开发已成功初始化，已接入云数据库！
+    # Subtest: 3. Nickname saving uses updateNick; local avatar is NOT sent to backend
+    ok 3 - 3. Nickname saving uses updateNick; local avatar is NOT sent to backend
+      ---
+      duration_ms: 13.847333
+      type: 'test'
+      ...
+    # Subtest: 4. Cloud provider branch remains intact when IDENTITY_PROVIDER is cloud
+    ok 4 - 4. Cloud provider branch remains intact when IDENTITY_PROVIDER is cloud
+      ---
+      duration_ms: 0.3385
+      type: 'test'
+      ...
+    # Subtest: 5. WeLink loginWithWeChat with userProfile updates user avatar and nickname
+    ok 5 - 5. WeLink loginWithWeChat with userProfile updates user avatar and nickname
+      ---
+      duration_ms: 11.791916
+      type: 'test'
+      ...
+    1..5
+ok 21 - identity and session bridge test suite
+  ---
+  duration_ms: 47.053667
+  type: 'test'
+  ...
+# Subtest: WeLink identity restores remote profile and saves avatar/nickname without replacing local tasting userId
+ok 22 - WeLink identity restores remote profile and saves avatar/nickname without replacing local tasting userId
+  ---
+  duration_ms: 5.933125
+  type: 'test'
+  ...
+# Subtest: knowledgeCatalog public service unit tests
+    # Subtest: 1. sanitizePagination handles bounds and illegal inputs safely
+    ok 1 - 1. sanitizePagination handles bounds and illegal inputs safely
+      ---
+      duration_ms: 6.47975
+      type: 'test'
+      ...
+    # Subtest: 2. stripHtml cleans script, style, html tags, entities safely
+    ok 2 - 2. stripHtml cleans script, style, html tags, entities safely
+      ---
+      duration_ms: 2.074583
+      type: 'test'
+      ...
+    # Subtest: 3. normalizeKnowledgeItem produces exact target schema and does not invent facts
+    ok 3 - 3. normalizeKnowledgeItem produces exact target schema and does not invent facts
+      ---
+      duration_ms: 0.823291
+      type: 'test'
+      ...
+    # Subtest: 4. normalizeKnowledgeResponse supports 00000 with records / list / array formats and empty page
+    ok 4 - 4. normalizeKnowledgeResponse supports 00000 with records / list / array formats and empty page
+      ---
+      duration_ms: 2.374375
+      type: 'test'
+      ...
+    # Subtest: 5. loadKnowledge calls welinkClient.requestPublic with safe params and handles 00000 success
+    ok 5 - 5. loadKnowledge calls welinkClient.requestPublic with safe params and handles 00000 success
+      ---
+      duration_ms: 0.99525
+      type: 'test'
+      ...
+    # Subtest: 6. backend error or non-00000 code does not forge success
+    ok 6 - 6. backend error or non-00000 code does not forge success
+      ---
+      duration_ms: 0.514792
+      type: 'test'
+      ...
+    # Subtest: 7. baseUrl change isolates cache and discards inflight responses
+    ok 7 - 7. baseUrl change isolates cache and discards inflight responses
+      ---
+      duration_ms: 0.3695
+      type: 'test'
+      ...
+    # Subtest: 8. actual knowledge fields retain paragraphs, sources, tip and updateDate
+    ok 8 - 8. actual knowledge fields retain paragraphs, sources, tip and updateDate
+      ---
+      duration_ms: 0.613333
+      type: 'test'
+      ...
+    1..8
+ok 23 - knowledgeCatalog public service unit tests
+  ---
+  duration_ms: 16.769416
+  type: 'test'
+  ...
+# Subtest: knowledge page displays remote public articles and opens their detail
+ok 24 - knowledge page displays remote public articles and opens their detail
+  ---
+  duration_ms: 7.821083
+  type: 'test'
+  ...
+# Subtest: knowledge page retains local articles when the public endpoint is unavailable
+ok 25 - knowledge page retains local articles when the public endpoint is unavailable
+  ---
+  duration_ms: 3.99275
+  type: 'test'
+  ...
+# Subtest: Mine starts idle and loads an empty local archive without authentication
+ok 26 - Mine starts idle and loads an empty local archive without authentication
+  ---
+  duration_ms: 8.129208
+  type: 'test'
+  ...
+# Subtest: counts include every local note, distinct current-user rooms and only judged aroma exclusions
+ok 27 - counts include every local note, distinct current-user rooms and only judged aroma exclusions
+  ---
+  duration_ms: 4.783375
+  type: 'test'
+  ...
+# Subtest: presentation copies preserve all original note data and never mutate the journal on repeated shows
+ok 28 - presentation copies preserve all original note data and never mutate the journal on repeated shows
+  ---
+  duration_ms: 11.682792
+  type: 'test'
+  ...
+# Subtest: calendar dates retain their actual label and split valid years, leap days and consistent separators
+ok 29 - calendar dates retain their actual label and split valid years, leap days and consistent separators
+  ---
+  duration_ms: 1.264542
+  type: 'test'
+  ...
+# Subtest: impossible dates, malformed years and mixed separators stay undated without losing the raw label
+ok 30 - impossible dates, malformed years and mixed separators stay undated without losing the raw label
+  ---
+  duration_ms: 1.127583
+  type: 'test'
+  ...
+# Subtest: missing and non-string dates never infer today or a date from createdAt
+ok 31 - missing and non-string dates never infer today or a date from createdAt
+  ---
+  duration_ms: 5.98625
+  type: 'test'
+  ...
+# Subtest: the real journal reader treats missing or invalid stored collections as an empty archive
+ok 32 - the real journal reader treats missing or invalid stored collections as an empty archive
+  ---
+  duration_ms: 12.785042
+  type: 'test'
+  ...
+# Subtest: guest, signed-in and completed-profile states stay independent and refresh from the current user
+ok 33 - guest, signed-in and completed-profile states stay independent and refresh from the current user
+  ---
+  duration_ms: 14.940458
+  type: 'test'
+  ...
+# Subtest: avatar failures keep the saved identity and reset only the preview error on show
+ok 34 - avatar failures keep the saved identity and reset only the preview error on show
+  ---
+  duration_ms: 1.975209
+  type: 'test'
+  ...
+# Subtest: archive actions and sharing keep their original destinations and payloads
+ok 35 - archive actions and sharing keep their original destinations and payloads
+  ---
+  duration_ms: 2.009083
+  type: 'test'
+  ...
+# Subtest: registration stays busy across shows and double clicks, then refreshes identity and notes on success
+ok 36 - registration stays busy across shows and double clicks, then refreshes identity and notes on success
+  ---
+  duration_ms: 1.41975
+  type: 'test'
+  ...
+# Subtest: unsuccessful, rejected and thrown registrations reset busy state, fall back to profile and allow retry
+ok 37 - unsuccessful, rejected and thrown registrations reset busy state, fall back to profile and allow retry
+  ---
+  duration_ms: 12.565459
+  type: 'test'
+  ...
+# Subtest: signed-in users skip registration even with an incomplete profile and edit it only explicitly
+ok 38 - signed-in users skip registration even with an incomplete profile and edit it only explicitly
+  ---
+  duration_ms: 5.724333
+  type: 'test'
+  ...
+# Subtest: cancelling logout leaves identity, local records and the displayed archive untouched
+ok 39 - cancelling logout leaves identity, local records and the displayed archive untouched
+  ---
+  duration_ms: 2.85375
+  type: 'test'
+  ...
+# Subtest: confirmed logout keeps the existing refresh and toast flow even when the auth stub rejects
+ok 40 - confirmed logout keeps the existing refresh and toast flow even when the auth stub rejects
+  ---
+  duration_ms: 2.490625
+  type: 'test'
+  ...
+# Subtest: logged-in stub displays avatar + nickname and clicking opens the profile edit modal
+ok 41 - logged-in stub displays avatar + nickname and clicking opens the profile edit modal
+  ---
+  duration_ms: 2.074875
+  type: 'test'
+  ...
+# Subtest: onlinePages test suite - Page/wx lifecycle and edge-case contracts
+    # Subtest: Case 1: packages/online/create - password is cleared in finally on failure, and on success
+    ok 1 - Case 1: packages/online/create - password is cleared in finally on failure, and on success
+      ---
+      duration_ms: 33.955375
+      type: 'test'
+      ...
+    # Subtest: Case 2: packages/online/create - guest does not send network request on submit
+    ok 2 - Case 2: packages/online/create - guest does not send network request on submit
+      ---
+      duration_ms: 0.781333
+      type: 'test'
+      ...
+    # Subtest: Case 3: packages/online/detail - 401 clears detail and results with needLogin, then onShow resumes loadData
+    ok 3 - Case 3: packages/online/detail - 401 clears detail and results with needLogin, then onShow resumes loadData
+      ---
+      duration_ms: 33.530291
+      type: 'test'
+      ...
+    # Subtest: Case 4: packages/online/detail - switching account prevents reading old answers
+    ok 4 - Case 4: packages/online/detail - switching account prevents reading old answers
+      ---
+      duration_ms: 26.239125
+      type: 'test'
+      ...
+    # Subtest: Case 5: packages/online/detail - 0 and 100 are submitted correctly; illegal decimals are rejected and not truncated
+    ok 5 - Case 5: packages/online/detail - 0 and 100 are submitted correctly; illegal decimals are rejected and not truncated
+      ---
+      duration_ms: 12.385333
+      type: 'test'
+      ...
+    # Subtest: Case 6: packages/online/detail - busy state blocks duplicate submitScores and closeTaste
+    ok 6 - Case 6: packages/online/detail - busy state blocks duplicate submitScores and closeTaste
+      ---
+      duration_ms: 12.184667
+      type: 'test'
+      ...
+    # Subtest: Case 7: pages/gather - loadOnlineTastes treats event object as page 1, and returning as guest clears onlineList
+    ok 7 - Case 7: pages/gather - loadOnlineTastes treats event object as page 1, and returning as guest clears onlineList
+      ---
+      duration_ms: 12.214084
+      type: 'test'
+      ...
+    # Subtest: Case 8: pages/profile - saving nickname only does not prompt user to re-upload avatar
+    ok 8 - Case 8: pages/profile - saving nickname only does not prompt user to re-upload avatar
+      ---
+      duration_ms: 11.481
+      type: 'test'
+      ...
+# 【盲酌】WeLink 微信登录失败 Error: 已取消授权
+#     at Object.useFallbackProfile [as fail] (/Users/joozo/Github/Codex/mangzhuo/miniprogram/services/welinkClient.js:770:25)
+#     at global.wx.getUserProfile (/Users/joozo/Github/Codex/mangzhuo/tests/onlinePages.test.cjs:716:12)
+#     at Promise.finally.inFlightLoginPromise (/Users/joozo/Github/Codex/mangzhuo/miniprogram/services/welinkClient.js:777:12)
+#     at new Promise (<anonymous>)
+#     at Object.login (/Users/joozo/Github/Codex/mangzhuo/miniprogram/services/welinkClient.js:615:26)
+#     at Object.loginWithWeChat (/Users/joozo/Github/Codex/mangzhuo/miniprogram/services/identity.js:146:42)
+#     at Object.onLogin (evalmachine.<anonymous>:88:34)
+#     at TestContext.<anonymous> (/Users/joozo/Github/Codex/mangzhuo/tests/onlinePages.test.cjs:725:10)
+#     at Test.runInAsyncScope (node:async_hooks:214:14)
+#     at Test.run (node:internal/test_runner/test:1047:25)
+    # Subtest: Case 9: pages/profile - onLogin with wx.getUserProfile successfully authorizes and updates UI
+    ok 9 - Case 9: pages/profile - onLogin with wx.getUserProfile successfully authorizes and updates UI
+      ---
+      duration_ms: 21.538709
+      type: 'test'
+      ...
+# 【盲酌】wx.getUserProfile 暂不可用，使用页面已有资料继续登录: getUserProfile:fail api scope is not declared in the privacy agreement
+    # Subtest: Case 10: pages/profile - onLogin when user denies wx.getUserProfile shows toast and remains guest
+    ok 10 - Case 10: pages/profile - onLogin when user denies wx.getUserProfile shows toast and remains guest
+      ---
+      duration_ms: 21.6945
+      type: 'test'
+      ...
+    # Subtest: Case 11: pages/profile - onLogin when wx.getUserProfile reports privacy agreement error falls back and succeeds
+    ok 11 - Case 11: pages/profile - onLogin when wx.getUserProfile reports privacy agreement error falls back and succeeds
+      ---
+      duration_ms: 22.748167
+      type: 'test'
+      ...
+    1..11
+ok 42 - onlinePages test suite - Page/wx lifecycle and edge-case contracts
+  ---
+  duration_ms: 223.226042
+  type: 'test'
+  ...
+# 【盲酌】WeLink 资料同步失败 Error: network offline
+#     at fail (/Users/joozo/Github/Codex/mangzhuo/miniprogram/services/welinkClient.js:761:18)
+#     at Object.login (/Users/joozo/Github/Codex/mangzhuo/tests/sessionExpiry.test.cjs:72:23)
+#     at doLoginWithProfile (/Users/joozo/Github/Codex/mangzhuo/miniprogram/services/welinkClient.js:624:10)
+#     at Promise.finally.inFlightLoginPromise (/Users/joozo/Github/Codex/mangzhuo/miniprogram/services/welinkClient.js:788:7)
+#     at new Promise (<anonymous>)
+#     at login (/Users/joozo/Github/Codex/mangzhuo/miniprogram/services/welinkClient.js:615:26)
+#     at ensureSession (/Users/joozo/Github/Codex/mangzhuo/miniprogram/services/welinkClient.js:578:25)
+#     at Object.updateProfile (/Users/joozo/Github/Codex/mangzhuo/miniprogram/services/welinkClient.js:857:25)
+#     at syncProfileToWelink (/Users/joozo/Github/Codex/mangzhuo/miniprogram/services/identity.js:353:40)
+#     at Object.saveProfile (/Users/joozo/Github/Codex/mangzhuo/miniprogram/services/identity.js:325:24)
+# Subtest: expired token clears only credentials; identity and profile survive save and module reload
+ok 43 - expired token clears only credentials; identity and profile survive save and module reload
+  ---
+  duration_ms: 9.811042
+  type: 'test'
+  ...
+# Subtest: expired credentials renew once for concurrent requests, and each business request sends once
+ok 44 - expired credentials renew once for concurrent requests, and each business request sends once
+  ---
+  duration_ms: 15.708375
+  type: 'test'
+  ...
+# Subtest: saving a nickname after expiry renews credentials and synchronizes once
+ok 45 - saving a nickname after expiry renews credentials and synchronizes once
+  ---
+  duration_ms: 9.801209
+  type: 'test'
+  ...
+# Subtest: failed renewal preserves the identity and never sends the pending write
+ok 46 - failed renewal preserves the identity and never sends the pending write
+  ---
+  duration_ms: 18.845208
+  type: 'test'
+  ...
+# Subtest: logout during renewal discards the response without restoring the user or sending a write
+ok 47 - logout during renewal discards the response without restoring the user or sending a write
+  ---
+  duration_ms: 0.840417
+  type: 'test'
+  ...
+# Subtest: renewal cannot silently switch WeChat accounts or replay a rejected write
+ok 48 - renewal cannot silently switch WeChat accounts or replay a rejected write
+  ---
+  duration_ms: 6.948167
+  type: 'test'
+  ...
+# Subtest: guests and identities bound to another backend never renew automatically
+ok 49 - guests and identities bound to another backend never renew automatically
+  ---
+  duration_ms: 0.930875
+  type: 'test'
+  ...
+# Subtest: mini program JWT expiry parsing works without Node Buffer or TextDecoder
+ok 50 - mini program JWT expiry parsing works without Node Buffer or TextDecoder
+  ---
+  duration_ms: 6.528916
+  type: 'test'
+  ...
+# Subtest: a restored accessToken without a legacy cookie still sends the Bearer header
+ok 51 - a restored accessToken without a legacy cookie still sends the Bearer header
+  ---
+  duration_ms: 0.94075
+  type: 'test'
+  ...
+# Subtest: a forbidden online feature reports its error without logging out the remembered identity
+ok 52 - a forbidden online feature reports its error without logging out the remembered identity
+  ---
+  duration_ms: 0.743709
+  type: 'test'
+  ...
+# Subtest: long tasting notes generate a bounded card with clear truncation and share the home page
+ok 53 - long tasting notes generate a bounded card with clear truncation and share the home page
+  ---
+  duration_ms: 21.939667
+  type: 'test'
+  ...
+# Subtest: failed canvas setup releases loading and exposes retry state
+ok 54 - failed canvas setup releases loading and exposes retry state
+  ---
+  duration_ms: 0.544291
+  type: 'test'
+  ...
+# Subtest: saving uses the generated image and opens settings only after confirmation
+ok 55 - saving uses the generated image and opens settings only after confirmation
+  ---
+  duration_ms: 0.463708
+  type: 'test'
+  ...
+# Subtest: room posters keep long wine names and nicknames within their cards and preserve the score
+ok 56 - room posters keep long wine names and nicknames within their cards and preserve the score
+  ---
+  duration_ms: 28.327666
+  type: 'test'
+  ...
+# Subtest: stars select 1-10 independently and save with the sample without changing guessing fields
+ok 57 - stars select 1-10 independently and save with the sample without changing guessing fields
+  ---
+  duration_ms: 1.427667
+  type: 'test'
+  ...
+# Subtest: a previously saved preference is restored when revisiting the same sample
+ok 58 - a previously saved preference is restored when revisiting the same sample
+  ---
+  duration_ms: 3.816875
+  type: 'test'
+  ...
+# Subtest: preference does not affect the existing guess score
+ok 59 - preference does not affect the existing guess score
+  ---
+  duration_ms: 3.02275
+  type: 'test'
+  ...
+# Subtest: userInfo Bearer API contracts
+    # Subtest: login accepts openId/accessToken and get returns authoritative profile
+    ok 1 - login accepts openId/accessToken and get returns authoritative profile
+      ---
+      duration_ms: 3.229375
+      type: 'test'
+      ...
+    # Subtest: nickname uses updateNick once without requesting a new wx code
+    ok 2 - nickname uses updateNick once without requesting a new wx code
+      ---
+      duration_ms: 0.924625
+      type: 'test'
+      ...
+    # Subtest: avatar upload sends file/openid with Bearer and accepts file_url
+    ok 3 - avatar upload sends file/openid with Bearer and accepts file_url
+      ---
+      duration_ms: 0.629334
+      type: 'test'
+      ...
+    # Subtest: public requests carry no credentials and cannot clear login on 403
+    ok 4 - public requests carry no credentials and cannot clear login on 403
+      ---
+      duration_ms: 0.524667
+      type: 'test'
+      ...
+    1..4
+ok 60 - userInfo Bearer API contracts
+  ---
+  duration_ms: 7.992042
+  type: 'test'
+  ...
+# Subtest: welinkClient test suite
+    # Subtest: 1. Session isolation and Set-Cookie JSESSIONID persistence
+    ok 1 - 1. Session isolation and Set-Cookie JSESSIONID persistence
+      ---
+      duration_ms: 12.467083
+      type: 'test'
+      ...
+    # Subtest: 7. Path traversal, external URL rejection, and header Cookie override prevention
+    ok 2 - 7. Path traversal, external URL rejection, and header Cookie override prevention
+      ---
+      duration_ms: 11.991833
+      type: 'test'
+      ...
+    # Subtest: 8. Base URL switch drops old session and openid
+    ok 3 - 8. Base URL switch drops old session and openid
+      ---
+      duration_ms: 0.197542
+      type: 'test'
+      ...
+    # Subtest: 9. Envelope validation: HTML response, missing data, missing code
+    ok 4 - 9. Envelope validation: HTML response, missing data, missing code
+      ---
+      duration_ms: 0.24325
+      type: 'test'
+      ...
+    # Subtest: 10. Login requires fresh JSESSIONID, multiple cookies parsing, no half session on fail
+    ok 5 - 10. Login requires fresh JSESSIONID, multiple cookies parsing, no half session on fail
+      ---
+      duration_ms: 33.296917
+      type: 'test'
+      ...
+    # Subtest: 11. No auto retry for POST/write operations; immediate 401 fail
+    ok 6 - 11. No auto retry for POST/write operations; immediate 401 fail
+      ---
+      duration_ms: 12.332084
+      type: 'test'
+      ...
+    # Subtest: 12. Strict validators: ID, scores, duplicate samples, lengths
+    ok 7 - 12. Strict validators: ID, scores, duplicate samples, lengths
+      ---
+      duration_ms: 11.846542
+      type: 'test'
+      ...
+    # Subtest: 2. Single-flight concurrent login
+    ok 8 - 2. Single-flight concurrent login
+      ---
+      duration_ms: 31.887375
+      type: 'test'
+      ...
+    # Subtest: 3. 401 Unauthorized clears session immediately
+    ok 9 - 3. 401 Unauthorized clears session immediately
+      ---
+      duration_ms: 0.30425
+      type: 'test'
+      ...
+# 【盲酌】未在受信任开发环境下或地址非法，禁止非安全 HTTP 覆盖，已强制使用安全地址
+# 【盲酌】未在受信任开发环境下或地址非法，禁止非安全 HTTP 覆盖，已强制使用安全地址
+# 【盲酌】未在受信任开发环境下或地址非法，禁止非安全 HTTP 覆盖，已强制使用安全地址
+# 【盲酌】未在受信任开发环境下或地址非法，禁止非安全 HTTP 覆盖，已强制使用安全地址
+# 【盲酌】未在受信任开发环境下或地址非法，禁止非安全 HTTP 覆盖，已强制使用安全地址
+# 【盲酌】未在受信任开发环境下或地址非法，禁止非安全 HTTP 覆盖，已强制使用安全地址
+# 【盲酌】未在受信任开发环境下或地址非法，禁止非安全 HTTP 覆盖，已强制使用安全地址
+    # Subtest: 4. Score validation: integer 0..100, requires valid sampleId and guessedName
+    ok 10 - 4. Score validation: integer 0..100, requires valid sampleId and guessedName
+      ---
+      duration_ms: 11.772083
+      type: 'test'
+      ...
+    # Subtest: 5. Non-2xx or non-zero code does not return false success
+    ok 11 - 5. Non-2xx or non-zero code does not return false success
+      ---
+      duration_ms: 0.171625
+      type: 'test'
+      ...
+    # Subtest: 6. Base URL resolution security: regex anchor, trial disallowed, port/userinfo checks
+    ok 12 - 6. Base URL resolution security: regex anchor, trial disallowed, port/userinfo checks
+      ---
+      duration_ms: 0.450417
+      type: 'test'
+      ...
+    # Subtest: 13. Create contract accepts title 32, sample names 100 and passphrase 64 after trimming
+    ok 13 - 13. Create contract accepts title 32, sample names 100 and passphrase 64 after trimming
+      ---
+      duration_ms: 0.520375
+      type: 'test'
+      ...
+    # Subtest: 14. Create rejects title 33, sample name 101 and passphrase 65 before network
+    ok 14 - 14. Create rejects title 33, sample name 101 and passphrase 65 before network
+      ---
+      duration_ms: 0.172959
+      type: 'test'
+      ...
+    # Subtest: 15. Create rejects duplicate names including whitespace variants before network
+    ok 15 - 15. Create rejects duplicate names including whitespace variants before network
+      ---
+      duration_ms: 0.109792
+      type: 'test'
+      ...
+    # Subtest: 16. Score contract accepts guessed names of 51 and 100 characters without truncation
+    ok 16 - 16. Score contract accepts guessed names of 51 and 100 characters without truncation
+      ---
+      duration_ms: 0.13925
+      type: 'test'
+      ...
+    # Subtest: 17. Late old 401 after explicit clear and new login cannot clear the new session
+    ok 17 - 17. Late old 401 after explicit clear and new login cannot clear the new session
+      ---
+      duration_ms: 21.160625
+      type: 'test'
+      ...
+    # Subtest: 18. Direct re-login supersedes pending requests even without clearSession
+    ok 18 - 18. Direct re-login supersedes pending requests even without clearSession
+      ---
+      duration_ms: 22.772584
+      type: 'test'
+      ...
+    # Subtest: 19. Stale success and malformed envelopes reject before processing and cannot overwrite the new session
+    ok 19 - 19. Stale success and malformed envelopes reject before processing and cannot overwrite the new session
+      ---
+      duration_ms: 22.973709
+      type: 'test'
+      ...
+    # Subtest: 20. A base-only change rejects old 401 before clearing session or emitting an event
+    ok 20 - 20. A base-only change rejects old 401 before clearing session or emitting an event
+      ---
+      duration_ms: 11.517959
+      type: 'test'
+      ...
+    # Subtest: 21. The first request after a base switch captures generation after session isolation
+    ok 21 - 21. The first request after a base switch captures generation after session isolation
+      ---
+      duration_ms: 11.454583
+      type: 'test'
+      ...
+    # Subtest: 22. Login with wx.getUserProfile routes to /taste/userInfo/wxLogin with avatarUrl, nickName, sex
+    ok 22 - 22. Login with wx.getUserProfile routes to /taste/userInfo/wxLogin with avatarUrl, nickName, sex
+      ---
+      duration_ms: 11.886958
+      type: 'test'
+      ...
+    1..22
+ok 61 - welinkClient test suite
+  ---
+  duration_ms: 234.048709
+  type: 'test'
+  ...
+# Subtest: public wine catalogue contracts and consuming pages
+    # Subtest: accepts actual string success code and data length despite count zero; shares one public GET
+    ok 1 - accepts actual string success code and data length despite count zero; shares one public GET
+      ---
+      duration_ms: 4.04225
+      type: 'test'
+      ...
+    # Subtest: failed and malformed refreshes retain last successful catalogue
+    ok 2 - failed and malformed refreshes retain last successful catalogue
+      ---
+      duration_ms: 0.62825
+      type: 'test'
+      ...
+    # Subtest: first offline use retains manual-entry suggestions and distinguishes builtin source
+    ok 3 - first offline use retains manual-entry suggestions and distinguishes builtin source
+      ---
+      duration_ms: 0.441916
+      type: 'test'
+      ...
+    # Subtest: base changes discard late response and never use another base cache
+    ok 4 - base changes discard late response and never use another base cache
+      ---
+      duration_ms: 0.407375
+      type: 'test'
+      ...
+    # Subtest: empty catalogue stays empty; missing or invalid price stays unknown
+    ok 5 - empty catalogue stays empty; missing or invalid price stays unknown
+      ---
+      duration_ms: 0.283416
+      type: 'test'
+      ...
+    # Subtest: check-in and online selection use catalogue rows without overwriting another wine
+    ok 6 - check-in and online selection use catalogue rows without overwriting another wine
+      ---
+      duration_ms: 2.461959
+      type: 'test'
+      ...
+    1..6
+ok 62 - public wine catalogue contracts and consuming pages
+  ---
+  duration_ms: 9.599041
+  type: 'test'
+  ...
+1..62
+# tests 129
+# suites 0
+# pass 129
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 482.980959

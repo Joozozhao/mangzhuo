@@ -1,0 +1,109 @@
+<view class="journal organized-page member-level-page">
+  <view class="book-kicker"><text>盲酌 · 品鉴品阶谱</text><text class="book-edition">一阶一风景</text></view>
+  <view class="book-cover">
+    <view class="cover-copy">
+      <view class="cover-eyebrow">循 味 而 行 · 向 真 而 生</view>
+      <image wx:if="{{!calligraphyErrors.heading}}" class="cover-title-art" src="/assets/member-level/calligraphy/heading.svg" mode="aspectFit" aria-label="知味九阶" data-calligraphy="heading" binderror="onCalligraphyError"/>
+      <view wx:else class="cover-title">知味九阶</view>
+      <view class="cover-poem"><view>从初识一缕香，</view><view>到杯中见天地。</view></view>
+    </view>
+    <image class="cover-landscape" src="/assets/member-level/journey-landscape.png" mode="aspectFit" aria-hidden="true"/>
+    <view class="cover-seal" aria-hidden="true">循味</view>
+  </view>
+  <view class="cover-colophon"><text>以参局积阅历，以盲猜见知味。</text><text>盲酌雅集</text></view>
+
+  <view class="book-navigation" aria-label="品阶页目录">
+    <button class="book-nav-item" bindtap="scrollToSection" data-section="journey"><text class="book-nav-label">此刻品阶</text></button>
+    <button class="book-nav-item" bindtap="scrollToSection" data-section="levels"><text class="book-nav-label">九阶长卷</text></button>
+    <button class="book-nav-item" bindtap="scrollToSection" data-section="rules"><text class="book-nav-label">晋升细则</text></button>
+  </view>
+
+  <view id="journey" class="journey-section" wx:if="{{membership}}">
+    <view class="section-heading"><text class="section-number">01</text><view class="section-title">此刻，行至何处</view></view>
+    <view class="journey-ticket">
+      <view class="journey-heading">
+        <view>
+          <view class="journey-kicker">我的品鉴品阶</view>
+          <view class="journey-title"><text class="journey-rank">{{current.rank}}</text><image wx:if="{{!calligraphyErrors[current.titleKey]}}" class="journey-title-art" src="{{current.titleSvg}}" mode="aspectFit" aria-label="{{current.title}}" data-calligraphy="{{current.titleKey}}" binderror="onCalligraphyError"/><text wx:else>{{current.title}}</text></view>
+        </view>
+        <text class="journey-status">当前品阶</text>
+      </view>
+      <view class="journey-verse">{{current.poem}}</view>
+      <view class="journey-stats">
+        <view class="journey-stat"><text class="stat-value">{{roomCountLabel}}<text class="stat-unit">场</text></text><text class="stat-label">已参与酒局</text></view>
+        <view class="journey-stat"><text class="stat-value">{{scoreLabel}}<text class="stat-unit">分</text></text><text class="stat-label">累计盲猜积分</text></view>
+      </view>
+      <block wx:if="{{next}}">
+        <view class="next-heading"><text>下一程 · {{next.title}}</text><text>两项同时达标</text></view>
+        <view class="requirement-progress">
+          <view class="requirement-label"><text>参局 {{roomCountLabel}} / {{next.roomsLabel}} 场</text><text class="{{membership.needRooms === 0 ? 'is-met' : ''}}">{{membership.needRooms === 0 ? '已达标' : '还差 ' + needRoomsLabel + ' 场'}}</text></view>
+          <view class="progress-track" aria-label="参局条件进度 {{roomProgress}}%"><view class="progress-ink" style="width:{{roomProgress}}%;"/></view>
+        </view>
+        <view class="requirement-progress">
+          <view class="requirement-label"><text>积分 {{scoreLabel}} / {{next.scoreLabel}} 分</text><text class="{{membership.needScore === 0 ? 'is-met' : ''}}">{{membership.needScore === 0 ? '已达标' : '还差 ' + needScoreLabel + ' 分'}}</text></view>
+          <view class="progress-track" aria-label="积分条件进度 {{scoreProgress}}%"><view class="progress-ink" style="width:{{scoreProgress}}%;"/></view>
+        </view>
+      </block>
+      <view class="journey-complete" wx:else><view>九阶已至，知味无涯。</view><view>愿历览风味，仍守初来真心。</view></view>
+      <button class="locate-current" bindtap="locateCurrent"><text>在长卷中，寻我的一阶</text><image src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></button>
+    </view>
+    <view class="record-scope">品阶依据本机保存的桌上酒局记录评定。</view>
+  </view>
+
+  <view id="levels" class="levels-section">
+    <view class="section-heading"><text class="section-number">02</text><view class="section-title">九阶，一卷风味</view></view>
+    <view class="section-preface"><view>从问泉到太白，每一步皆有来处。</view><view>这里记下称号的诗意，也写明晋升的门槛。</view></view>
+    <view class="reading-modes" aria-label="品阶浏览方式">
+      <button class="reading-mode {{viewMode === 'story' ? 'mode-selected' : ''}}" bindtap="switchView" data-mode="story" aria-label="品阶雅叙，{{viewMode === 'story' ? '已选中' : '未选中'}}"><text class="reading-mode-label">品阶雅叙</text></button>
+      <button class="reading-mode {{viewMode === 'overview' ? 'mode-selected' : ''}}" bindtap="switchView" data-mode="overview" aria-label="晋升一览，{{viewMode === 'overview' ? '已选中' : '未选中'}}"><text class="reading-mode-label">晋升一览</text></button>
+    </view>
+
+    <view wx:if="{{viewMode === 'story'}}" class="level-scroll-story">
+      <view class="level-chapter" wx:for="{{chapters}}" wx:for-item="chapter" wx:key="title">
+        <view class="chapter-heading"><view class="chapter-name"><text class="chapter-volume">{{chapter.volume}}</text><image wx:if="{{!calligraphyErrors[chapter.titleKey]}}" class="chapter-title-art" src="{{chapter.titleSvg}}" mode="aspectFit" aria-label="{{chapter.title}}" data-calligraphy="{{chapter.titleKey}}" binderror="onCalligraphyError"/><view wx:else class="chapter-title">{{chapter.title}}</view></view><text class="chapter-caption">{{chapter.subtitle}}</text></view>
+        <view class="chapter-prelude">{{chapter.prelude}}</view>
+        <view id="level-{{item.level}}" class="level-leaf {{item.state === 'current' ? 'leaf-current' : ''}}" wx:for="{{chapter.levels}}" wx:key="level">
+          <view class="leaf-margin"><text class="leaf-ordinal">{{item.ordinal}}</text><text class="leaf-rank">{{item.rank}}</text></view>
+          <view class="leaf-body">
+            <view class="leaf-heading"><view class="leaf-title"><image wx:if="{{!calligraphyErrors[item.titleKey]}}" class="leaf-title-art" src="{{item.titleSvg}}" mode="aspectFit" aria-label="{{item.title}}" data-calligraphy="{{item.titleKey}}" binderror="onCalligraphyError"/><text wx:else>{{item.title}}</text></view><text class="leaf-state state-{{item.state}}">{{item.stateLabel}}</text></view>
+            <view class="leaf-poem" user-select="true">{{item.poem}}</view>
+            <view class="leaf-description">{{item.story}}</view>
+            <view class="leaf-thresholds">
+              <view><text class="threshold-label">参局门槛</text><text class="threshold-number">{{item.roomsLabel}}<text class="threshold-unit">场</text></text></view>
+              <view><text class="threshold-label">累计盲猜积分</text><text class="threshold-number">{{item.scoreLabel}}<text class="threshold-unit">分</text></text></view>
+            </view>
+            <view wx:if="{{item.level === 1}}" class="leaf-origin">初识风味，即启此阶。</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="overview-book">
+      <view class="overview-title">品阶命名与晋升规则总览</view>
+      <view class="overview-note">参局次数与累计积分须同时达到下列门槛。</view>
+      <view class="overview-row overview-head"><text>品阶称号</text><text class="numeric-cell">场次</text><text class="numeric-cell">积分</text></view>
+      <view class="overview-row {{item.state === 'current' ? 'overview-current' : ''}}" wx:for="{{levels}}" wx:key="level" aria-label="{{item.rank}} {{item.title}}，{{item.roomsLabel}}场酒局及{{item.scoreLabel}}积分，{{item.stateLabel}}">
+        <view class="overview-name"><text class="overview-rank">{{item.rank}}</text><image wx:if="{{!calligraphyErrors[item.titleKey]}}" class="overview-title-art" src="{{item.titleSvg}}" mode="aspectFit" aria-label="{{item.title}}" data-calligraphy="{{item.titleKey}}" binderror="onCalligraphyError"/><text wx:else class="overview-level-title">{{item.title}}</text><text wx:if="{{item.state === 'current'}}" class="overview-current-label">当前</text></view>
+        <text class="numeric-cell overview-number">{{item.roomsLabel}}</text><text class="numeric-cell overview-number">{{item.scoreLabel}}</text>
+      </view>
+      <view class="overview-foot">每一阶都由同一套规则评定，达标后自动更新。</view>
+    </view>
+  </view>
+
+  <view id="rules" class="rules-section">
+    <view class="section-heading"><text class="section-number">03</text><view class="section-title">有章可循，知味有度</view></view>
+    <view class="rules-preface">阶位记阅历，心意不设限。</view>
+    <view class="rule-entry" wx:for="{{rules}}" wx:key="title">
+      <text class="rule-number">{{index + 1 < 10 ? '0' + (index + 1) : index + 1}}</text>
+      <view class="rule-body"><view class="rule-title">{{item.title}}</view><view class="rule-copy">{{item.body}}</view></view>
+    </view>
+  </view>
+
+  <view class="book-ending">
+    <image class="ending-brand" src="/assets/brand/mangzhuo-lockup-v6.png" mode="aspectFit" aria-label="盲酌"/>
+    <view class="ending-poem">风味有阶，喜欢无界。</view>
+    <view class="ending-copy">愿每一次认真记录，都成为自己的知味手札。</view>
+    <button class="return-to-mine" bindtap="goMine">回到我的品鉴档案</button>
+    <view class="book-signature">盲酌 · 去掉酒标，只凭味道</view>
+  </view>
+</view>

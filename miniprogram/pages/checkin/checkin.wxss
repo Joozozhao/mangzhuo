@@ -8,6 +8,10 @@
 .section-number { color: #78866f; font-family: Georgia, serif; font-size: 14px; font-weight: 400; }
 .section-hint { color: #747e6e; font-size: 12px; line-height: 1.6; }
 .checkin-page .field-label { display: flex; align-items: center; gap: 12rpx; }
+.association-note { margin: 10rpx 0 16rpx; color: #687365; font-size: 12px; line-height: 1.7; }
+.association-ticket { margin: 0 0 20rpx; padding: 18rpx 20rpx; background: #eef2e9; border-left: 4rpx solid #496c50; }
+.association-ticket > view { display: flex; gap: 24rpx; color: #4c5c4b; font-size: 12px; line-height: 1.7; }
+.checkin-page .sample-picker { min-height: 44px; margin-top: 14rpx; background: #fbfaf5; }
 .required-mark, .optional-mark { color: #7d8776; font-size: 12px; font-weight: 400; }
 .required-mark { color: #6d795e; }
 .checkin-page .catalog-feedback { flex-wrap: nowrap; min-height: 36rpx; margin: 12rpx 0 20rpx; gap: 12rpx; font-size: 12px; line-height: 1.6; }

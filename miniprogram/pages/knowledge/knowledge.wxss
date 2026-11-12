@@ -1,26 +1,27 @@
-.knowledge-map{display:flex;align-items:stretch;gap:4rpx;border-bottom:1rpx solid #b9c5b1;margin:0 -12rpx 28rpx;}
+.knowledge-map{display:flex;align-items:stretch;gap:4rpx;border-bottom:1rpx solid #b9c5b1;margin:0 0 28rpx;}
 .knowledge-page .map-row{flex:1;display:flex;align-items:center;justify-content:center;min-width:0;min-height:48px;margin:0;padding:0 2rpx;background:transparent;border:0;border-radius:0;text-align:center;}
 .map-name{display:flex;align-items:center;justify-content:center;min-height:48px;min-width:108rpx;padding:0 4rpx;border-bottom:3rpx solid transparent;font-size:13px;color:#687365;line-height:1.5;}
 .map-row.active .map-name{border-bottom-color:#274d3b;color:#274d3b;font-weight:600;}
-.search-wrap{position:relative;margin:0 -12rpx 24rpx;}
+.search-wrap{position:relative;margin:0 0 24rpx;}
 .knowledge-page .search{width:100%;height:88rpx;min-height:48px;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:12rpx;padding:0 104rpx 0 24rpx;font-size:16px;box-sizing:border-box;}
-.search-clear{position:absolute;right:8rpx;top:50%;transform:translateY(-50%);min-height:44px;min-width:44px;margin:0;padding:8rpx;color:#274d3b;background:transparent;font-size:12px;}
-.journal.organized-page .resume-ticket{display:flex;align-items:stretch;width:auto !important;min-height:132rpx;margin:0 -12rpx 24rpx;padding:0;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:12rpx;text-align:left;overflow:visible;}
-.resume-stub{position:relative;display:flex;flex:0 0 132rpx;align-items:center;justify-content:center;padding:18rpx 8rpx;background:#e5eadb;border-right:1rpx dashed #bac5b0;border-radius:11rpx 0 0 11rpx;}
+.knowledge-page .search-clear{position:absolute;right:4rpx;top:50%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;width:44px;height:44px;min-height:44px;min-width:44px;margin:0;padding:0;border-radius:8rpx;color:#274d3b;background:transparent;font-size:12px;line-height:1.4;}
+.journal.organized-page .resume-ticket{display:flex;align-items:stretch;width:100% !important;min-height:112rpx;margin:0 0 24rpx;padding:0;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:12rpx;text-align:left;overflow:visible;}
+.resume-stub{position:relative;display:flex;flex:0 0 104rpx;align-items:center;justify-content:center;padding:16rpx 8rpx;background:#e5eadb;border-right:1rpx dashed #bac5b0;border-radius:11rpx 0 0 11rpx;}
 .resume-stub::before,.resume-stub::after{content:"";position:absolute;right:-14rpx;width:24rpx;height:24rpx;border:1rpx solid #b9c5b1;border-radius:50%;background:#f7f6ef;z-index:1;}
 .resume-stub::before{top:-13rpx;border-top-color:transparent;border-left-color:transparent;transform:rotate(45deg);}
 .resume-stub::after{bottom:-13rpx;border-bottom-color:transparent;border-right-color:transparent;transform:rotate(45deg);}
 .resume-stub-mark{font-family:"Songti SC","STSong",serif;font-size:32rpx;font-weight:600;letter-spacing:2rpx;color:#274d3b;}
-.resume-main{flex:1;min-width:0;padding:20rpx 12rpx 20rpx 24rpx;display:flex;flex-direction:column;justify-content:center;}
+.resume-main{flex:1;min-width:0;padding:16rpx 12rpx 16rpx 24rpx;display:flex;flex-direction:column;justify-content:center;}
 .resume-kicker{font-size:12px;color:#687365;line-height:1.5;}
-.resume-title{margin-top:4rpx;font-family:"Songti SC","STSong",serif;font-size:34rpx;font-weight:600;line-height:1.4;color:#28382e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.resume-open{display:flex;align-items:center;justify-content:center;flex:0 0 64rpx;}
+.resume-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-top:4rpx;font-family:"Songti SC","STSong",serif;font-size:16px;font-weight:600;line-height:1.45;color:#28382e;overflow:hidden;overflow-wrap:anywhere;}
+.resume-open{display:flex;align-items:center;justify-content:center;flex:0 0 56rpx;}
 .knowledge-page .knowledge-controls{margin-bottom:18rpx;}
-.knowledge-page .catalog-panel,.knowledge-page .knowledge-results{margin-left:-12rpx;margin-right:-12rpx;}
+.knowledge-page .catalog-panel,.knowledge-page .knowledge-results{margin-left:0;margin-right:0;}
 .knowledge-page .results-heading{border-bottom:0;min-height:44px;padding:0 0 18rpx;margin:0;align-items:baseline;}
 .knowledge-page .results-heading .panel-title{font-size:52rpx;font-weight:600;line-height:1.35;}
-.category-list{display:flex;flex-wrap:wrap;gap:12rpx;margin:4rpx 0 24rpx;}
-.knowledge-page .category-chip{width:auto !important;min-height:40px;padding:8rpx 20rpx;margin:0;background:#fbfaf5;border:1rpx solid #b9c5b1;color:#4c5c4b;font-size:12px;border-radius:30rpx;line-height:1.5;}
+.category-list{display:flex;flex-wrap:wrap;align-items:flex-start;gap:8px;margin:4rpx 0 24rpx;}
+.knowledge-page .category-chip{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:auto !important;max-width:100%;min-width:44px;min-height:44px;height:auto;padding:8px 16rpx;margin:0;background:#fbfaf5;border:1rpx solid #b9c5b1;color:#4c5c4b;font-size:13px;border-radius:999rpx;line-height:1.4;text-align:center;white-space:normal;}
+.category-label{display:block;min-width:0;overflow-wrap:anywhere;}
 .knowledge-page .category-chip.active{background:#274d3b;border-color:#274d3b;color:#f7f6ef;}
 .knowledge-ledger,.wine-ledger{position:relative;border:1rpx solid #b9c5b1;border-radius:12rpx;background:#fbfaf5;}
 .knowledge-ledger::before,.knowledge-ledger::after,.wine-ledger::before,.wine-ledger::after{content:"";position:absolute;left:130rpx;width:26rpx;height:26rpx;border:1rpx solid #b9c5b1;border-radius:50%;background:#f7f6ef;z-index:1;}
@@ -76,4 +77,4 @@
 .remote-feedback .text-link{flex-shrink:0;}
 .knowledge-page .remote-more{display:flex;justify-content:center;margin:18rpx auto 0;}
 .catalog-panel .catalog-feedback{margin:0 0 16rpx;font-size:12px;color:#687365;}
-@media(max-width:350px){.knowledge-map,.search-wrap,.journal.organized-page .resume-ticket,.knowledge-page .catalog-panel,.knowledge-page .knowledge-results{margin-left:0;margin-right:0;}.map-name{min-width:84rpx;font-size:12px;}.ledger-stub{flex-basis:124rpx;}.knowledge-ledger::before,.knowledge-ledger::after,.wine-ledger::before,.wine-ledger::after{left:110rpx;}.ledger-copy{padding-left:18rpx;}.note-title{font-size:34rpx;}}
+@media(max-width:350px){.map-name{min-width:84rpx;font-size:12px;}.ledger-stub{flex-basis:124rpx;}.knowledge-ledger::before,.knowledge-ledger::after,.wine-ledger::before,.wine-ledger::after{left:110rpx;}.ledger-copy{padding-left:18rpx;}.note-title{font-size:34rpx;}}

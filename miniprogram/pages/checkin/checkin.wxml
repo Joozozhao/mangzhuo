@@ -7,6 +7,17 @@
   <form bindsubmit="submit">
     <view class="form-section wine-section" id="wine-section">
       <view class="section-heading"><view class="section-title"><text class="section-number">01</text>这一杯</view><text class="section-hint">只填酒名也能保存</text></view>
+      <view class="field-label" for="note-room">所属酒局<text class="optional-mark">选填</text></view>
+      <picker range="{{roomOptions}}" range-key="displayName" value="{{roomIndex}}" bindchange="chooseRoom" aria-label="选择手记所属酒局">
+        <view class="input picker-value"><text class="{{roomIndex < 0 ? 'picker-placeholder' : ''}}">{{selectedRoom ? selectedRoom.name : '个人手记 · 不关联酒局'}}</text><view class="picker-chevron"></view></view>
+      </picker>
+      <view class="association-note">{{roomOptions.length ? '关联后，会一并记下这场酒局的酒款与参与人数。' : '暂未发现你参与的本机酒局，仍可写个人手记。'}}</view>
+      <view class="association-ticket" wx:if="{{selectedRoom}}">
+        <view><text>{{selectedRoom.sampleCount}} 款酒样</text><text>{{selectedRoom.memberCount}} 人同席</text></view>
+        <picker range="{{sampleOptions}}" range-key="label" value="{{sampleIndex}}" bindchange="chooseSample" aria-label="选择手记对应酒样">
+          <view class="input picker-value sample-picker"><text class="{{sampleIndex < 0 ? 'picker-placeholder' : ''}}">{{selectedSample ? selectedSample.label : '选择对应酒样（选填）'}}</text><view class="picker-chevron"></view></view>
+        </picker>
+      </view>
       <label class="field-label" for="wine-title">酒款 / 盲样名称<text class="required-mark">必填</text></label>
       <input id="wine-title" class="input {{titleError ? 'is-invalid' : ''}}" name="title" value="{{title}}" bindinput="onTitleInput" maxlength="40" placeholder="输入酒名或盲样编号" placeholder-class="form-placeholder" focus="{{titleFocused}}" bindblur="onTitleBlur" confirm-type="done" cursor-spacing="24" />
       <view wx:if="{{titleError}}" class="field-error" role="alert">{{titleError}}</view>

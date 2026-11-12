@@ -1,0 +1,123 @@
+{
+  "phase": "before",
+  "viewport": {
+    "width": 402,
+    "height": 776
+  },
+  "screenshot": "/Users/joozo/Github/Codex/mangzhuo/docs/design/2026-11-12-category-polish/before.png",
+  "checks": [],
+  "metrics": [
+    {
+      "label": "全部",
+      "size": {
+        "width": 46,
+        "height": 40
+      },
+      "position": {
+        "left": 18,
+        "top": 155.3984375
+      },
+      "display": "block",
+      "align": "normal",
+      "radius": null,
+      "font": "12px",
+      "textBox": null
+    },
+    {
+      "label": "香型入门",
+      "size": {
+        "width": 70,
+        "height": 40
+      },
+      "position": {
+        "left": 70,
+        "top": 155.3984375
+      },
+      "display": "block",
+      "align": "normal",
+      "radius": null,
+      "font": "12px",
+      "textBox": null
+    },
+    {
+      "label": "酿造工艺",
+      "size": {
+        "width": 70,
+        "height": 40
+      },
+      "position": {
+        "left": 146,
+        "top": 155.3984375
+      },
+      "display": "block",
+      "align": "normal",
+      "radius": null,
+      "font": "12px",
+      "textBox": null
+    },
+    {
+      "label": "识酒入门",
+      "size": {
+        "width": 70,
+        "height": 40
+      },
+      "position": {
+        "left": 222,
+        "top": 155.3984375
+      },
+      "display": "block",
+      "align": "normal",
+      "radius": null,
+      "font": "12px",
+      "textBox": null
+    },
+    {
+      "label": "品鉴方法",
+      "size": {
+        "width": 70,
+        "height": 40
+      },
+      "position": {
+        "left": 298,
+        "top": 155.3984375
+      },
+      "display": "block",
+      "align": "normal",
+      "radius": null,
+      "font": "12px",
+      "textBox": null
+    },
+    {
+      "label": "香型笔记",
+      "size": {
+        "width": 70,
+        "height": 40
+      },
+      "position": {
+        "left": 18,
+        "top": 201.3984375
+      },
+      "display": "block",
+      "align": "normal",
+      "radius": null,
+      "font": "12px",
+      "textBox": null
+    },
+    {
+      "label": "盲品入门",
+      "size": {
+        "width": 70,
+        "height": 40
+      },
+      "position": {
+        "left": 94,
+        "top": 201.3984375
+      },
+      "display": "block",
+      "align": "normal",
+      "radius": null,
+      "font": "12px",
+      "textBox": null
+    }
+  ]
+}

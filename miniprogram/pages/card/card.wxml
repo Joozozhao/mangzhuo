@@ -1,23 +1,45 @@
-<view class="journal form-page card-page">
+<brand-nav />
+<view class="journal organized-page card-page">
   <block wx:if="{{note}}">
+    <view class="page-kicker"><text>杯 中 留 念</text><text class="chapter-number">品鉴手记</text></view>
     <view class="card-heading">
-      <view class="card-kicker">品鉴手记 · {{note.date}}</view>
-      <view class="page-title">这一杯，值得留存</view>
-      <view class="card-description">保存图片，或分享小程序给朋友。</view>
+      <view class="card-kicker">一 杯 一 记</view>
+      <view class="compact-title">这一杯，值得留存</view>
+      <view class="heading-desc">先写感受，再与同席好友分享。</view>
     </view>
-    <button wx:if="{{!profileCompleted}}" class="card-profile-hint" bindtap="goProfile">完善头像昵称，让酒卡署上你的名字 →</button>
-    <view class="card-actions">
-      <button wx:if="{{imagePath}}" class="btn-primary" open-type="agreePrivacyAuthorization" bindagreeprivacyauthorization="save">保存酒卡图片</button>
-      <button wx:else class="btn-primary" loading="{{busy}}" disabled="{{busy}}" bindtap="renderCard">{{busy ? '正在生成酒卡' : '重新生成酒卡'}}</button>
-      <button class="btn-secondary" open-type="share" disabled="{{busy || !imagePath}}">分享小程序</button>
+    <button wx:if="{{!profileCompleted}}" class="card-profile-hint" bindtap="goProfile"><text>完善头像昵称，为酒卡署名</text><text aria-hidden="true">→</text></button>
+    <view class="preview-panel" aria-busy="{{busy}}">
+      <view class="preview-heading"><text>我的品鉴酒卡</text><text wx:if="{{imagePath}}" class="preview-hint">点击可查看大图</text></view>
+      <canvas type="2d" id="poster" class="poster-canvas"></canvas>
+      <button wx:if="{{imagePath}}" class="poster-preview-button" bindtap="preview" aria-label="查看品鉴酒卡大图，{{note.title}}">
+        <image src="{{imagePath}}" mode="widthFix" class="poster-image" show-menu-by-longpress aria-hidden="true"/>
+      </button>
+      <view wx:elif="{{busy}}" class="card-placeholder" role="status"><text class="loading-mark"></text><text>正在把这一杯写进酒卡</text></view>
+      <view wx:elif="{{renderError}}" class="card-placeholder"><text>酒卡暂时没有生成成功</text><button class="retry-button" bindtap="renderCard">重新生成</button></view>
     </view>
-    <view class="card-action-note">保存图片可发朋友圈；好友打开分享后进入小程序首页。</view>
-    <canvas type="2d" id="poster" class="poster-canvas"></canvas>
-    <view class="preview-heading"><text>酒卡预览</text><text wx:if="{{imagePath}}" class="preview-hint">点击查看大图</text></view>
-    <image wx:if="{{imagePath}}" src="{{imagePath}}" mode="widthFix" class="poster-image" show-menu-by-longpress bindtap="preview" aria-label="预览分享酒卡"/>
-    <view wx:elif="{{busy}}" class="card-placeholder">正在生成酒卡，请稍候…</view>
-    <view wx:elif="{{renderError}}" class="card-placeholder">酒卡没有生成成功，请点击上方按钮重试。</view>
+    <view class="share-panel">
+      <view class="share-caption">留存风味，也分享此刻</view>
+      <view class="card-actions">
+        <button wx:if="{{imagePath}}" class="btn-primary" open-type="agreePrivacyAuthorization" bindagreeprivacyauthorization="save">保存酒卡图片</button>
+        <button wx:else class="btn-primary" loading="{{busy}}" disabled="{{busy}}" bindtap="renderCard">{{busy ? '正在生成酒卡' : '生成酒卡'}}</button>
+        <button class="btn-secondary" open-type="share" disabled="{{busy || !imagePath}}">分享给朋友</button>
+      </view>
+      <view class="card-action-note">保存后可发布至朋友圈；微信分享将使用酒卡作封面。</view>
+    </view>
+    <view class="note-detail">
+      <view class="detail-title-row"><text class="detail-title">{{note.title}}</text><text class="detail-date">{{note.date}}</text></view>
+      <view class="detail-tags"><text class="detail-tag">{{note.aromaType}}</text></view>
+      <view class="taste-row" wx:if="{{note.aroma}}"><text class="taste-label">闻香</text><text class="taste-copy">{{note.aroma}}</text></view>
+      <view class="taste-row" wx:if="{{note.taste}}"><text class="taste-label">入口</text><text class="taste-copy">{{note.taste}}</text></view>
+      <view class="taste-row" wx:if="{{note.finish}}"><text class="taste-label">回味</text><text class="taste-copy">{{note.finish}}</text></view>
+      <view class="note-memory" wx:if="{{note.note}}">{{note.note}}</view>
+    </view>
+    <view class="card-footer-note">手记保存在本机；分享小程序时，好友从首页进入。</view>
   </block>
-  <view wx:else class="empty-note">没有找到这条记录，请回首页重新选择。</view>
-  <button class="text-link card-home" bindtap="home">返回首页</button>
+  <view wx:else class="empty-state">
+    <view class="empty-title">没有找到这篇手记</view>
+    <view class="empty-desc">回到首页，选择一篇已保存的手记。</view>
+    <button class="btn-primary" bindtap="home">返回首页</button>
+  </view>
+  <view class="quiet-footer">一杯一记 · 留下风味 · 也留下记忆</view>
 </view>

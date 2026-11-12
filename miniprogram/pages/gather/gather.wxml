@@ -17,9 +17,6 @@
         <view class="ink-description"><view>一人组织，同席品鉴。</view><view>先为酒样编上号，再留下自己的感受。</view></view>
         <button class="btn-primary ink-action" bindtap="goToCreate"><text>发起桌上酒局</text><text class="button-arrow" aria-hidden="true">↗</text></button>
       </view>
-      <view class="tasting-steps"><text>一 酒样编号</text><text>二 各记感受</text><text>三 一起揭晓</text></view>
-      <button class="inline-action join-entry" bindtap="goToJoin"><text>已有一席，凭号入座</text><text class="action-arrow" aria-hidden="true">↗</text></button>
-      <button class="inline-action demo-entry" bindtap="openDemoRoom"><view><view class="demo-title">第一次盲品？</view><view class="meta">先看看示例酒局</view></view><text class="action-arrow" aria-hidden="true">↗</text></button>
     </block>
     <block wx:else>
       <view class="ink-block">
@@ -37,7 +34,6 @@
   </view>
   <view id="local-room-records" class="content-panel room-panel local-room-panel" wx:if="{{currentTab === 'local'}}">
     <view class="records-context"><text>桌上品鉴</text><text>本机记录</text></view>
-    <view class="panel-heading records-heading"><view class="panel-title">酒局记录</view><view class="meta">{{roomCounts.all}} 场</view></view>
     <view class="room-filters" wx:if="{{rooms.length}}">
       <button class="room-filter {{roomFilter === 'all' ? 'is-selected' : ''}}" bindtap="selectRoomFilter" data-filter="all" aria-pressed="{{roomFilter === 'all'}}"><view class="room-filter-label">全部 {{roomCounts.all}}</view></button>
       <button class="room-filter {{roomFilter === 'playing' ? 'is-selected' : ''}}" bindtap="selectRoomFilter" data-filter="playing" aria-pressed="{{roomFilter === 'playing'}}"><view class="room-filter-label">进行中</view></button>
@@ -51,8 +47,10 @@
           <text class="ticket-code-value">{{item.roomCode}}</text>
         </view>
         <view class="ticket-main">
-          <view class="ticket-status">{{item.statusLabel}}</view>
-          <view class="ticket-title">{{item.displayName}}</view>
+          <view class="ticket-header-row">
+            <view class="ticket-title">{{item.displayName}}</view>
+            <view class="ticket-status">{{item.statusLabel}}</view>
+          </view>
           <view class="ticket-foot">
             <view class="ticket-facts"><text>{{item.sampleCount}} 款酒样</text><text>{{item.memberCount}} 人参与</text></view>
             <view class="ticket-action"><text>{{item.actionLabel}}</text><image class="ticket-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></view>
@@ -81,13 +79,12 @@
             <text class="ticket-code-value">#{{item.id}}</text>
           </view>
           <view class="ticket-main">
-            <view class="online-status-row">
-              <view class="ticket-status">{{item.status === 1 ? '已揭晓' : '进行中'}}</view>
-              <text wx:if="{{item.isOwner}}" class="owner-pill">我发起的</text>
-            </view>
+          <view class="ticket-header-row">
             <view class="ticket-title">{{item.title}}</view>
+              <view class="ticket-status">{{item.status === 1 ? '已揭晓' : '进行中'}}</view>
+            </view>
             <view class="ticket-foot">
-              <view class="ticket-facts"><text>{{item.createdAtText || '近期活动'}}</text></view>
+            <view class="ticket-facts"><text wx:if="{{item.isOwner}}" class="owner-pill">我发起的</text><text>{{item.createdAtText || '近期活动'}}</text></view>
               <view class="ticket-action"><text>{{item.status === 1 ? '查看结果' : '参与品鉴'}}</text><image class="ticket-arrow" src="/assets/icons/arrow-right.svg" mode="aspectFit" aria-hidden="true"/></view>
             </view>
           </view>

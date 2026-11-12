@@ -51,11 +51,16 @@ function makePage({
   // Real readers and identity predicates, isolated from device storage and authentication.
   const storage = loadService('storage');
   const journal = loadService('journal');
+  const journalContext = loadService('journalContext', { './storage': storage });
   const identity = loadService('identity', {
     './storage': storage,
     './cloudDb': { initCloud: () => false },
     './welinkClient': { addSessionListener() {}, hasValidSession: () => session.valid },
     '../config': { IDENTITY_PROVIDER: 'welink' }
+  });
+  const memberLevel = loadService('memberLevel', {
+    './storage': storage,
+    '../utils/scoring': require('../miniprogram/utils/scoring')
   });
   identity.loginWithWeChat = () => { calls.login++; return login({ values, session }); };
   identity.logoutWithWeChat = () => { calls.logout++; return logout({ values, session }); };
@@ -77,7 +82,9 @@ function makePage({
       const dependencies = {
         '../../services/storage': storage,
         '../../services/journal': journal,
-        '../../services/identity': identity
+        '../../services/journalContext': journalContext,
+        '../../services/identity': identity,
+        '../../services/memberLevel': memberLevel
       };
       if (Object.hasOwn(dependencies, name)) return dependencies[name];
       throw new Error('Unexpected dependency: ' + name);
@@ -97,14 +104,13 @@ test('Mine starts idle and loads an empty local archive without authentication',
   page.onShow();
   assert.equal(page.data.count, 0);
   assert.equal(page.data.roomCount, 0);
-  assert.equal(page.data.aromaCount, 0);
   assert.equal(page.data.notes.length, 0);
   assert.deepEqual(tabSelections, [{ selected: 3 }]);
   assert.equal(calls.login, 0);
   assert.deepEqual(writes, []);
 });
 
-test('counts include every local note, distinct current-user rooms and only judged aroma exclusions', () => {
+test('counts include every local note and distinct current-user rooms', () => {
   const user = signedInUser({ nickname: '保存的昵称', avatar: 'wxfile://saved.jpg', profileCompleted: true });
   const notes = ['酱香型', '酱香型', '浓香型', undefined, null, '', '暂不判断', '其他', '其它', '自定义香型', '暂不判断 ']
     .map((aromaType, index) => ({ id: index < 2 ? 'duplicate-id' : 'note-' + index, userId: 'another-user', aromaType }));
@@ -121,7 +127,6 @@ test('counts include every local note, distinct current-user rooms and only judg
   assert.equal(page.data.count, 11);
   assert.equal(page.data.notes.length, 11);
   assert.equal(page.data.roomCount, 2);
-  assert.equal(page.data.aromaCount, 5);
   assert.equal(values.mz_tasting_journal_v1, notes);
   assert.deepEqual(writes, []);
 });
@@ -223,7 +228,6 @@ test('the real journal reader treats missing or invalid stored collections as an
     page.onShow();
     assert.equal(page.data.notes.length, 0);
     assert.equal(page.data.count, 0);
-    assert.equal(page.data.aromaCount, 0);
     assert.deepEqual(writes, []);
   }
 });
@@ -457,4 +461,15 @@ test('logged-in stub displays avatar + nickname and clicking opens the profile e
   assert.equal(page.data.showProfileModal, false);
   assert.equal(page.data.displayNickname, '青莲居士');
   assert.deepEqual(toasts, [{ title: '资料已更新', icon: 'success' }]);
+});
+
+test('member level entry computes current rank and opens the standalone guide', () => {
+  const user = signedInUser({ nickname: '品鉴客', profileCompleted: true });
+  const { page, navigations } = makePage({ user });
+  page.onShow();
+  assert.ok(page.data.memberLevel, 'memberLevel should be populated');
+  assert.equal(page.data.memberLevel.current.level, 1);
+  assert.equal(page.data.memberLevel.current.title, '问泉客');
+  page.openMemberLevels();
+  assert.deepEqual(navigations, [{ type: 'navigateTo', url: '/pages/member-level/member-level' }]);
 });

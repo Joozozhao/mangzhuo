@@ -20,7 +20,10 @@
         <image wx:if="{{item.avatarImg}}" class="user-avatar user-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
         <view wx:else class="user-avatar">{{item.avatar}}</view>
         <view class="user-meta">
-          <view class="user-name">{{item.nickname}}</view>
+          <view class="user-name-line">
+            <text class="user-name">{{item.nickname}}</text>
+            <text class="user-level-badge" wx:if="{{item.levelTitle}}">{{item.levelTitle}}</text>
+          </view>
           <view class="user-detail">品牌命中率：{{item.hitBrandsCount}} 款酒</view>
         </view>
         <view class="user-score-box">

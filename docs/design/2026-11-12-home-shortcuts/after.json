@@ -1,0 +1,47 @@
+{
+  "phase": "after",
+  "viewport": {
+    "width": 402,
+    "height": 776
+  },
+  "metrics": [
+    {
+      "selector": ".home-join-entry",
+      "text": "凭号入座输入本机房间号",
+      "size": {
+        "width": 173,
+        "height": 112
+      },
+      "offset": {
+        "left": 24,
+        "top": 456.59375
+      }
+    },
+    {
+      "selector": ".home-demo-entry",
+      "text": "初次盲品？先看看示例酒局",
+      "size": {
+        "width": 173,
+        "height": 112
+      },
+      "offset": {
+        "left": 205,
+        "top": 456.59375
+      }
+    }
+  ],
+  "checks": [
+    {
+      "selector": ".home-join-entry",
+      "route": "packages/blind/pages/join/join",
+      "valid": true
+    },
+    {
+      "selector": ".home-demo-entry",
+      "route": "packages/blind/pages/reveal/reveal",
+      "valid": true,
+      "roomId": "room_demo_01",
+      "sampleCount": 4
+    }
+  ]
+}

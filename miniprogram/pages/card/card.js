@@ -44,17 +44,20 @@ Page({
         ctx.fillStyle = '#f7f6ef';
         ctx.fillRect(0, 0, 750, 1200);
         const n = this.data.note;
-        const text = (value, x, y, size, color = '#28251f') => {
+        ctx.strokeStyle = '#b9c5b1';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(22, 22, 706, 1156);
+        const text = (value, x, y, size, color = '#28382e', weight = '') => {
           ctx.fillStyle = color;
-          ctx.font = size + 'px "Songti SC", "STSong", "SimSun", serif';
+          ctx.font = weight + ' ' + size + 'px "Songti SC", "STSong", "SimSun", serif';
           ctx.fillText(value, x, y);
         };
-        const wrap = (value, y, size, maxLines) => {
+        const wrap = (value, x, y, size, maxLines, width = 570, color = '#28382e') => {
           let line = '', lines = [];
           ctx.font = size + 'px "Songti SC", "STSong", "SimSun", serif';
           for (const char of String(value || '')) {
             const br = char === String.fromCharCode(10);
-            if (ctx.measureText(line + char).width > 630 || br) {
+            if (ctx.measureText(line + char).width > width || br) {
               lines.push(line);
               line = '';
             }
@@ -64,28 +67,34 @@ Page({
           if (lines.length > maxLines) {
             lines = lines.slice(0, maxLines);
             let last = lines[maxLines - 1];
-            while (last && ctx.measureText(last + '…').width > 630) last = last.slice(0, -1);
+            while (last && ctx.measureText(last + '…').width > width) last = last.slice(0, -1);
             lines[maxLines - 1] = last + '…';
           }
-          lines.forEach(row => { text(row, 60, y, size); y += size * 1.6; });
+          lines.forEach(row => { text(row, x, y, size, color); y += size * 1.6; });
           return y;
         };
-        text('盲酌', 155, 95, 46);
-        text('白酒品鉴手记', 450, 90, 24, '#274d3b');
-        ctx.fillStyle = '#cfc3b0';
-        ctx.fillRect(60, 125, 630, 1);
-        text([n.date, n.aromaType].filter(Boolean).join(' · '), 60, 180, 24, '#897b68');
-        let y = wrap(n.title, 255, 42, 2) + 22;
+        text('白酒品鉴手记', 234, 96, 23, '#687365');
+        text('去掉酒标，只凭味道', 60, 171, 20, '#687365');
+        text([n.date, n.aromaType].filter(Boolean).join(' · '), 60, 207, 20, '#687365');
+        ctx.fillStyle = '#d6ddcf';
+        ctx.fillRect(60, 234, 630, 1);
+        let y = wrap(n.title, 60, 302, 42, 2) + 26;
         [['闻香', n.aroma], ['入口', n.taste], ['回味', n.finish]].forEach(pair => {
-          text(pair[0], 60, y, 24, '#274d3b');
-          y += 37;
-          y = wrap(pair[1] || '未记录', y, 26, 2) + 15;
+          text(pair[0], 62, y, 21, '#274d3b');
+          ctx.fillStyle = '#d6ddcf';
+          ctx.fillRect(62, y + 17, 626, 1);
+          y = wrap(pair[1] || '未记录', 62, y + 65, 24, 2, 626, '#52654c') + 18;
         });
         if (n.note) {
-          text('品鉴随记', 60, y + 8, 24, '#274d3b');
-          wrap(n.note, y + 45, 24, 3);
+          const memoryTop = Math.min(y + 4, 910);
+          ctx.fillStyle = '#edf0e7';
+          ctx.fillRect(60, memoryTop, 630, 132);
+          ctx.fillStyle = '#a8382b';
+          ctx.fillRect(60, memoryTop, 3, 132);
+          text('此刻的手记', 80, memoryTop + 33, 19, '#274d3b');
+          wrap(n.note, 80, memoryTop + 76, 23, 2, 590, '#52654c');
         }
-        text('只凭味道 · 记录这一杯', 60, 1150, 23, '#897b68');
+        text('一杯一记 · 留下风味，也留下记忆', 60, 1150, 19, '#687365');
 
         const exportCard = () => {
           if (token !== this._renderToken) return;
@@ -104,21 +113,29 @@ Page({
           identity.drawCanvasAvatar(canvas, ctx, 62, 1070, 26, user.avatar, () => token === this._renderToken)
             .then(() => {
               if (token !== this._renderToken) return;
-              ctx.fillStyle = '#cfc3b0';
-              ctx.fillRect(60, 1048, 630, 1);
+              ctx.fillStyle = '#d6ddcf';
+              ctx.fillRect(60, 1034, 630, 1);
               ctx.font = '24px "Songti SC", "STSong", "SimSun", serif';
-              ctx.fillStyle = '#28251f';
-              ctx.fillText(user.nickname || '匿名品鉴客', 126, 1092, 560);
-              text('盲酌品鉴者', 126, 1118, 20, '#897b68');
+              ctx.fillStyle = '#28382e';
+              ctx.fillText(user.nickname || '匿名品鉴客', 126, 1092, 500);
+              text('盲酌品鉴者', 126, 1118, 18, '#687365');
+              // 红色印章是品牌图形标识，不依赖系统书法字体。
+              ctx.strokeStyle = '#a8382b';
+              ctx.lineWidth = 2;
+              ctx.strokeRect(630, 1064, 62, 46);
+              ctx.font = '20px "Songti SC", "STSong", "SimSun", serif';
+              ctx.fillStyle = '#a8382b';
+              ctx.fillText('知味', 640, 1095);
               exportCard();
             })
             .catch(() => { if (token === this._renderToken) exportCard(); });
         };
 
         // logo 同样走带超时的加载器，避免极端情况下酒卡一直 busy
-        identity.loadCanvasImage(canvas, '/assets/brand/libai.png').then(img => {
+        identity.loadCanvasImage(canvas, '/assets/brand/mangzhuo-lockup-v6.png').then(img => {
           if (token !== this._renderToken) return;
-          if (img) ctx.drawImage(img, 55, 30, 90, 90);
+          if (img) ctx.drawImage(img, 60, 54, 154, 72);
+          else text('盲酌', 60, 106, 48, '#274d3b');
           drawAuthor();
         }).catch(() => { if (token === this._renderToken) drawAuthor(); });
       } catch (e) {

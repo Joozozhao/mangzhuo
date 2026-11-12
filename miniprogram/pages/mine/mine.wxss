@@ -1,33 +1,35 @@
-/* 我的：身份票、统计票和日期手记册。沿用酒局票签的纸白与竹绿。 */
-.mine-page .profile-panel{margin:26rpx -12rpx 36rpx;}
-.profile-ticket{display:flex;align-items:stretch;min-height:224rpx;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:12rpx;}
-.journal.organized-page .profile-stub{position:relative;display:flex;flex:0 0 168rpx;flex-direction:column;align-items:center;justify-content:center;gap:12rpx;min-width:0;margin:0;padding:22rpx 12rpx;background:#e5eadb;border-right:1rpx dashed #bac5b0;border-radius:11rpx 0 0 11rpx;overflow:visible;}
-.profile-stub::before,.profile-stub::after{content:"";position:absolute;right:-14rpx;width:26rpx;height:26rpx;border:1rpx solid #b9c5b1;border-radius:50%;background:#f7f6ef;z-index:1;}
-.profile-stub::before{top:-14rpx;border-top-color:transparent;border-left-color:transparent;transform:rotate(45deg);}
-.profile-stub::after{bottom:-14rpx;border-bottom-color:transparent;border-right-color:transparent;transform:rotate(45deg);}
-.journal.organized-page .profile-avatar-action{display:flex;align-items:center;justify-content:center;align-self:stretch;flex:1;width:100% !important;min-width:0;margin:0;padding:0;background:transparent;border:0;border-radius:0;}
-.journal.organized-page .stub-avatar-btn{display:flex;align-items:center;justify-content:center;width:108rpx !important;height:108rpx;min-width:44px;min-height:44px;margin:0;padding:0;background:transparent;border:0;border-radius:50%;}
-.pe-avatar{display:flex;align-items:center;justify-content:center;width:112rpx;height:112rpx;flex-shrink:0;border-radius:8rpx;overflow:hidden;}
-.pe-avatar-logged{width:104rpx;height:104rpx;border-radius:50%;border:2rpx solid #274d3b;background:#fbfaf5;}
-.pe-emoji{font-family:"Songti SC","STSong",serif;font-size:44rpx;line-height:1.4;color:#274d3b;}
-.pe-avatar-logged.pe-emoji{font-size:38rpx;font-weight:600;}
-.journal.organized-page .stub-nickname-btn{display:flex;align-items:center;justify-content:center;width:100% !important;min-width:0;min-height:48rpx;margin:0;padding:4rpx 8rpx;background:rgba(251,250,245,0.75);border:1rpx solid #b9c5b1;border-radius:24rpx;}
-.stub-nickname-text{max-width:100%;font-family:"Songti SC","STSong",serif;font-size:24rpx;font-weight:600;line-height:1.35;color:#274d3b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.profile-main{flex:1;min-width:0;padding:26rpx 24rpx;display:flex;flex-direction:column;justify-content:center;}
-.profile-title{font-family:"Songti SC","STSong","SimSun",serif;font-size:44rpx;font-weight:600;line-height:1.4;color:#28382e;}
-.profile-state-row{display:flex;align-items:center;justify-content:space-between;gap:16rpx;margin-top:16rpx;}
-.profile-copy{flex:1;min-width:0;padding-right:16rpx;border-right:1rpx dashed #bac5b0;}
-.identity-state{display:inline-flex;align-items:center;max-width:100%;padding:3rpx 14rpx;border-radius:30rpx;background:#e5eadb;color:#274d3b;font-size:12px;line-height:1.6;}
-.mine-profile-hint{margin-top:10rpx;font-size:12px;line-height:1.7;color:#687365;}
-.journal.organized-page .profile-action{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:auto !important;min-height:44px;min-width:84px;margin:0;padding:6rpx 22rpx;border:1rpx solid #274d3b;border-radius:8rpx;background:transparent;color:#274d3b;font-size:14px;line-height:1.4;}
+/* 我的：简洁的双行资料卡，统计票与日期手记册。 */
+.mine-page .profile-panel{margin:26rpx 0 36rpx;}
+.profile-ticket{padding:30rpx 32rpx;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:14rpx;}
+.profile-identity-row{display:flex;align-items:center;gap:24rpx;min-width:0;}
+.journal.organized-page .profile-avatar-action{display:flex;align-items:center;justify-content:center;flex:0 0 48px;width:48px!important;height:48px;min-width:48px;min-height:48px;margin:0;padding:0;background:#274d3b;border:0;border-radius:8rpx;overflow:hidden;}
+.pe-avatar{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:48px;height:48px;overflow:hidden;}
+.pe-emoji{font-family:"Songti SC","STSong",serif;font-size:24px;line-height:1.4;color:#f7f6ef;}
+.profile-main{flex:1;min-width:0;}
+.profile-title{display:block;font-family:"Songti SC","STSong","SimSun",serif;font-size:19px;font-weight:600;line-height:1.45;color:#274d3b;}
+.journal.organized-page .profile-name-action{display:block;width:100%;min-width:0;min-height:48px;margin:0;padding:0;background:transparent;border:0;border-radius:0;text-align:left;}
+.profile-nickname-text{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mine-profile-hint{display:block;margin-top:5rpx;font-size:12px;line-height:1.6;color:#687365;overflow-wrap:anywhere;}
+.journal.organized-page .profile-action{display:flex;align-items:center;justify-content:center;flex:0 0 86px;width:86px!important;min-width:86px;min-height:44px;margin:0;padding:8rpx 12rpx;border:1rpx solid #274d3b;border-radius:8rpx;background:#274d3b;color:#fbfaf5;font-size:14px;font-weight:500;line-height:1.4;}
+.journal.organized-page .profile-action.profile-edit-action{background:transparent;border-color:#b9c5b1;color:#274d3b;font-weight:400;}
 .journal.organized-page .profile-action.is-busy{opacity:.65;}
-.mine-page .profile-stats{display:flex;align-items:stretch;gap:14rpx;margin:0 -12rpx 48rpx;}
+
+/* 品阶是整行入口，细线与留白分组。 */
+.journal.organized-page .level-seal-badge{display:flex;align-items:center;gap:20rpx;width:100%;min-width:0;min-height:58px;margin:24rpx 0 0;padding:22rpx 0 0;background:transparent;border:0;border-top:1rpx solid #d6ddcf;border-radius:0;text-align:left;}
+.seal-meta{flex:1;min-width:0;}
+.seal-title-row{display:flex;align-items:baseline;flex-wrap:wrap;gap:12rpx;}
+.seal-rank{font-family:"Songti SC","STSong",serif;font-size:17px;color:#8c5e24;}
+.seal-name{font-family:"Songti SC","STSong",serif;font-size:18px;font-weight:500;color:#274d3b;}
+.seal-progress-text{font-size:12px;color:#687365;margin-top:4rpx;line-height:1.7;overflow-wrap:anywhere;}
+.seal-arrow{width:30rpx;height:30rpx;opacity:.65;}
+.mine-page .profile-stats{display:flex;align-items:stretch;gap:14rpx;margin:0 0 48rpx;}
 .stat-ticket{position:relative;flex:1;min-width:0;min-height:174rpx;padding:22rpx 26rpx;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:12rpx;}
+.journal.organized-page .stat-score-ticket{flex:1;width:auto!important;min-width:0;margin:0;text-align:left;font-weight:400;background:#f8f9f2;border-color:#b5c4ad;}
 .journal.organized-page .stat-link{display:block;flex:1;width:auto !important;min-width:0;margin:0;padding:22rpx 26rpx;text-align:left;font-weight:400;}
 .stat-number{font-family:Georgia,"Times New Roman",serif;font-size:64rpx;line-height:1.15;color:#274d3b;font-weight:400;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;}
 .stat-copy{display:flex;align-items:center;gap:6rpx;flex-wrap:wrap;margin-top:16rpx;padding-top:14rpx;border-top:1rpx dashed #bac5b0;color:#687365;font-size:13px;line-height:1.6;}
 .small-arrow{display:block;width:30rpx;height:30rpx;flex-shrink:0;}
-.mine-page .record-panel{margin:0 -12rpx 34rpx;}
+.mine-page .record-panel{margin:0 0 34rpx;}
 .organized-page .notes-heading{align-items:center;gap:18rpx;min-height:44px;margin:0 0 24rpx;padding:0;border:0;}
 .organized-page .notes-heading .panel-title{font-size:56rpx;font-weight:600;line-height:1.35;letter-spacing:1rpx;}
 .journal.organized-page .mine-checkin{display:flex;align-items:center;justify-content:center;gap:10rpx;flex-shrink:0;width:auto !important;min-height:44px;margin:0;padding:10rpx 24rpx;border:0;border-radius:40rpx;background:#274d3b;color:#f7f6ef;font-size:14px;line-height:1.5;}
@@ -48,6 +50,8 @@
 .ledger-copy{flex:1;min-width:0;padding:24rpx 0 24rpx 26rpx;}
 .note-aroma{font-size:12px;line-height:1.6;color:#687365;overflow-wrap:anywhere;}
 .note-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:6rpx;font-family:"Songti SC","STSong","SimSun",serif;font-size:44rpx;font-weight:500;line-height:1.4;color:#28382e;overflow-wrap:anywhere;}
+.note-room{margin-top:10rpx;color:#274d3b;font-size:12px;font-weight:500;line-height:1.6;overflow-wrap:anywhere;}
+.note-room-facts{margin-top:2rpx;color:#687365;font-size:11px;line-height:1.6;overflow-wrap:anywhere;}
 .note-excerpt{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:10rpx;font-size:13px;line-height:1.7;color:#687365;overflow-wrap:anywhere;}
 .ledger-open{display:flex;align-items:center;justify-content:center;flex:0 0 56rpx;}
 .ledger-chevron{display:block;width:32rpx;height:32rpx;flex-shrink:0;}
@@ -55,13 +59,13 @@
 .empty-ledger{padding:30rpx 28rpx;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:12rpx;}
 .empty-ledger-title{font-family:"Songti SC","STSong",serif;font-size:36rpx;line-height:1.5;color:#28382e;margin-bottom:12rpx;}
 .journal.organized-page .empty-checkin{margin-top:24rpx;}
-.mine-page .settings-panel{margin:0 -12rpx;border-top:1rpx solid #d6ddcf;border-bottom:1rpx solid #d6ddcf;}
+.mine-page .settings-panel{margin:0;border-top:1rpx solid #d6ddcf;border-bottom:1rpx solid #d6ddcf;}
 .journal.organized-page .settings-row{display:flex;align-items:center;justify-content:space-between;gap:20rpx;width:100% !important;min-height:52px;margin:0;padding:22rpx 0;border-radius:0;background:transparent;text-align:left;color:#274d3b;font-size:14px;font-weight:500;line-height:1.7;}
 .settings-row+.settings-row{border-top:1rpx solid #d6ddcf;}
 .journal.organized-page .logout-row{color:#687365;font-weight:400;}
-.profile-modal-mask{position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:32rpx;padding-top:calc(32rpx + env(safe-area-inset-top));padding-bottom:calc(32rpx + env(safe-area-inset-bottom));background:rgba(24,23,19,0.48);}
+.profile-modal-mask{position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;display:flex;align-items:flex-start;justify-content:center;padding:32rpx;padding-top:calc(170rpx + env(safe-area-inset-top));padding-bottom:calc(48rpx + env(safe-area-inset-bottom));background:rgba(24,23,19,0.48);}
 .profile-modal-ticket{width:100%;max-width:640rpx;max-height:calc(100vh - 64rpx - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow-y:auto;padding:28rpx;background:#fbfaf5;border:1rpx solid #b9c5b1;border-radius:16rpx;}
-.modal-kicker{display:flex;align-items:center;justify-content:space-between;gap:16rpx;padding-bottom:16rpx;border-bottom:1rpx dashed #bac5b0;font-size:12px;color:#687365;letter-spacing:2rpx;}
+.modal-kicker{display:flex;align-items:center;justify-content:space-between;gap:16rpx;padding-bottom:16rpx;padding-right:120rpx;border-bottom:1rpx dashed #bac5b0;font-size:12px;color:#687365;letter-spacing:2rpx;}
 .modal-title{margin:20rpx 0 22rpx;font-family:"Songti SC","STSong",serif;font-size:42rpx;font-weight:600;line-height:1.35;color:#28382e;}
 .modal-section{padding:18rpx 20rpx;margin-bottom:20rpx;background:#f7f6ef;border:1rpx solid #d6ddcf;border-radius:12rpx;}
 .modal-section.is-highlighted{border-color:#274d3b;background:#eff3ea;}
@@ -79,4 +83,5 @@
 .journal.organized-page .modal-cancel-btn{background:transparent;border:1rpx solid #b9c5b1;color:#687365;}
 .journal.organized-page .modal-save-btn{background:#274d3b;border:1rpx solid #274d3b;color:#f7f6ef;font-weight:500;}
 .journal.organized-page .modal-save-btn.is-busy{opacity:.68;}
-@media(max-width:350px){.mine-page .profile-panel,.mine-page .profile-stats,.mine-page .record-panel,.mine-page .settings-panel{margin-left:0;margin-right:0;}.journal.organized-page .profile-stub,.ledger-date{flex-basis:140rpx;}.profile-main{padding:22rpx 20rpx;}.profile-title{font-size:40rpx;}.profile-state-row{gap:12rpx;flex-wrap:wrap;}.journal.organized-page .profile-action{min-width:72px;}.pe-avatar{width:96rpx;height:96rpx;}.pe-emoji{font-size:40rpx;}.stat-ticket,.journal.organized-page .stat-link{padding:20rpx 16rpx;}.stat-copy{font-size:12px;gap:4rpx;}.stat-number{font-size:60rpx;}.note-ledger::before,.note-ledger::after{left:126rpx;}.date-month-day{font-size:34rpx;}.ledger-copy{padding-left:20rpx;}.ledger-open{flex-basis:44rpx;}.note-title{font-size:42rpx;}.organized-page .notes-heading .panel-title{font-size:52rpx;}.journal.organized-page .mine-checkin{padding:10rpx 20rpx;}}
+
+@media(max-width:350px){.profile-ticket{padding:28rpx;}.profile-identity-row{gap:18rpx;}.profile-title{font-size:18px;}.journal.organized-page .profile-action{flex-basis:82px;width:82px!important;min-width:82px;}.ledger-date{flex-basis:140rpx;}.stat-ticket,.journal.organized-page .stat-link{padding:20rpx 16rpx;}.stat-copy{font-size:12px;gap:4rpx;}.stat-number{font-size:60rpx;}.note-ledger::before,.note-ledger::after{left:126rpx;}.date-month-day{font-size:34rpx;}.ledger-copy{padding-left:20rpx;}.ledger-open{flex-basis:44rpx;}.note-title{font-size:42rpx;}.organized-page .notes-heading .panel-title{font-size:52rpx;}.journal.organized-page .mine-checkin{padding:10rpx 20rpx;}}

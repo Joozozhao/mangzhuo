@@ -46,7 +46,11 @@
         <image wx:if="{{item.avatarImg}}" class="member-avatar member-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
         <view wx:else class="member-avatar">{{item.avatar || "🍶"}}</view>
         <view class="member-info">
-          <view class="m-name">{{item.nickname}} <text class="m-tag" wx:if="{{item.role === 'owner'}}">房主</text></view>
+          <view class="m-name">
+            <text>{{item.nickname}}</text>
+            <text class="m-level-badge" wx:if="{{item.levelTitle}}">{{item.levelTitle}}</text>
+            <text class="m-tag" wx:if="{{item.role === 'owner'}}">房主</text>
+          </view>
           <view class="m-state {{item.isSubmitted ? 'state-done' : ''}}">{{item.isSubmitted ? "✓ 已交卷" : "品评中"}}</view>
         </view>
       </view>

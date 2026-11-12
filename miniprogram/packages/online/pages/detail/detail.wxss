@@ -1,7 +1,7 @@
 .journal.detail-page {
   width: 100%;
   min-width: 0;
-  padding: 32rpx 46rpx 80rpx;
+  padding: 32rpx var(--mz-gutter,46rpx) 80rpx;
   padding-bottom: calc(80rpx + env(safe-area-inset-bottom));
 }
 .detail-page .chapter-mast { flex-wrap: wrap; align-items: baseline; gap: 10rpx 20rpx; padding-bottom: 24rpx; }
@@ -74,7 +74,7 @@
 .my-score { padding-top: 6rpx; color: #274d3b; }
 .detail-title, .detail-meta, .chapter-no, .muted, .empty-note, .choice-tag, .host-hint, .picker-text, .actual-name-row, .my-choice { overflow-wrap: anywhere; word-break: break-all; }
 @media (max-width: 350px) {
-  .journal.detail-page { padding-left: 36rpx; padding-right: 36rpx; }
+  .journal.detail-page { padding-left: var(--mz-gutter,36rpx); padding-right: var(--mz-gutter,36rpx); }
   .detail-page .card { padding: 24rpx; }
 }
 @media (prefers-reduced-motion: reduce) { .loading-spinner { animation: none; } }

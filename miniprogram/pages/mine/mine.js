@@ -1,6 +1,8 @@
 const storage = require('../../services/storage');
 const journal = require('../../services/journal');
+const journalContext = require('../../services/journalContext');
 const identity = require('../../services/identity');
+const memberLevel = require('../../services/memberLevel');
 
 function withDatePresentation(note) {
   const dateLabel = typeof note.date === 'string' ? note.date : '';
@@ -45,10 +47,10 @@ Page({
     modalPendingImg: false,
     modalAvatarLoadError: false,
     modalSaving: false,
+    memberLevel: null,
     notes: [],
     count: 0,
-    roomCount: 0,
-    aromaCount: 0
+    roomCount: 0
   },
 
   onShow() {
@@ -56,13 +58,14 @@ Page({
     if (tabBar) tabBar.setData({ selected: 3 });
 
     const user = storage.getCurrentUser();
-    const notes = journal.all().map(withDatePresentation);
+    const notes = journal.all().map(note => journalContext.presentNote(withDatePresentation(note)));
     const roomIds = new Set(storage.getMembers()
       .filter(member => member.userId === user.userId)
       .map(member => member.roomId));
     const isWechat = identity.isLoggedIn();
-    const aromaTypes = new Set(notes.map(note => note.aromaType)
-      .filter(aroma => aroma && aroma !== '暂不判断' && aroma !== '其他'));
+    const levelInfo = (memberLevel.getUserMemberLevel && user && user.userId)
+      ? memberLevel.getUserMemberLevel(user.userId)
+      : (memberLevel.calculateMemberLevel ? memberLevel.calculateMemberLevel({ roomCount: roomIds.size, totalScore: 0 }) : null);
 
     this.setData({
       user,
@@ -71,10 +74,10 @@ Page({
       avatarLoadError: false,
       isWechat,
       profileCompleted: identity.hasCompletedProfile(user),
+      memberLevel: levelInfo,
       notes,
       count: notes.length,
-      roomCount: roomIds.size,
-      aromaCount: aromaTypes.size
+      roomCount: roomIds.size
     });
   },
 
@@ -110,6 +113,10 @@ Page({
 
   openNicknameModal() {
     this.openProfileModal({ currentTarget: { dataset: { field: 'nickname' } } });
+  },
+
+  openMemberLevels() {
+    wx.navigateTo({ url: '/pages/member-level/member-level' });
   },
 
   closeProfileModal() {

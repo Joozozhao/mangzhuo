@@ -1,5 +1,5 @@
 /* 竹影手札：四个一级页面的纸页、题签与操作节奏。 */
-.journal.organized-page{padding:32rpx 46rpx calc(156rpx + env(safe-area-inset-bottom));max-width:900rpx;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#28382e;font-size:14px;line-height:1.7;}
+.journal.organized-page{padding:32rpx var(--mz-gutter,46rpx) calc(156rpx + env(safe-area-inset-bottom));max-width:900rpx;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#28382e;font-size:14px;line-height:1.7;}
 .organized-page view,.organized-page text,.organized-page button{box-sizing:border-box;}
 .organized-page button{font-family:inherit;font-weight:400;min-height:44px;min-width:44px;white-space:normal;line-height:1.6;overflow-wrap:anywhere;}
 .organized-page button::after{border:0;}
@@ -38,5 +38,5 @@
 .organized-page .quiet-footer{font-size:12px;color:#687365;line-height:1.8;text-align:center;padding:14rpx 0 16rpx;}
 .organized-page .bamboo-art{filter:brightness(0) saturate(100%) invert(26%) sepia(14%) saturate(1159%) hue-rotate(93deg) brightness(92%) contrast(90%);}
 .organized-page .input{min-width:0;min-height:44px;font-size:16px;border-radius:0;border:1rpx solid #b4c0ad;background:#fbfaf5;color:#28382e;}
-@media(max-width:350px){.journal.organized-page{padding-left:36rpx;padding-right:36rpx;}.organized-page .compact-title{font-size:54rpx;}.organized-page .page-kicker{letter-spacing:3rpx;}.organized-page .row-title{font-size:35rpx;}.organized-page .chapter-hero-banner{min-height:316rpx;}.organized-page .chapter-title-svg{width:316rpx;height:252rpx;}.organized-page .chapter-pose-svg{right:-56rpx;width:324rpx;height:324rpx;}}
+@media(max-width:350px){.journal.organized-page{padding-left:var(--mz-gutter,36rpx);padding-right:var(--mz-gutter,36rpx);}.organized-page .compact-title{font-size:54rpx;}.organized-page .page-kicker{letter-spacing:3rpx;}.organized-page .row-title{font-size:35rpx;}.organized-page .chapter-hero-banner{min-height:316rpx;}.organized-page .chapter-title-svg{width:316rpx;height:252rpx;}.organized-page .chapter-pose-svg{right:-56rpx;width:324rpx;height:324rpx;}}
 @media(prefers-reduced-motion:reduce){.organized-page button{transition:none;}}

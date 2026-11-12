@@ -5,7 +5,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const kb = require('../miniprogram/utils/liquorKnowledge');
 
-function makePage({ offline = false, saveError = false } = {}) {
+function makePage({ offline = false, saveError = false, rooms = [] } = {}) {
   let page;
   const saved = [], navigations = [], scrolls = [], toasts = [];
   const catalogue = [{ product: '青花汾酒', brand: '汾酒', aromaType: '清香型' }];
@@ -17,11 +17,13 @@ function makePage({ offline = false, saveError = false } = {}) {
       showToast(options) { toasts.push(options); }
     },
     require(name) {
-      if (name.includes('journal')) return { save(value) {
+      if (name === '../../services/journal') return { save(value) {
         if (saveError) throw new Error('存储空间不足');
         saved.push(value);
         return { id: 'saved-note' };
       } };
+      if (name === '../../services/journalContext') return { getRoomOptions: () => rooms };
+      if (name === '../../services/storage') return { getCurrentUser: () => ({ userId: 'me' }) };
       if (name.includes('liquorKnowledge')) return kb;
       return {
         searchLiquors(query) { return query ? catalogue : []; },
@@ -100,4 +102,34 @@ test('storage failure releases saving state and never leaves the form', () => {
   assert.equal(page.data.saving, false);
   assert.equal(navigations.length, 0);
   assert.equal(toasts[0].title, '存储空间不足');
+});
+
+test('a room and blind sample stay attached to the note with a truthful room snapshot', () => {
+  const rooms = [{
+    roomId: 'room_real', name: '春夜品鉴', status: 'playing', sampleCount: 2, memberCount: 4,
+    samples: [{ sampleId: 'sample-1', label: '01号盲样', product: '', aromaType: '' }, { sampleId: 'sample-2', label: '02号盲样', product: '', aromaType: '' }]
+  }];
+  const { page, saved } = makePage({ rooms });
+  assert.equal(page.data.roomIndex, -1);
+  page.chooseRoom({ detail: { value: 0 } });
+  page.chooseSample({ detail: { value: 0 } });
+  assert.equal(page.data.title, '01号盲样');
+  assert.equal(page.data.selectedSample.product, '', 'Writing a note must not reveal a blind sample');
+  page.submit({ detail: { value: { title: page.data.title, note: '与同席朋友一起记录' } } });
+  assert.equal(saved[0].roomId, 'room_real');
+  assert.equal(saved[0].sampleId, 'sample-1');
+  assert.deepEqual({ ...saved[0].roomSnapshot }, { roomId: 'room_real', name: '春夜品鉴', sampleCount: 2, memberCount: 4 });
+});
+
+test('an explicit room route preselects context and manual wine names are preserved', () => {
+  const rooms = [{ roomId: 'room_real', name: '春夜品鉴', status: 'revealed', sampleCount: 1, memberCount: 3,
+    samples: [{ sampleId: 'sample-1', label: '01号酒', product: '已揭晓酒款', aromaType: '清香型' }] }];
+  const { page } = makePage({ rooms });
+  page.onLoad({ roomId: 'room_real', sampleId: 'sample-1' });
+  assert.equal(page.data.selectedRoom.roomId, 'room_real');
+  assert.equal(page.data.selectedSample.sampleId, 'sample-1');
+  assert.equal(page.data.aromas[page.data.index], '清香型');
+  page.onTitleInput({ detail: { value: '我的这杯' } });
+  page.chooseSample({ detail: { value: 0 } });
+  assert.equal(page.data.title, '我的这杯');
 });

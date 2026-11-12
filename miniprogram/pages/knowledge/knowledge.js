@@ -31,6 +31,8 @@ Page({
   },
   onLoad() {
     this._disposed = false;
+    this._scrollTop = 0;
+    this._listScrollTop = 0;
     try {
       this.setData({ lastRead: wx.getStorageSync(LAST_READ_KEY) || null });
     } catch (err) {
@@ -47,6 +49,9 @@ Page({
     if (pending) this.openDetail(pending.type, pending.id);
   },
   onUnload() { this._disposed = true; },
+  onPageScroll(e) {
+    this._scrollTop = Math.max(0, e.scrollTop || 0);
+  },
   async loadWineCatalog(force = false) {
     this.setData({ catalogLoading: true });
     const result = await refreshLiquors({ force: force === true });
@@ -87,13 +92,22 @@ Page({
   },
   retryRemoteKnowledge() { this.loadRemoteKnowledge(true); },
   onReachBottom() {
+    if (this.data.selected || this.data.selectedWine) return;
     if (this.data.section === 'articles' && this.data.remoteHasMore) this.loadRemoteKnowledge();
+  },
+  showDetail(selected, selectedWine = null) {
+    // 关联阅读沿用最初列表的位置，正文滚动不覆盖返回位置。
+    if (!this.data.selected && !this.data.selectedWine) {
+      this._listScrollTop = this._scrollTop || 0;
+    }
+    this.setData({ selected, selectedWine }, () => {
+      if (!this._disposed) wx.pageScrollTo({ scrollTop: 0, duration: 0 });
+    });
   },
   openWine(e) {
     const wine = (this._catalogRows || []).find(item => item.brand === e.currentTarget.dataset.brand && item.product === e.currentTarget.dataset.product);
     if (!wine) return;
-    this.setData({ selected: null, selectedWine: wine });
-    wx.pageScrollTo({ scrollTop: 0, duration: 0 });
+    this.showDetail(null, wine);
   },
   refresh() {
     let results = kb.search(this.data.section, this.data.query) || [];
@@ -147,7 +161,7 @@ Page({
       wx.showToast({ title: '这篇内容还在整理中', icon: 'none' });
       return;
     }
-    this.setData({ selected: detail, selectedWine: null });
+    this.showDetail(detail);
     const lastRead = {
       type: detail.type,
       id: detail.id,
@@ -160,7 +174,6 @@ Page({
     } catch (err) {
       // Keep the current session usable when device storage is unavailable.
     }
-    wx.pageScrollTo({ scrollTop: 0, duration: 0 });
   },
   open(e) {
     const { type, id } = e.currentTarget.dataset;
@@ -175,7 +188,11 @@ Page({
     if (item) this.openDetail(item.type, item.id);
   },
   close() {
-    this.setData({ selected: null, selectedWine: null });
+    if (!this.data.selected && !this.data.selectedWine) return;
+    // 列表重新渲染后再恢复，避免被较短的正文高度截断滚动位置。
+    this.setData({ selected: null, selectedWine: null }, () => {
+      if (!this._disposed) wx.pageScrollTo({ scrollTop: this._listScrollTop || 0, duration: 0 });
+    });
   },
   copy(e) {
     wx.setClipboardData({ data: e.currentTarget.dataset.url });

@@ -1,0 +1,68 @@
+{
+  "rows": [
+    {
+      "name": "home",
+      "route": "/pages/index/index",
+      "actualRoute": "pages/index/index",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px",
+      "bounds": [
+        {
+          "selector": ".home-shortcuts",
+          "left": 24,
+          "right": 24,
+          "width": 354
+        },
+        {
+          "selector": ".record-panel",
+          "left": 24,
+          "right": 24,
+          "width": 354
+        }
+      ]
+    },
+    {
+      "name": "tasting",
+      "route": "/packages/blind/pages/tasting/tasting?roomId=room_demo_01&sampleIndex=0",
+      "actualRoute": "packages/blind/pages/tasting/tasting",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px",
+      "bounds": [
+        {
+          "selector": ".card",
+          "left": 24,
+          "right": 24,
+          "width": 354
+        }
+      ]
+    },
+    {
+      "name": "report",
+      "route": "/packages/blind/pages/report/report?roomId=room_demo_01",
+      "actualRoute": "packages/blind/pages/report/report",
+      "left": 0,
+      "right": 0,
+      "width": 402,
+      "viewport": 402,
+      "paddingLeft": "24px",
+      "paddingRight": "24px",
+      "bounds": [
+        {
+          "selector": ".card",
+          "left": 24,
+          "right": 24,
+          "width": 354
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

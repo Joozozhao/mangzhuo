@@ -22,6 +22,11 @@ function makeHomePage(notes = []) {
     Page(def) { page = def; },
     wx,
     require(id) {
+      if (id === '../../services/storage') return { getCurrentUser: () => ({ userId: 'u1' }) };
+      if (id === '../../services/journalContext') return { presentNote: note => note };
+      if (id === '../../services/homeProgress') return { getHomeOverview: () => ({ active: null, latestResult: null, membership: null }) };
+      if (id === '../../utils/knowledgeNavigation') return { open: () => {} };
+      if (id === '../../utils/liquorKnowledge') return { articles: [] };
       if (id === '../../services/journal') return { all: () => notes };
       throw new Error('Unexpected dependency: ' + id);
     }

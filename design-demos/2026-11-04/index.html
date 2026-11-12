@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>盲酌 · 三种打开方式</title>
+  <link rel="stylesheet" href="review.css">
+</head>
+<body>
+  <header class="masthead">
+    <a class="wordmark" href="./index.html" aria-label="盲酌设计对比首页">盲酌<span>设计提案</span></a>
+    <span class="edition">DESIGN STUDY <span>／</span> 2026.11</span>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="title">
+      <div><p class="eyebrow">去掉酒标，只凭味道。</p><h1 id="title">同一杯酒，<br class="mobile-break">三种打开方式<span>。</span></h1></div>
+      <p class="intro-note">四个页面，三种气质。<br>可以整套选择，也可以挑出喜欢的页面组合。</p>
+    </section>
+    <section class="workspace" aria-label="设计方案对比">
+      <div class="toolbar">
+        <nav class="page-tabs" aria-label="对比页面">
+          <button type="button" data-page="home" aria-pressed="true">首页</button>
+          <button type="button" data-page="gather" aria-pressed="false">酒局</button>
+          <button type="button" data-page="knowledge" aria-pressed="false">酒识</button>
+          <button type="button" data-page="mine" aria-pressed="false">我的</button>
+        </nav>
+        <div class="view-tools">
+          <label class="sync-control"><input id="sync" type="checkbox" checked><span>页面联动</span></label>
+          <button type="button" id="view-toggle" class="quiet-button" aria-pressed="false">单版细看 <span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+      <div class="single-picker" hidden><span>当前方案</span><div role="group" aria-label="细看方案"><button type="button" data-version="a" aria-pressed="true">A 竹影手札</button><button type="button" data-version="b" aria-pressed="false">B 夜酌俱乐部</button><button type="button" data-version="c" aria-pressed="false">C 白日品鉴室</button></div></div>
+      <div class="variants" id="variants">
+        <article class="variant variant-a" data-version="a">
+          <header class="variant-heading"><div class="variant-name"><span class="letter">A</span><div><h2>竹影手札</h2><p>纸白 × 竹绿 · 当代东方</p></div></div><a class="open-link" href="a.html?page=home" target="_blank" rel="noopener" aria-label="独立打开A竹影手札">↗</a></header>
+          <div class="preview"><iframe src="a.html?page=home" title="A 竹影手札交互预览" loading="eager"></iframe></div>
+          <div class="variant-foot"><p>把每一杯，收进自己的手札。</p><button type="button" class="choose" data-choose="a" aria-pressed="false">首页选 A <span aria-hidden="true">＋</span></button></div>
+          <div class="design-note"><span>适合喜欢</span><p>温润、安静、有东方气质。纸本排印与竹绿题签，让手记更像值得珍藏的一页。</p><button type="button" class="choose-suite" data-suite="a">四页都选 A <span aria-hidden="true">→</span></button></div>
+        </article>
+        <article class="variant variant-b" data-version="b">
+          <header class="variant-heading"><div class="variant-name"><span class="letter">B</span><div><h2>夜酌俱乐部</h2><p>暖炭 × 琥珀 · 私享夜酌</p></div></div><a class="open-link" href="b.html?page=home" target="_blank" rel="noopener" aria-label="独立打开B夜酌俱乐部">↗</a></header>
+          <div class="preview"><iframe src="b.html?page=home" title="B 夜酌俱乐部交互预览" loading="eager"></iframe></div>
+          <div class="variant-foot"><p>让味道，成为今晚的主角。</p><button type="button" class="choose" data-choose="b" aria-pressed="false">首页选 B <span aria-hidden="true">＋</span></button></div>
+          <div class="design-note"><span>适合喜欢</span><p>专注、有分量、有聚会氛围。深色桌面与琥珀排印，让发起一局更有仪式感。</p><button type="button" class="choose-suite" data-suite="b">四页都选 B <span aria-hidden="true">→</span></button></div>
+        </article>
+        <article class="variant variant-c" data-version="c">
+          <header class="variant-heading"><div class="variant-name"><span class="letter">C</span><div><h2>白日品鉴室</h2><p>亮白 × 钴蓝 · 轻盈秩序</p></div></div><a class="open-link" href="c.html?page=home" target="_blank" rel="noopener" aria-label="独立打开C白日品鉴室">↗</a></header>
+          <div class="preview"><iframe src="c.html?page=home" title="C 白日品鉴室交互预览" loading="eager"></iframe></div>
+          <div class="variant-foot"><p>轻松记录，慢慢读懂风味。</p><button type="button" class="choose" data-choose="c" aria-pressed="false">首页选 C <span aria-hidden="true">＋</span></button></div>
+          <div class="design-note"><span>适合喜欢</span><p>清爽、直接、使用轻快。蓝白编辑网格与明确入口，把记录和查阅放到手边。</p><button type="button" class="choose-suite" data-suite="c">四页都选 C <span aria-hidden="true">→</span></button></div>
+        </article>
+      </div>
+    </section>
+    <section class="selection" aria-labelledby="selection-title">
+      <div class="selection-intro"><span class="eyebrow">YOUR EDIT</span><h2 id="selection-title">我的组合</h2><p>点击方案下方按钮记录偏好，选择自动保存在当前浏览器。</p></div>
+      <div class="selection-values" id="selection-values"></div>
+      <div class="selection-actions"><button type="button" id="export" class="export-button" disabled>导出选择 <span aria-hidden="true">↓</span></button><button type="button" id="clear" class="quiet-button" disabled>清空</button></div>
+      <p class="selection-status" id="selection-status" role="status" aria-live="polite">尚未选择，可以先逛逛。</p>
+    </section>
+    <footer class="review-footer"><span>交互设计初稿 · 页面内容与个人数字为演示</span><span>预览中可切页、阅读、记一杯与体验酒局流程</span></footer>
+  </main>
+  <script src="review.js"></script>
+</body>
+</html>
